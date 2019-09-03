@@ -45,7 +45,7 @@ public class FamilyApplicationTests {
         FaLoginEntity fle=new FaLoginEntity();
         fle.id=1;
         EntityHelper<FaLoginEntity> eh=new EntityHelper(fle);
-        FaLoginEntity ent=mhs.getSingleByPrimaryKey(eh);
+        FaLoginEntity ent=mhs.getSingleByPrimaryKey(eh,1);
         System.out.println(ent);
     }
 

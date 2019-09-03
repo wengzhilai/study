@@ -34,8 +34,8 @@ public class MapperHelperImpl<T> implements MapperHelperService<T> {
         return whereStr;
     }
 
-    public T getSingleByPrimaryKey(EntityHelper<T> entityHelper) {
-        HashMap<String, Object> map = mh.GetSingleByPrimaryKey(entityHelper);
+    public T getSingleByPrimaryKey(EntityHelper<T> entityHelper,int key) {
+        HashMap<String, Object> map = mh.GetSingleByPrimaryKey(entityHelper,key);
         String str = JSON.toJSONString(map);
         T ent = JSON.parseObject(str, entityHelper.classType);
         return ent;

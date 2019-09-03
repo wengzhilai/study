@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.function.Function;
 
 public interface MapperHelperService<T> {
-    T getSingleByPrimaryKey(EntityHelper<T> entityHelper);
+    T getSingleByPrimaryKey(EntityHelper<T> entityHelper,int key);
 
     T getSingle(EntityHelper<T> entityHelper, SqlPredicate<T> whereLambda);
 

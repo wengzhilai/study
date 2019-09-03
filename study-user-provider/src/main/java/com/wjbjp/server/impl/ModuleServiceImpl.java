@@ -24,7 +24,7 @@ public class ModuleServiceImpl implements ModuleService {
     @Override
     public FaModuleEntity singleByKey(int key) {
         moduleEh.data.id=key;
-       return  moduleMhs.getSingleByPrimaryKey(moduleEh);
+       return  moduleMhs.getSingleByPrimaryKey(moduleEh,key);
     }
 
     @Override
