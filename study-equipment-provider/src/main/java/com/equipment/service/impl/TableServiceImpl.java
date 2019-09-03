@@ -13,8 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 
 @Service
 public class TableServiceImpl implements TableService {
@@ -78,31 +80,29 @@ public class TableServiceImpl implements TableService {
     /**
     * 生成创建表SQL
     */
-    public String MakeSqlCreateTable(FaTableTypeEntity inEnt)
-    {
-//        List<String> allColumns = new List<>();
-//        foreach (var item in inEnt.AllColumns)
-//        {
-//            allColumns.Add(
-//                    String.format("\r\n  {0} {1} {2} COMMENT '{3}'",
-//                            item.columnName,
-//                            GetTypeStr(item),
-//                            (item.isRequired > 1) ? "not null" : "null",
-//                            item.name
-//                    )
-//            );
-//        }
-//
-//        String reObj = @"
-//        create table {0}(
-//            Id INT NOT NULL AUTO_INCREMENT,
-//        {1},
-//        PRIMARY KEY ( Id )
-//);
-//        ";
-//        reObj = String.format(reObj, inEnt.TABLE_name, String.Join(",", allColumns));
-        return "";
+    public String MakeSqlCreateTable(FaTableTypeEntity inEnt) {
+        List<String> allColumns = new ArrayList<>();
+        for (FaTableColumnEntity item : inEnt.AllColumns) {
+            allColumns.add(
+                    String.format("\r\n  {0} {1} {2} COMMENT '{3}'",
+                            item.columnName,
+                            "",
+                            (item.isRequired > 1) ? "not null" : "null",
+                            item.name
+                    )
+            );
+        }
+
+        String reObj = "" +
+                "create table {0}(\n" +
+                "   Id INT NOT NULL AUTO_INCREMENT,\n" +
+                "{1},\n" +
+                "   PRIMARY KEY ( Id )\n" +
+                ");";
+        reObj = String.format(reObj, inEnt.tableName, String.join(",", allColumns));
+        return reObj;
     }
+
 
 
     /**
