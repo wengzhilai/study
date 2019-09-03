@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: user-provider
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 144.202.58.141:8848
