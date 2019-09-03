@@ -24,6 +24,9 @@ public class TableServiceImpl implements TableService {
     @Autowired
     MyBatisService<FaTableTypeEntity> moduleMhs;
 
+    @Autowired
+    MyBatisService<FaTableColumnEntity> batisColumn;
+
     EntityHelper<FaTableTypeEntity> moduleEh = new EntityHelper<>(new FaTableTypeEntity());
 
     @Override
@@ -43,23 +46,109 @@ public class TableServiceImpl implements TableService {
         }
 
         moduleEh = new EntityHelper(inEnt.data);
-
+        boolean isAdd=true;
         if (inEnt.data.id == 0) {
             if (moduleEh.dbKeyType == DatabaseGeneratedOption.Computed) {
                 moduleEh.data.id = moduleMhs.getIncreasingId(moduleEh);
                 moduleEh.data.addTime=new Date();
             }
+            isAdd=true;
             resultObj.data = moduleMhs.insert(moduleEh, inEnt.saveFieldList, null);
         } else {
-            FaTableTypeEntity old=moduleMhs.getSingleByPrimaryKey(moduleEh,moduleEh.data.id);
+            isAdd = false;
+
+            FaTableTypeEntity oldEnt = moduleMhs.getSingleByPrimaryKey(moduleEh, moduleEh.data.id);
             resultObj.data = moduleMhs.update(moduleEh, inEnt.saveFieldList, inEnt.whereList);
             resultObj.success = resultObj.data > 0;
 
-            if(!old.tableName.equals(moduleEh.data.tableName)){
-
+            if (!oldEnt.tableName.equals(moduleEh.data.tableName)) {
+                moduleMhs.exec(this.MakeSqlChangetableName(oldEnt.tableName, inEnt.data.tableName));
             }
         }
+
+        for (FaTableColumnEntity item : inEnt.data.AllColumns) {
+//            if (isAdd || item.id == 0) //如果是新增加，或列ID为空
+//            {
+//                item.tableTypeId = inEnt.data.id;
+//                item.id = batisColumn.getIncreasingId(new EntityHelper(new FaTableColumnEntity()));
+//                int opNum = batisColumn.insert(new DtoSave<FaTableColumnEntity>
+//                {
+//                    Data = item
+//                });
+//                if (opNum < 1)
+//                {
+//                    LogHelper.WriteErrorLog(this.GetType(), "保存字段失败");
+//                    DapperHelper.TranscationRollback();
+//                    reObj.IsSuccess = false;
+//                    reObj.Msg = "保存字段失败";
+//                    return reObj;
+//                }
+//                //如果是修改，才修改数据库
+//                if (!isAdd)
+//                {
+//                    //添加字段,线程添加
+//                    var t = DapperHelper.Exec(MakeSqlAlterAddColumn(inEnt.Data.TABLE_NAME, item));
+//                }
+//            }
+//            else
+//            {
+//                var oldCol = oldEnt.AllColumns.Single(x => x.ID == item.ID);
+//                if (
+//                        oldCol != null
+//                                && oldCol.COLUMN_NAME == item.COLUMN_NAME
+//                                && oldCol.NAME == item.NAME
+//                                && oldCol.COLUMN_TYPE == item.COLUMN_TYPE
+//                                && oldCol.COLUMN_LONG == item.COLUMN_LONG
+//                )
+//                {
+//                    continue;
+//                }
+//                int opNum = 0;
+//                if (oldCol == null)
+//                {
+//                    item.ID = await new SequenceRepository().GetNextID<FaTableColumnEntity>();
+//                    opNum = await dapperCol.Save(new DtoSave<FaTableColumnEntity>
+//                    {
+//                        Data = item
+//                    });
+//                    //添加字段
+//                    var t = DapperHelper.Exec(MakeSqlAlterAddColumn(inEnt.Data.TABLE_NAME, item));
+//                }
+//                else
+//                {
+//                    opNum = await dapperCol.Update(new DtoSave<FaTableColumnEntity>
+//                    {
+//                        Data = item,
+//                                SaveFieldList = dapperCol.modelHelper.GetDirct().Select(x => x.Key).ToList(),
+//                            IgnoreFieldList = null
+//                    });
+//                    if (oldCol.COLUMN_NAME == item.COLUMN_NAME)
+//                    {
+//                        var t = DapperHelper.Exec(MakeSqlAlterTable(inEnt.Data.TABLE_NAME, item));
+//                    }
+//                    else
+//                    {
+//                        var t = DapperHelper.Exec(MakeSqlAlterChangeColumn(inEnt.Data.TABLE_NAME, oldCol.COLUMN_NAME, item));
+//                    }
+//                }
+//
+//                if (opNum < 1)
+//                {
+//                    LogHelper.WriteErrorLog(this.GetType(), "修改字段失败");
+//                    dbHelper.TranscationRollback();
+//                    reObj.IsSuccess = false;
+//                    reObj.Msg = "修改字段失败";
+//                    return reObj;
+//                }
+//            }
+        }
+
+
+
+
         return resultObj;
+
+
     }
 
     @Override
@@ -84,7 +173,7 @@ public class TableServiceImpl implements TableService {
         List<String> allColumns = new ArrayList<>();
         for (FaTableColumnEntity item : inEnt.AllColumns) {
             allColumns.add(
-                    String.format("\r\n  {0} {1} {2} COMMENT '{3}'",
+                    String.format("\r\n  %s %s %s COMMENT '%s'",
                             item.columnName,
                             "",
                             (item.isRequired > 1) ? "not null" : "null",
@@ -94,9 +183,9 @@ public class TableServiceImpl implements TableService {
         }
 
         String reObj = "" +
-                "create table {0}(\n" +
+                "create table %s(\n" +
                 "   Id INT NOT NULL AUTO_INCREMENT,\n" +
-                "{1},\n" +
+                "%s,\n" +
                 "   PRIMARY KEY ( Id )\n" +
                 ");";
         reObj = String.format(reObj, inEnt.tableName, String.join(",", allColumns));
@@ -127,7 +216,7 @@ public class TableServiceImpl implements TableService {
     {
 
         String reObj = String.format(
-                "alter table {0}  modify column {1} {2} {3} COMMENT '{4}';",
+                "alter table %s  modify column %s %s %s COMMENT '%s';",
                 tableName,
                 inEnt.columnName,
                 GetTypeStr(inEnt),
@@ -144,7 +233,7 @@ public class TableServiceImpl implements TableService {
     public String MakeSqlAlterAddColumn(String tableName, FaTableColumnEntity inEnt)
     {
         String reObj = String.format(
-                "alter table {0}  add {1} {2} {3} COMMENT '{4}';",
+                "alter table %s  add %s %s %s COMMENT '%s';",
                 tableName,
                 inEnt.columnName,
                 GetTypeStr(inEnt),
@@ -161,14 +250,14 @@ public class TableServiceImpl implements TableService {
     public String MakeSqlAlterChangeColumn(String tableName, String oldname, FaTableColumnEntity inEnt)
     {
         String reObj = String.format(
-                "alter table {0}  change {5} {1} {2} {3} COMMENT '{4}';",
+                "alter table %s  change %s %s %s %s COMMENT '%s';",
                 tableName,
-                inEnt.columnName,
                 GetTypeStr(inEnt),
                 (inEnt.isRequired > 1) ? "not null" : "null",
                 inEnt.name,
-                oldname
-        );
+                oldname,
+                inEnt.columnName
+                );
         return reObj;
     }
 
@@ -179,7 +268,7 @@ public class TableServiceImpl implements TableService {
     public String MakeSqlAlterUniqueColumn(String tableName, FaTableColumnEntity inEnt)
     {
         String reObj = String.format(
-                "alter table {0}  add UNIQUE ({1})",
+                "alter table %s  add UNIQUE (%s)",
                 tableName,
                 inEnt.columnName,
                 GetTypeStr(inEnt),

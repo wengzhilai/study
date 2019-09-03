@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 
 public interface MyBatisService<T> {
+    int exec(String sql);
+
     T getSingleByPrimaryKey(EntityHelper<T> entityHelper, int key);
 
     T getSingle(EntityHelper<T> entityHelper, SqlPredicate<T> whereLambda);

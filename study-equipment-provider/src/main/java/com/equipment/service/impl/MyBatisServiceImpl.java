@@ -34,6 +34,11 @@ public class MyBatisServiceImpl<T> implements MyBatisService<T> {
         return whereStr;
     }
 
+    public int exec(String sql) {
+        int reInt = mh.exec(sql);
+        return reInt;
+    }
+
     public List<HashMap<String,Object>> Select(String sql){
         return mh.Select(sql);
     }
