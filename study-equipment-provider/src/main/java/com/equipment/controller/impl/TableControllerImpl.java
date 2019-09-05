@@ -5,6 +5,7 @@ import com.equipment.model.entity.FaTableTypeEntity;
 import com.equipment.service.TableService;
 import com.wzl.commons.model.KVT;
 import com.wzl.commons.model.ResultObj;
+import com.wzl.commons.model.dto.DtoSave;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,16 @@ public class TableControllerImpl implements TableController {
     public FaTableTypeEntity SingleByKey(int key) {
         FaTableTypeEntity t=ts.SingleByKey(key);
         return t;
+    }
+
+    @Override
+    public ResultObj<Integer> Save(DtoSave<FaTableTypeEntity> inEnt) {
+        return ts.Save(inEnt);
+    }
+
+    @Override
+    public ResultObj<Integer> Delete(int key) {
+        return ts.Delete(key);
     }
 
     @RequestMapping(value = "/GetTableSelect", method = RequestMethod.POST)

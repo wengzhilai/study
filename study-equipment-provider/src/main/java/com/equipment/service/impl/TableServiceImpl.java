@@ -3,19 +3,24 @@ package com.equipment.service.impl;
 import com.dependencies.mybatis.service.MyBatisService;
 import com.equipment.model.entity.FaTableColumnEntity;
 import com.equipment.model.entity.FaTableTypeEntity;
+import com.equipment.model.mynum.TableColumnType;
 import com.equipment.service.TableService;
 import com.wzl.commons.model.KVT;
 import com.wzl.commons.model.ResultObj;
 import com.wzl.commons.model.dto.DtoSave;
 import com.wzl.commons.model.mynum.DatabaseGeneratedOption;
 import com.wzl.commons.retention.EntityHelper;
+import com.wzl.commons.utlity.LogHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -38,110 +43,156 @@ public class TableServiceImpl implements TableService {
     public ResultObj<Integer> Save(DtoSave<FaTableTypeEntity> inEnt) {
         ResultObj<Integer> resultObj = new ResultObj<>();
 
-        if (inEnt.data.AllColumns == null || inEnt.data.AllColumns.size() == 0)
-        {
+        //region 判断数据是否有效
+        if (inEnt.data.AllColumns == null || inEnt.data.AllColumns.size() == 0) {
             resultObj.success = false;
             resultObj.msg = "配置列不能为空";
             return resultObj;
         }
+        //endregion
 
         moduleEh = new EntityHelper(inEnt.data);
-        boolean isAdd=true;
+        boolean isAdd;
+        int opNum;
+        boolean opBool;
+        FaTableTypeEntity oldEnt = null;
+        List<FaTableColumnEntity> oldColumnList=new ArrayList<>();
+
+        //region 添加或修改数据
         if (inEnt.data.id == 0) {
             if (moduleEh.dbKeyType == DatabaseGeneratedOption.Computed) {
                 moduleEh.data.id = moduleMhs.getIncreasingId(moduleEh);
-                moduleEh.data.addTime=new Date();
+                moduleEh.data.addTime = new Date();
             }
-            isAdd=true;
+            isAdd = true;
             resultObj.data = moduleMhs.insert(moduleEh, inEnt.saveFieldList, null);
+            if (resultObj.data>0) {
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                LogHelper.writeErrorLog(this.getClass(), "添加表名失败");
+                resultObj.success = false;
+                resultObj.msg = "添加表名失败";
+                return resultObj;
+            }
         } else {
             isAdd = false;
-
-            FaTableTypeEntity oldEnt = moduleMhs.getSingleByPrimaryKey(moduleEh, moduleEh.data.id);
-            resultObj.data = moduleMhs.update(moduleEh, inEnt.saveFieldList, inEnt.whereList);
+            oldEnt = moduleMhs.getSingleByPrimaryKey(moduleEh, moduleEh.data.id);
+            int id=moduleEh.data.id;
+            oldColumnList=batisColumn.getAll(new EntityHelper(new FaTableColumnEntity()),x->x.tableTypeId==id,1,100,null);
+            resultObj.data = moduleMhs.update(moduleEh, inEnt.saveFieldList, Arrays.asList("id"));
             resultObj.success = resultObj.data > 0;
-
             if (!oldEnt.tableName.equals(moduleEh.data.tableName)) {
-                moduleMhs.exec(this.MakeSqlChangetableName(oldEnt.tableName, inEnt.data.tableName));
+                opBool=moduleMhs.alter(this.MakeSqlChangetableName(oldEnt.tableName, inEnt.data.tableName));
+                if (!opBool) {
+                    TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                    LogHelper.writeErrorLog(this.getClass(), "修改表名失败");
+                    resultObj.success = false;
+                    resultObj.msg = "修改字段失败";
+                    return resultObj;
+                }
+            }
+        }
+        //endregion
+
+        //region 修改阿或添加列
+        for (FaTableColumnEntity item : inEnt.data.AllColumns) {
+            EntityHelper<FaTableColumnEntity> columEH = new EntityHelper(item);
+            if (isAdd) //如果是新增加，或列ID为空
+            {
+                item.tableTypeId = inEnt.data.id;
+                item.id = batisColumn.getIncreasingId(columEH);
+                opNum = batisColumn.insert(columEH, null, null);
+                if (opNum < 1) {
+                    TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                    LogHelper.writeErrorLog(this.getClass(), "保存字段失败");
+                    resultObj.success = false;
+                    resultObj.msg = "保存字段失败";
+                    return resultObj;
+                }
+            }
+            //修改
+            else {
+                List<FaTableColumnEntity> oldColList=oldColumnList.stream().filter(x -> x.columnName.equals(item.columnName)).collect(Collectors.toList());
+                FaTableColumnEntity oldCol = oldColList.size()>0 ? oldColList.get(0): null;
+                if (
+                        oldCol != null &&
+                        oldCol.columnName == item.columnName &&
+                        oldCol.name == item.name &&
+                        oldCol.columnType == item.columnType &&
+                        oldCol.columnLong == item.columnLong
+                        ) {
+                    continue;
+                }
+                if (oldCol == null) {
+                    item.id = batisColumn.getIncreasingId(columEH);
+                    opNum = batisColumn.insert(columEH, null, null);
+                    if (opNum < 1) {
+                        TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                        LogHelper.writeErrorLog(this.getClass(), "添加字段失败");
+                        resultObj.success = false;
+                        resultObj.msg = "修改字段失败";
+                        return resultObj;
+                    }
+                    //添加字段
+                    opBool = batisColumn.alter(MakeSqlAlterAddColumn(inEnt.data.tableName, item));
+                    if (!opBool) {
+                        TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                        LogHelper.writeErrorLog(this.getClass(), "添加字段失败1");
+                        resultObj.success = false;
+                        resultObj.msg = "修改字段失败";
+                        return resultObj;
+                    }
+                } else {
+                    int oldId = oldCol.id;
+                    opNum = batisColumn.update(columEH, x -> x.id == oldId);
+                    if (opNum < 1) {
+                        TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                        LogHelper.writeErrorLog(this.getClass(), "修改字段失败");
+                        resultObj.success = false;
+                        resultObj.msg = "修改字段失败";
+                        return resultObj;
+                    }
+
+                    if (oldCol.columnName.equals(item.columnName)) {
+                        opBool = batisColumn.alter(MakeSqlAlterTable(inEnt.data.tableName, item));
+                    } else {
+                        opBool = batisColumn.alter(MakeSqlAlterChangeColumn(inEnt.data.tableName, oldCol.columnName, item));
+                    }
+                    if (!opBool) {
+                        TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                        LogHelper.writeErrorLog(this.getClass(), "修改字段失败1");
+                        resultObj.success = false;
+                        resultObj.msg = "修改字段失败";
+                        return resultObj;
+                    }
+                }
+
+
+            }
+        }
+        //endregion
+
+        for (FaTableColumnEntity item : oldColumnList){
+            if(!inEnt.data.AllColumns.stream().anyMatch(x->x.columnName.equals(item.columnName))){
+                EntityHelper<FaTableColumnEntity> columEH = new EntityHelper(item);
+                int delId=item.id;
+                batisColumn.delete(columEH,x->x.id==delId );
+                batisColumn.alter(MakeSqlAlterDropColumn(inEnt.data.tableName,item));
             }
         }
 
-        for (FaTableColumnEntity item : inEnt.data.AllColumns) {
-//            if (isAdd || item.id == 0) //如果是新增加，或列ID为空
-//            {
-//                item.tableTypeId = inEnt.data.id;
-//                item.id = batisColumn.getIncreasingId(new EntityHelper(new FaTableColumnEntity()));
-//                int opNum = batisColumn.insert(new DtoSave<FaTableColumnEntity>
-//                {
-//                    Data = item
-//                });
-//                if (opNum < 1)
-//                {
-//                    LogHelper.WriteErrorLog(this.GetType(), "保存字段失败");
-//                    DapperHelper.TranscationRollback();
-//                    reObj.IsSuccess = false;
-//                    reObj.Msg = "保存字段失败";
-//                    return reObj;
-//                }
-//                //如果是修改，才修改数据库
-//                if (!isAdd)
-//                {
-//                    //添加字段,线程添加
-//                    var t = DapperHelper.Exec(MakeSqlAlterAddColumn(inEnt.Data.TABLE_NAME, item));
-//                }
-//            }
-//            else
-//            {
-//                var oldCol = oldEnt.AllColumns.Single(x => x.ID == item.ID);
-//                if (
-//                        oldCol != null
-//                                && oldCol.COLUMN_NAME == item.COLUMN_NAME
-//                                && oldCol.NAME == item.NAME
-//                                && oldCol.COLUMN_TYPE == item.COLUMN_TYPE
-//                                && oldCol.COLUMN_LONG == item.COLUMN_LONG
-//                )
-//                {
-//                    continue;
-//                }
-//                int opNum = 0;
-//                if (oldCol == null)
-//                {
-//                    item.ID = await new SequenceRepository().GetNextID<FaTableColumnEntity>();
-//                    opNum = await dapperCol.Save(new DtoSave<FaTableColumnEntity>
-//                    {
-//                        Data = item
-//                    });
-//                    //添加字段
-//                    var t = DapperHelper.Exec(MakeSqlAlterAddColumn(inEnt.Data.TABLE_NAME, item));
-//                }
-//                else
-//                {
-//                    opNum = await dapperCol.Update(new DtoSave<FaTableColumnEntity>
-//                    {
-//                        Data = item,
-//                                SaveFieldList = dapperCol.modelHelper.GetDirct().Select(x => x.Key).ToList(),
-//                            IgnoreFieldList = null
-//                    });
-//                    if (oldCol.COLUMN_NAME == item.COLUMN_NAME)
-//                    {
-//                        var t = DapperHelper.Exec(MakeSqlAlterTable(inEnt.Data.TABLE_NAME, item));
-//                    }
-//                    else
-//                    {
-//                        var t = DapperHelper.Exec(MakeSqlAlterChangeColumn(inEnt.Data.TABLE_NAME, oldCol.COLUMN_NAME, item));
-//                    }
-//                }
-//
-//                if (opNum < 1)
-//                {
-//                    LogHelper.WriteErrorLog(this.GetType(), "修改字段失败");
-//                    dbHelper.TranscationRollback();
-//                    reObj.IsSuccess = false;
-//                    reObj.Msg = "修改字段失败";
-//                    return reObj;
-//                }
-//            }
+        //region 新增加的时候，创建新表
+        if(isAdd){
+            boolean obj = moduleMhs.alter(MakeSqlCreateTable(inEnt.data));
+            if (!obj) {
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                LogHelper.writeErrorLog(this.getClass(), "创建新表失败");
+                resultObj.success = false;
+                resultObj.msg = "修改字段失败";
+                return resultObj;
+            }
         }
+        //endregion
+
         return resultObj;
     }
 
@@ -174,7 +225,7 @@ public class TableServiceImpl implements TableService {
             allColumns.add(
                     String.format("\r\n  %s %s %s COMMENT '%s'",
                             item.columnName,
-                            "",
+                            GetTypeStr(item),
                             (item.isRequired > 1) ? "not null" : "null",
                             item.name
                     )
@@ -188,6 +239,7 @@ public class TableServiceImpl implements TableService {
                 "   PRIMARY KEY ( Id )\n" +
                 ");";
         reObj = String.format(reObj, inEnt.tableName, String.join(",", allColumns));
+        System.out.println(reObj);
         return reObj;
     }
 
@@ -200,10 +252,11 @@ public class TableServiceImpl implements TableService {
     {
 
         String reObj = String.format(
-                "ALTER TABLE %s REname TO %s;",
+                "ALTER TABLE %s rename TO %s;",
                 oldtableName,
                 nowtableName
         );
+        System.out.println(reObj);
         return reObj;
     }
 
@@ -222,6 +275,7 @@ public class TableServiceImpl implements TableService {
                 (inEnt.isRequired > 1) ? "not null" : "null",
                 inEnt.name
         );
+        System.out.println(reObj);
         return reObj;
     }
 
@@ -239,6 +293,7 @@ public class TableServiceImpl implements TableService {
                 (inEnt.isRequired > 1) ? "not null" : "null",
                 inEnt.name
         );
+        System.out.println(reObj);
         return reObj;
     }
 
@@ -257,6 +312,7 @@ public class TableServiceImpl implements TableService {
                 oldname,
                 inEnt.columnName
                 );
+        System.out.println(reObj);
         return reObj;
     }
 
@@ -274,6 +330,24 @@ public class TableServiceImpl implements TableService {
                 (inEnt.isRequired > 1) ? "not null" : "null",
                 inEnt.name
         );
+        System.out.println(reObj);
+        return reObj;
+    }
+
+    /**
+     * 删除列
+     * @param tableName
+     * @param inEnt
+     * @return
+     */
+    public String MakeSqlAlterDropColumn(String tableName, FaTableColumnEntity inEnt)
+    {
+        String reObj = String.format(
+                "alter table %s  drop column %s",
+                tableName,
+                inEnt.columnName
+        );
+        System.out.println(reObj);
         return reObj;
     }
 
@@ -289,16 +363,16 @@ public class TableServiceImpl implements TableService {
         if (inEnt.columnLong == 0) inEnt.columnLong = 50;
         switch (inEnt.columnType)
         {
-            case "text":
-            case "textarea":
-            case "Checkbox":
-            case "Radio":
-            case "auto":
+            case Text:
+            case Textarea:
+            case Checkbox:
+            case Radio:
+            case Auto:
                 return String.format("varchar(%s) CHARACTER SET utf8", inEnt.columnLong);
-            case "int":
-            case "pic":
+            case Int:
+            case Pic:
                 return String.format("int");
-            case "datatime":
+            case Datatime:
                 return String.format("datatime");
             default:
                 return String.format("varchar(%s) CHARACTER SET utf8", inEnt.columnLong);

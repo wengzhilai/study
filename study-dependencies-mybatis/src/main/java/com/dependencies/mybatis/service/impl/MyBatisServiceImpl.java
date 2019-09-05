@@ -5,12 +5,14 @@ import com.alibaba.fastjson.JSON;
 import com.dependencies.mybatis.mapper.MapperHelper;
 import com.dependencies.mybatis.model.entity.SequenceEntity;
 import com.dependencies.mybatis.service.MyBatisService;
+import com.wzl.commons.model.mynum.DatabaseGeneratedOption;
 import com.wzl.commons.retention.EntityHelper;
 import com.wzl.commons.utlity.lambda2sql.Lambda2Sql;
 import com.wzl.commons.utlity.lambda2sql.SqlPredicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -39,6 +41,17 @@ public class MyBatisServiceImpl<T> implements MyBatisService<T> {
         return reInt;
     }
 
+    public boolean alter(String sql) {
+
+        try {
+            Object reInt = mh.alter(sql);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return  false;
+        }
+    }
+
     public List<HashMap<String,Object>> Select(String sql){
         return mh.Select(sql);
     }
@@ -61,12 +74,14 @@ public class MyBatisServiceImpl<T> implements MyBatisService<T> {
     }
 
     public List<T> getAll(EntityHelper<T> entityHelper, String whereStr, int pageIndex, int pageSize, List<String> allItems) {
-        List<HashMap<String, Object>> map = mh.getAll(entityHelper, "", pageIndex, pageSize, allItems);
+        List<HashMap<String, Object>> map = mh.getAll(entityHelper, whereStr, pageIndex, pageSize, allItems);
         String str = JSON.toJSONString(map);
         List<T> ent = JSON.parseArray(str, entityHelper.classType);
         return ent;
     }
-
+    public List<T> getAll(EntityHelper<T> entityHelper, String whereStr) {
+        return getAll(entityHelper, whereStr, 1, 100, null);
+    }
     public List<T> getAll(EntityHelper<T> entityHelper, SqlPredicate<T> whereLambda, int pageIndex, int pageSize, List<String> allItems) {
         String whereStr = LambdaToSql(entityHelper, whereLambda);
         return getAll(entityHelper, whereStr, pageIndex, pageSize, allItems);
@@ -85,6 +100,26 @@ public class MyBatisServiceImpl<T> implements MyBatisService<T> {
     public int update(EntityHelper<T> entityHelper, List<String> saveFieldList, String whereStr) {
         int reInt = mh.update(entityHelper, saveFieldList,whereStr);
         return reInt;
+    }
+
+    @Override
+    public int update(EntityHelper<T> entityHelper, String whereStr) {
+        HashMap<String, String> map= entityHelper.getEntityMapNameColumn();
+        List<String> saveFieldList=new ArrayList<>(map.keySet());
+
+        //移除自增加ID
+        if(entityHelper.dbKeyType!=DatabaseGeneratedOption.Computed){
+            saveFieldList.remove(entityHelper.classKey);
+        }
+
+        int reInt = mh.update(entityHelper,saveFieldList, whereStr);
+        return reInt;
+    }
+
+    @Override
+    public int update(EntityHelper<T> entityHelper, SqlPredicate<T> whereLambda) {
+        String whereStr = LambdaToSql(entityHelper, whereLambda);
+        return update(entityHelper, whereStr);
     }
 
     public int update(EntityHelper<T> entityHelper, List<String> saveFieldList,  SqlPredicate<T> whereLambda) {

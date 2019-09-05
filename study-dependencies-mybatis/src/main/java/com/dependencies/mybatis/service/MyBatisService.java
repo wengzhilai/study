@@ -10,12 +10,15 @@ import java.util.List;
 
 public interface MyBatisService<T> {
     int exec(String sql);
+    boolean alter(String sql);
 
     T getSingleByPrimaryKey(EntityHelper<T> entityHelper, int key);
 
     T getSingle(EntityHelper<T> entityHelper, SqlPredicate<T> whereLambda);
 
     List<T> getAll(EntityHelper<T> entityHelper, String whereStr, int pageIndex, int pageSize, List<String> allItems);
+
+    List<T> getAll(EntityHelper<T> entityHelper, String whereStr);
 
     List<T> getAll(EntityHelper<T> entityHelper, SqlPredicate<T> whereLambda, int pageIndex, int pageSize, List<String> allItems);
 
@@ -32,6 +35,10 @@ public interface MyBatisService<T> {
     int update(EntityHelper<T> entityHelper, List<String> saveFieldList, List<String> whereList);
 
     int update(EntityHelper<T> entityHelper, List<String> saveFieldList, String whereStr);
+
+    int update(EntityHelper<T> entityHelper, String whereStr);
+
+    int update(EntityHelper<T> entityHelper, SqlPredicate<T> whereLambda);
 
     int update(EntityHelper<T> entityHelper, List<String> saveFieldList, SqlPredicate<T> whereLambda);
 

@@ -7,6 +7,17 @@ import java.util.List;
  * @param <T>
  */
 public class DtoSave<T> {
+    public DtoSave(T data, List<String> saveFieldList, List<String> ignoreFieldList, List<String> whereList) {
+        this.data = data;
+        this.saveFieldList = saveFieldList;
+        this.ignoreFieldList = ignoreFieldList;
+        this.whereList = whereList;
+    }
+
+    public DtoSave(T data) {
+        this.data = data;
+    }
+
     /**
     * 用于操作的对象
     */

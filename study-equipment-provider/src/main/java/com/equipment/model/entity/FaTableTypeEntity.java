@@ -16,7 +16,7 @@ public class FaTableTypeEntity {
     * ID
     */
     @Key
-    @DatabaseGenerated(DatabaseGeneratedOption.None)
+    @DatabaseGenerated(DatabaseGeneratedOption.Computed)
     @Display(Name = "ID")
     @Column("ID")
     public int id;

@@ -1,5 +1,6 @@
 package com.equipment.model.entity;
 
+import com.equipment.model.mynum.TableColumnType;
 import com.wzl.commons.model.mynum.DatabaseGeneratedOption;
 import com.wzl.commons.retention.*;
 
@@ -13,7 +14,7 @@ public class FaTableColumnEntity {
      * ID
      */
     @Key
-    @DatabaseGenerated(DatabaseGeneratedOption.None)
+    @DatabaseGenerated(DatabaseGeneratedOption.Computed)
     @Display(Name = "ID")
     @Column("ID")
     public int id;
@@ -70,14 +71,14 @@ public class FaTableColumnEntity {
     @StringLength(15)
     @Display(Name = "列类型")
     @Column("COLUMN_TYPE")
-    public String columnType;
+    public TableColumnType columnType;
 
     /**
      * 字段长度
      */
     @Display(Name = "字段长度")
     @Column("COLUMN_LONG")
-    public Integer columnLong;
+    public int columnLong;
 
     /**
      * 必填

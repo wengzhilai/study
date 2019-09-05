@@ -26,6 +26,21 @@ public class MybatisSQLTemplate {
         return sql;
     }
 
+    public String GetSingleObj(@Param("data") EntityHelper eh,String whereStr) {
+        SQL sqlObj = new SQL().
+                SELECT(StringUtils.join(eh.getSelectFiledList(null), ","))
+                .FROM(eh.tableName)
+                .LIMIT(1)
+                .ORDER_BY(eh.dbKey + " DESC");
+        if (!StringUtils.isAnyBlank(whereStr)) {
+            sqlObj = sqlObj.WHERE(whereStr);
+        }
+        String sql = sqlObj.toString();
+        System.out.println(sql);
+        return sql;
+    }
+
+
     public String getAll(@Param("data") EntityHelper eh, String whereStr, int pageIndex, int pageSize, List<String> allItems) {
         if (pageIndex == 0) pageIndex = 1;
         if (pageSize == 0) pageSize = 10;
