@@ -4,21 +4,24 @@ import java.lang.*;
 import java.util.Arrays;
 import java.util.List;
 
-import com.wjbjp.model.Result;
-import com.wjbjp.model.ResultObj;
-import com.wjbjp.model.TokenUser;
-import com.wjbjp.model.dto.DtoSave;
-import com.wjbjp.model.dto.EditPwdDto;
-import com.wjbjp.model.dto.LogingDto;
-import com.wjbjp.model.dto.ResetPasswordDto;
+import com.dependencies.mybatis.service.MyBatisService;
+
 import com.wjbjp.model.entity.FaLoginEntity;
 import com.wjbjp.model.entity.FaUserEntity;
-import com.wjbjp.model.mynum.DatabaseGeneratedOption;
-import com.wjbjp.retention.EntityHelper;
+
 import com.wjbjp.server.LoginService;
-import com.wjbjp.server.MapperHelperService;
-import com.wjbjp.utlity.StringHelper;
-import com.wjbjp.utlity.TokenUtil;
+
+import com.wzl.commons.model.Result;
+import com.wzl.commons.model.ResultObj;
+import com.wzl.commons.model.TokenUser;
+import com.wzl.commons.model.dto.DtoSave;
+import com.wzl.commons.model.dto.EditPwdDto;
+import com.wzl.commons.model.dto.LogingDto;
+import com.wzl.commons.model.dto.ResetPasswordDto;
+import com.wzl.commons.model.mynum.DatabaseGeneratedOption;
+import com.wzl.commons.retention.EntityHelper;
+import com.wzl.commons.utlity.StringHelper;
+import com.wzl.commons.utlity.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,10 +31,10 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 public class LoginServiceImpl implements LoginService {
 
     @Autowired
-    MapperHelperService<FaUserEntity> userMhs;
+    MyBatisService<FaUserEntity> userMhs;
 
     @Autowired
-    MapperHelperService<FaLoginEntity> loginMhs;
+    MyBatisService<FaLoginEntity> loginMhs;
 
     @Transactional
     public ResultObj<Integer> loginReg(LogingDto inEnt) {

@@ -1,10 +1,9 @@
 package com.equipment.controller.impl;
 
+import com.dependencies.mybatis.service.MyBatisService;
 import com.equipment.controller.QueryController;
 import com.equipment.model.entity.FaEquipmentEntity;
-import com.equipment.service.MyBatisService;
 import com.wzl.commons.model.ResultObj;
-import com.wzl.commons.utlity.TypeChange;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;

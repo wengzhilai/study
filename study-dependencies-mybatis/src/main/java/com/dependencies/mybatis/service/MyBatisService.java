@@ -5,10 +5,13 @@ import com.wzl.commons.retention.EntityHelper;
 import com.wzl.commons.utlity.lambda2sql.SqlPredicate;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.HashMap;
 import java.util.List;
 
 public interface MyBatisService<T> {
-    T getSingleByPrimaryKey(EntityHelper<T> entityHelper,int key);
+    int exec(String sql);
+
+    T getSingleByPrimaryKey(EntityHelper<T> entityHelper, int key);
 
     T getSingle(EntityHelper<T> entityHelper, SqlPredicate<T> whereLambda);
 
@@ -32,7 +35,13 @@ public interface MyBatisService<T> {
 
     int update(EntityHelper<T> entityHelper, List<String> saveFieldList, SqlPredicate<T> whereLambda);
 
-
+    /**
+     * 获取自增ID
+     *
+     * @param entityHelper
+     * @return
+     */
+    int getIncreasingId(EntityHelper<T> entityHelper);
 
     /**
      * 获取一个对象，如，min,max,count
@@ -44,4 +53,10 @@ public interface MyBatisService<T> {
      */
     String oneValue(@Param("data") EntityHelper eh, String selectStr, String whereStr);
 
+    /**
+     * 查询所有
+     * @param sql
+     * @return
+     */
+    List<HashMap<String,Object>> Select(String sql);
 }

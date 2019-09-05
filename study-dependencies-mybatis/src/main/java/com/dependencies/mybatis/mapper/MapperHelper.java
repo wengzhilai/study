@@ -19,9 +19,12 @@ public interface MapperHelper {
     @Select("${sql}")
     int exec(@Param("sql") String sql);
 
+    @Select("${sql}")
+    List<HashMap<String,Object>> Select(@Param("sql") String sql);
+
 
     @SelectProvider(type = MybatisSQLTemplate.class, method = "getSingleSql")
-    HashMap<String,Object> GetSingleByPrimaryKey(@Param("data") EntityHelper eh,int key);
+    HashMap<String,Object> GetSingleByPrimaryKey(@Param("data") EntityHelper eh, int key);
 
     @SelectProvider(type = MybatisSQLTemplate.class, method = "getSingleSql")
     HashMap<String, Object> GetSingleObj(@Param("data") EntityHelper eh, String whereStr);

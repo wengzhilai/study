@@ -26,7 +26,7 @@ public class MybatisSQLTemplate {
         return sql;
     }
 
-    public String getAll(@Param("data") EntityHelper eh,int pageIndex,int pageSize,String whereStr, List<String> allItems) {
+    public String getAll(@Param("data") EntityHelper eh, String whereStr, int pageIndex, int pageSize, List<String> allItems) {
         if (pageIndex == 0) pageIndex = 1;
         if (pageSize == 0) pageSize = 10;
         SQL sqlObj = new SQL().

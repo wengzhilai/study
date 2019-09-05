@@ -1,11 +1,9 @@
 package com.wjbjp.controller.impl;
 
 import com.wjbjp.controller.LoginController;
-import com.wjbjp.model.Result;
-import com.wjbjp.model.ResultObj;
-import com.wjbjp.model.dto.EditPwdDto;
-import com.wjbjp.model.dto.LogingDto;
-import com.wjbjp.model.dto.ResetPasswordDto;
+import com.wzl.commons.model.*;
+import com.wzl.commons.model.dto.*;
+
 import com.wjbjp.model.entity.FaUserEntity;
 import com.wjbjp.server.LoginService;
 import io.swagger.annotations.ApiOperation;

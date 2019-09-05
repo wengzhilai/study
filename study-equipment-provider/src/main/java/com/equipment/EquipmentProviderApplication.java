@@ -10,8 +10,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
 @EnableSwagger2
-@MapperScan(basePackages={"com.equipment.mapper"})//扫描Mapper
-@ComponentScan(basePackages = "com.equipment")
+@MapperScan(basePackages={"com.dependencies.mybatis.mapper"})//扫描Mapper
+@ComponentScan(basePackages = {"com.equipment","com.dependencies.mybatis.service"})
 public class EquipmentProviderApplication {
     public static void main(String[] args) {
         SpringApplication.run(EquipmentProviderApplication.class, args);

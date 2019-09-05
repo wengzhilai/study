@@ -3,7 +3,7 @@ package com.wjbjp.controller.impl;
 import com.alibaba.fastjson.JSON;
 import com.wjbjp.controller.TestController;
 import com.wjbjp.family.BaseController;
-import com.wjbjp.model.DtoDo;
+import com.wzl.commons.model.DtoDo;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

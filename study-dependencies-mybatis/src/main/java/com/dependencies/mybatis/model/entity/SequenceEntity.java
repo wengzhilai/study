@@ -1,4 +1,4 @@
-package com.equipment.model.entity;
+package com.dependencies.mybatis.model.entity;
 
 import com.wzl.commons.model.mynum.DatabaseGeneratedOption;
 import com.wzl.commons.retention.*;

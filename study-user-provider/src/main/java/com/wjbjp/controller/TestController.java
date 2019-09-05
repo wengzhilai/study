@@ -1,6 +1,6 @@
 package com.wjbjp.controller;
 
-import com.wjbjp.model.DtoDo;
+import com.wzl.commons.model.DtoDo;
 import org.springframework.web.bind.annotation.RequestBody;
 
 public interface TestController {

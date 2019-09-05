@@ -1,7 +1,7 @@
 package com.wjbjp.model.entity;
 
-import com.wjbjp.model.mynum.DatabaseGeneratedOption;
-import com.wjbjp.retention.*;
+import com.wzl.commons.model.mynum.DatabaseGeneratedOption;
+import com.wzl.commons.retention.*;
 
 import java.util.List;
 

@@ -1,11 +1,9 @@
 package com.wjbjp.controller;
 
-import com.wjbjp.model.Result;
-import com.wjbjp.model.ResultObj;
-import com.wjbjp.model.dto.EditPwdDto;
-import com.wjbjp.model.dto.LogingDto;
-import com.wjbjp.model.dto.ResetPasswordDto;
+
 import com.wjbjp.model.entity.FaUserEntity;
+import com.wzl.commons.model.*;
+import com.wzl.commons.model.dto.*;
 
 public interface LoginController {
     ResultObj<FaUserEntity> userLogin(LogingDto inEnt);

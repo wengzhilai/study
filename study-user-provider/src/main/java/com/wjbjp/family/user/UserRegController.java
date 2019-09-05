@@ -1,14 +1,14 @@
 package com.wjbjp.family.user;
 
 import com.wjbjp.family.BaseController;
-import com.wjbjp.model.RegDto;
-import com.wjbjp.model.Result;
-import com.wjbjp.model.ResultObj;
-import com.wjbjp.model.TokenUser;
 import com.wjbjp.model.entity.FaLoginEntity;
-import com.wjbjp.utlity.TokenUtil;
+
+import com.wzl.commons.model.RegDto;
+import com.wzl.commons.model.Result;
+import com.wzl.commons.model.ResultObj;
+import com.wzl.commons.model.TokenUser;
+import com.wzl.commons.utlity.TokenUtil;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

@@ -24,9 +24,16 @@ public class AppLicationTests {
     }
 
     @Test
+    public void GetTableSelect() {
+        System.out.println(TypeChange.objToString(tc.GetTableSelect()));
+    }
+
+    @Test
     public void Query() {
         System.out.println(TypeChange.objToString(qc.Query("" +
                 "SELECT ID id,NAME name,TABLE_NAME tableName,INTRODUCE introduce,ADD_TIME addTime,STAUTS stauts\n" +
                 "FROM fa_table_type")));
     }
+
+
 }

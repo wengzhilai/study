@@ -1,13 +1,11 @@
 package com.wjbjp.model.entity;
 import java.util.Date;
 
-import com.wjbjp.model.mynum.DatabaseGeneratedOption;
-import com.wjbjp.retention.*;
-import io.swagger.annotations.ApiModel;
+import com.wzl.commons.model.mynum.DatabaseGeneratedOption;
+import com.wzl.commons.retention.*;
 import lombok.Data;
 
 import javax.management.openmbean.ArrayType;
-import javax.validation.constraints.Max;
 
 @Data
 @Table("fa_user")

@@ -1,9 +1,7 @@
 package com.wjbjp.interceptor;
 
-import com.wjbjp.model.TokenUser;
-import com.wjbjp.utlity.TokenUtil;
-import lombok.var;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.wzl.commons.model.TokenUser;
+import com.wzl.commons.utlity.TokenUtil;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.ModelAndView;
@@ -11,7 +9,6 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.Console;
 
 /**
  * jwt拦器

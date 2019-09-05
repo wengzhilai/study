@@ -1,9 +1,10 @@
 package com.wjbjp.server;
 
-import com.wjbjp.model.Result;
-import com.wjbjp.model.ResultObj;
-import com.wjbjp.model.dto.DtoSave;
 import com.wjbjp.model.entity.FaModuleEntity;
+import com.wzl.commons.model.Result;
+import com.wzl.commons.model.ResultObj;
+import com.wzl.commons.model.dto.DtoSave;
+
 import java.util.List;
 
 public interface ModuleService {

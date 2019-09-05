@@ -3,6 +3,7 @@ package com.dependencies.mybatis.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.dependencies.mybatis.mapper.MapperHelper;
+import com.dependencies.mybatis.model.entity.SequenceEntity;
 import com.dependencies.mybatis.service.MyBatisService;
 import com.wzl.commons.retention.EntityHelper;
 import com.wzl.commons.utlity.lambda2sql.Lambda2Sql;
@@ -10,6 +11,7 @@ import com.wzl.commons.utlity.lambda2sql.SqlPredicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -32,6 +34,15 @@ public class MyBatisServiceImpl<T> implements MyBatisService<T> {
         return whereStr;
     }
 
+    public int exec(String sql) {
+        int reInt = mh.exec(sql);
+        return reInt;
+    }
+
+    public List<HashMap<String,Object>> Select(String sql){
+        return mh.Select(sql);
+    }
+
     public T getSingleByPrimaryKey(EntityHelper<T> entityHelper,int key) {
         HashMap<String, Object> map = mh.GetSingleByPrimaryKey(entityHelper,key);
         String str = JSON.toJSONString(map);
@@ -50,7 +61,7 @@ public class MyBatisServiceImpl<T> implements MyBatisService<T> {
     }
 
     public List<T> getAll(EntityHelper<T> entityHelper, String whereStr, int pageIndex, int pageSize, List<String> allItems) {
-        List<HashMap<String, Object>> map = mh.getAll(entityHelper, whereStr, pageIndex, pageSize, allItems);
+        List<HashMap<String, Object>> map = mh.getAll(entityHelper, "", pageIndex, pageSize, allItems);
         String str = JSON.toJSONString(map);
         List<T> ent = JSON.parseArray(str, entityHelper.classType);
         return ent;
@@ -101,6 +112,31 @@ public class MyBatisServiceImpl<T> implements MyBatisService<T> {
         return count(entityHelper, whereStr);
     }
 
+    @Override
+    public int getIncreasingId(EntityHelper<T> entityHelper) {
+        String tableName=entityHelper.tableName;
+        EntityHelper<SequenceEntity> ehSeq= new EntityHelper<>(SequenceEntity.class);
+        HashMap<String, Object> map= mh.GetSingleObj(ehSeq,"seq_name='"+tableName+"'");
+        String str = JSON.toJSONString(map);
+        SequenceEntity ent = JSON.parseObject(str, SequenceEntity.class);
+        if(ent==null){
+            String maxId=oneValue(entityHelper,"MAX("+entityHelper.dbKey+")",null);
+            ent=new SequenceEntity();
+            ent.current_val=Integer.parseInt(maxId)+1;
+            ent.seq_name=tableName;
+            ent.increment_val=1;
+            mh.insert(new EntityHelper<>(ent),null,null);
+            return ent.current_val;
+        }
+        else {
+            ent.current_val+=1;
+            List<String> saveList=Arrays.asList("current_val");
+            SqlPredicate<SequenceEntity> whereLambda=x->x.seq_name==tableName;
+            String whereStr = LambdaToSql(ehSeq, whereLambda);
+            mh.update(new EntityHelper<>(ent),saveList,whereStr);
+        }
+        return ent.current_val;
+    }
 
     @Override
     public String oneValue(EntityHelper eh, String selectStr, String whereStr) {

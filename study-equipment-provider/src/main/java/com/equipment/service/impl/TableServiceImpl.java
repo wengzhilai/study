@@ -1,8 +1,8 @@
 package com.equipment.service.impl;
 
+import com.dependencies.mybatis.service.MyBatisService;
 import com.equipment.model.entity.FaTableColumnEntity;
 import com.equipment.model.entity.FaTableTypeEntity;
-import com.equipment.service.MyBatisService;
 import com.equipment.service.TableService;
 import com.wzl.commons.model.KVT;
 import com.wzl.commons.model.ResultObj;
@@ -142,13 +142,7 @@ public class TableServiceImpl implements TableService {
 //                }
 //            }
         }
-
-
-
-
         return resultObj;
-
-
     }
 
     @Override
@@ -161,7 +155,12 @@ public class TableServiceImpl implements TableService {
 
     @Override
     public ResultObj<KVT> GetTableSelect() {
-        return null;
+
+        ResultObj<KVT> reObj = new ResultObj<>();
+        List<FaTableTypeEntity> entList = moduleMhs.getAll(moduleEh,x->x.stauts=="启用",1,100,null);
+        reObj.dataList =new ArrayList<>();
+        entList.stream().forEach(i -> reObj.dataList.add(new KVT(String.valueOf(i.id),i.name)));
+        return reObj;
     }
 
 

@@ -1,10 +1,12 @@
 package com.wjbjp.server;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
-import com.wjbjp.model.Result;
-import com.wjbjp.model.ResultObj;
-import com.wjbjp.model.dto.*;
+import com.wzl.commons.model.Result;
+import com.wzl.commons.model.ResultObj;
+import com.wzl.commons.model.dto.DtoSave;
 import com.wjbjp.model.entity.FaUserEntity;
+import com.wzl.commons.model.dto.EditPwdDto;
+import com.wzl.commons.model.dto.LogingDto;
+import com.wzl.commons.model.dto.ResetPasswordDto;
 
 public interface LoginService {
 

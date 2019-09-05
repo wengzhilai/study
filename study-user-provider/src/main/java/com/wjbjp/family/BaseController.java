@@ -1,6 +1,6 @@
 package com.wjbjp.family;
 
-import com.wjbjp.model.TokenUser;
+import com.wzl.commons.model.TokenUser;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import javax.servlet.http.HttpServletRequest;

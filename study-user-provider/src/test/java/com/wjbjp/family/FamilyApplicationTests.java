@@ -1,20 +1,22 @@
 package com.wjbjp.family;
 
 import com.alibaba.fastjson.JSON;
+import com.dependencies.mybatis.mapper.MapperHelper;
+import com.dependencies.mybatis.service.MyBatisService;
 import com.wjbjp.controller.LoginController;
 import com.wjbjp.controller.TestController;
-import com.wjbjp.mapper.MapperHelper;
-import com.wjbjp.model.Result;
-import com.wjbjp.model.ResultObj;
-import com.wjbjp.model.dto.EditPwdDto;
-import com.wjbjp.model.dto.LogingDto;
-import com.wjbjp.model.dto.ResetPasswordDto;
+
 import com.wjbjp.model.entity.FaLoginEntity;
 import com.wjbjp.model.entity.FaUserEntity;
-import com.wjbjp.retention.EntityHelper;
-import com.wjbjp.server.MapperHelperService;
-import com.wjbjp.utlity.lambda2sql.Lambda2Sql;
-import com.wjbjp.utlity.lambda2sql.SqlPredicate;
+
+import com.wzl.commons.model.Result;
+import com.wzl.commons.model.ResultObj;
+import com.wzl.commons.model.dto.EditPwdDto;
+import com.wzl.commons.model.dto.LogingDto;
+import com.wzl.commons.model.dto.ResetPasswordDto;
+import com.wzl.commons.retention.EntityHelper;
+import com.wzl.commons.utlity.lambda2sql.Lambda2Sql;
+import com.wzl.commons.utlity.lambda2sql.SqlPredicate;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +40,7 @@ public class FamilyApplicationTests {
     MapperHelper _mh;
 
     @Autowired
-    MapperHelperService<FaLoginEntity> mhs;
+    MyBatisService<FaLoginEntity> mhs;
 
     @Test
     public void TestSingleByPrimaryKey() {

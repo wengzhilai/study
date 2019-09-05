@@ -13,9 +13,10 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
 //@EnableDiscoveryClient
-@ComponentScan(basePackages = "com.wjbjp")
+@ComponentScan(basePackages = {"com.wjbjp","com.dependencies.mybatis.service"})
 @EnableSwagger2
-@MapperScan(basePackages={"com.wjbjp.mapper"})//扫描Mapper
+//@MapperScan(basePackages={"com.wjbjp.mapper"})//扫描Mapper
+@MapperScan(basePackages={"com.dependencies.mybatis.mapper"})//扫描Mapper
 @EnableTransactionManagement
 public class UserProviderApplication {
     public static void main(String[] args) {

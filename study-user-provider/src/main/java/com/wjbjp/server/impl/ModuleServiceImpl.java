@@ -1,13 +1,13 @@
 package com.wjbjp.server.impl;
 
-import com.wjbjp.model.Result;
-import com.wjbjp.model.ResultObj;
-import com.wjbjp.model.dto.DtoSave;
+import com.dependencies.mybatis.service.MyBatisService;
 import com.wjbjp.model.entity.FaModuleEntity;
-import com.wjbjp.model.mynum.DatabaseGeneratedOption;
-import com.wjbjp.retention.EntityHelper;
-import com.wjbjp.server.MapperHelperService;
 import com.wjbjp.server.ModuleService;
+import com.wzl.commons.model.Result;
+import com.wzl.commons.model.ResultObj;
+import com.wzl.commons.model.dto.DtoSave;
+import com.wzl.commons.model.mynum.DatabaseGeneratedOption;
+import com.wzl.commons.retention.EntityHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +17,7 @@ import java.util.List;
 public class ModuleServiceImpl implements ModuleService {
 
     @Autowired
-    MapperHelperService<FaModuleEntity> moduleMhs;
+    MyBatisService<FaModuleEntity> moduleMhs;
 
     EntityHelper<FaModuleEntity> moduleEh = new EntityHelper<>(new FaModuleEntity());
 
