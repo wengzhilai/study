@@ -5,6 +5,7 @@ import com.equipment.controller.TableController;
 import com.equipment.model.entity.FaTableColumnEntity;
 import com.equipment.model.entity.FaTableTypeEntity;
 import com.equipment.model.mynum.TableColumnType;
+import com.wzl.commons.model.DtoDo;
 import com.wzl.commons.model.dto.DtoSave;
 import com.wzl.commons.utlity.TypeChange;
 import org.junit.Test;
@@ -54,7 +55,12 @@ public class AppLicationTests {
 
     @Test
     public void GetSingle() {
-        System.out.println(TypeChange.objToString(tc.SingleByKey(8)));
+        System.out.println(TypeChange.objToString(tc.SingleByKey(new DtoDo("30"))));
+    }
+
+    @Test
+    public void Delete() {
+        System.out.println(TypeChange.objToString(tc.Delete(new DtoDo("30"))));
     }
 
     @Test

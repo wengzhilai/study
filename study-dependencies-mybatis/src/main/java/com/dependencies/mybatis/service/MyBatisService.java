@@ -19,6 +19,7 @@ public interface MyBatisService<T> {
     List<T> getAll(EntityHelper<T> entityHelper, String whereStr, int pageIndex, int pageSize, List<String> allItems);
 
     List<T> getAll(EntityHelper<T> entityHelper, String whereStr);
+    List<T> getAll(EntityHelper<T> entityHelper, SqlPredicate<T> whereLambda);
 
     List<T> getAll(EntityHelper<T> entityHelper, SqlPredicate<T> whereLambda, int pageIndex, int pageSize, List<String> allItems);
 

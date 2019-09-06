@@ -1,11 +1,10 @@
-package com.equipment.controller;
+package com.equipment.consumer.controller;
 
-import com.equipment.model.entity.FaTableTypeEntity;
+import com.equipment.consumer.model.entity.FaTableTypeEntity;
 import com.wzl.commons.model.DtoDo;
 import com.wzl.commons.model.KVT;
 import com.wzl.commons.model.ResultObj;
 import com.wzl.commons.model.dto.DtoSave;
-import org.springframework.web.bind.annotation.RequestBody;
 
 public interface TableController {
     /**
@@ -17,7 +16,7 @@ public interface TableController {
     /**
      * 获取表的单个对象
      */
-    ResultObj<FaTableTypeEntity> SingleByKey(@RequestBody DtoDo key);
+    ResultObj<FaTableTypeEntity> SingleByKey(DtoDo key);
 
     /**
      * 保存和自定义Table

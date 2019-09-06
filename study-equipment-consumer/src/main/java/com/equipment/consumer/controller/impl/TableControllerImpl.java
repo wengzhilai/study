@@ -1,48 +1,47 @@
-package com.equipment.controller.impl;
+package com.equipment.consumer.controller.impl;
 
-import com.equipment.controller.TableController;
-import com.equipment.model.entity.FaTableTypeEntity;
-import com.equipment.service.TableService;
+import com.equipment.consumer.controller.TableController;
+import com.equipment.consumer.feign.EquipmentTableService;
+import com.equipment.consumer.model.entity.FaTableTypeEntity;
 import com.wzl.commons.model.DtoDo;
 import com.wzl.commons.model.KVT;
 import com.wzl.commons.model.ResultObj;
 import com.wzl.commons.model.dto.DtoSave;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("Table")
 @RestController
 public class TableControllerImpl implements TableController {
+
+
     @Autowired
-    TableService ts;
+    private EquipmentTableService testC;
 
     @RequestMapping(value = "/GetTableSelect", method = RequestMethod.POST)
     @ApiOperation(value = "获取所有自定义表的列表")
     public ResultObj<KVT> GetTableSelect() {
-        return ts.GetTableSelect();
+        return testC.GetTableSelect();
     }
 
 
-    @RequestMapping(value = "/SingleByKey", method = RequestMethod.POST,consumes = "application/json")
+
+    @RequestMapping(value = "/SingleByKey", method = RequestMethod.POST)
     @ApiOperation(value = "获取单个")
-    public ResultObj<FaTableTypeEntity> SingleByKey(@RequestBody DtoDo inObj) {
-        ResultObj<FaTableTypeEntity> t=ts.SingleByKey(Integer.valueOf(inObj.key));
-        return t;
+    public ResultObj<FaTableTypeEntity> SingleByKey(@RequestBody DtoDo inEnt) {
+        return testC.SingleByKey(inEnt);
     }
 
     @RequestMapping(value = "/Save", method = RequestMethod.POST)
     @ApiOperation(value = "保存")
     public ResultObj<Integer> Save(@RequestBody DtoSave<FaTableTypeEntity> inEnt) {
-        return ts.Save(inEnt);
+        return testC.Save(inEnt);
     }
 
     @RequestMapping(value = "/Delete", method = RequestMethod.POST)
     @ApiOperation(value = "删除")
-    public ResultObj<Integer> Delete(@RequestBody DtoDo inObj) {
-        return ts.Delete(Integer.valueOf(inObj.key));
+    public ResultObj<Integer> Delete(@RequestBody DtoDo inEnt) {
+        return testC.Delete(inEnt);
     }
-
-
 }

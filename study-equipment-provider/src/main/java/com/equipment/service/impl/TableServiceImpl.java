@@ -35,8 +35,11 @@ public class TableServiceImpl implements TableService {
     EntityHelper<FaTableTypeEntity> moduleEh = new EntityHelper<>(new FaTableTypeEntity());
 
     @Override
-    public FaTableTypeEntity SingleByKey(int key) {
-        return moduleMhs.getSingleByPrimaryKey(moduleEh, key);
+    public ResultObj<FaTableTypeEntity> SingleByKey(int key) {
+        ResultObj<FaTableTypeEntity> reObj=new ResultObj<>();
+        reObj.data=moduleMhs.getSingleByPrimaryKey(moduleEh, key);
+        reObj.success=true;
+        return reObj;
     }
 
     @Transactional
@@ -196,9 +199,11 @@ public class TableServiceImpl implements TableService {
         return resultObj;
     }
 
-    @Override
+    @Transactional
     public ResultObj<Integer> Delete(int key) {
         ResultObj<Integer> reObj = new ResultObj();
+        batisColumn.delete(new EntityHelper(new FaTableColumnEntity()), x -> x.tableTypeId == key);
+
         reObj.data = moduleMhs.delete(moduleEh, x -> x.id == key);
         reObj.success = reObj.data > 0;
         return reObj;
@@ -208,7 +213,7 @@ public class TableServiceImpl implements TableService {
     public ResultObj<KVT> GetTableSelect() {
 
         ResultObj<KVT> reObj = new ResultObj<>();
-        List<FaTableTypeEntity> entList = moduleMhs.getAll(moduleEh,x->x.stauts=="启用",1,100,null);
+        List<FaTableTypeEntity> entList = moduleMhs.getAll(moduleEh,x->x.stauts=="正常",1,100,null);
         reObj.dataList =new ArrayList<>();
         entList.stream().forEach(i -> reObj.dataList.add(new KVT(String.valueOf(i.id),i.name)));
         return reObj;

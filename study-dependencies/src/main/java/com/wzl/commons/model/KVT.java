@@ -4,6 +4,9 @@ import lombok.Data;
 
 @Data
 public class KVT {
+    public KVT() {
+    }
+
     public KVT(String k, String v, String t) {
         this.k = k;
         this.v = v;

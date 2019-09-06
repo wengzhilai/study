@@ -82,6 +82,12 @@ public class MyBatisServiceImpl<T> implements MyBatisService<T> {
     public List<T> getAll(EntityHelper<T> entityHelper, String whereStr) {
         return getAll(entityHelper, whereStr, 1, 100, null);
     }
+
+    public List<T> getAll(EntityHelper<T> entityHelper, SqlPredicate<T> whereLambda) {
+        String whereStr = LambdaToSql(entityHelper, whereLambda);
+        return getAll(entityHelper, whereStr);
+    }
+
     public List<T> getAll(EntityHelper<T> entityHelper, SqlPredicate<T> whereLambda, int pageIndex, int pageSize, List<String> allItems) {
         String whereStr = LambdaToSql(entityHelper, whereLambda);
         return getAll(entityHelper, whereStr, pageIndex, pageSize, allItems);
