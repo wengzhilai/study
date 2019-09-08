@@ -1,4 +1,4 @@
-package com.wjbjp.model;
+package com.gateway.model;
 
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 

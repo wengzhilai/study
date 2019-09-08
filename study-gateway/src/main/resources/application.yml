@@ -6,13 +6,22 @@ spring:
     gateway:
       routes:
       # =====================================
-      - id: test-id
+      - id: user-provider
         uri: http://localhost:9001
         order: -1
         predicates:
-        - Path=/user-provider/**
+        - Path=/user/**
         filters:
         - StripPrefix=1
+
+
+      - id: equipment-consumer
+        uri: http://localhost:9004
+        order: -1
+        predicates:
+          - Path=/equipment/**
+        filters:
+          - StripPrefix=1
 
 server:
   port: 9000

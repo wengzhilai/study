@@ -1,12 +1,10 @@
-package com.wjbjp.utlity;
+package com.gateway.utlity;
 
-import com.wjbjp.model.TokenUser;
+import com.gateway.model.TokenUser;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import jdk.nashorn.internal.ir.Expression;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
-import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
