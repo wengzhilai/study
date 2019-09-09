@@ -22,8 +22,8 @@ import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClientResponse;
 
 import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * 鉴权过滤器
@@ -36,46 +36,47 @@ public class AuthFilter implements GlobalFilter, Ordered {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
 
-        String tmp=exchange.getLogPrefix();
-        Map<String, Object> tmp1=exchange.getAttributes();
-        Mono<WebSession> tmp2=exchange.getSession();
 
-        Route clientResponse = exchange.getAttribute(ServerWebExchangeUtils.GATEWAY_ROUTE_ATTR);
-        String id=clientResponse.getId();
-        URI rui= clientResponse.getUri();
+        Route route = exchange.getAttribute(ServerWebExchangeUtils.GATEWAY_ROUTE_ATTR);
+        URI rui= route.getUri();
         ServerHttpRequest request=exchange.getRequest();
         HttpHeaders headers=request.getHeaders();
         String authorization =headers.getFirst("Authorization");
-        System.out.println("Inside JWT interceptor, checking request ..."+rui+request.getPath());
 
         if (!StringUtils.isEmpty(authorization) && authorization.startsWith(BEARER_IDENTIFIER)) {
+            System.out.println("Token 验证通过 ..."+rui+request.getPath());
+
             String jwt = authorization.substring(BEARER_IDENTIFIER.length());
             TokenUser t=tokenUtil.parseUserFromToken(jwt);
 //            HttpServletRequest httpRequest = (HttpServletRequest) request;
 //            httpRequest.setAttribute("Claims_user",t);
         }
-        else {
+        else  if(!checkIgnoreToken(route.getId(),request.getPath().toString())){
+            System.out.println("Token 验证通过不通过 ..."+rui+request.getPath());
 
-//            ServerHttpResponse response = exchange.getResponse();
-//            // 封装错误信息
-//            Map<String, Object> responseData =  new HashMap<String,Object>();
-//            responseData.put("code", 401);
-//            responseData.put("message", "非法请求:"+rui+request.getPath());
-//            responseData.put("cause", "Token is empty");
-//
-//            try {
-//                // 将信息转换为 JSON
-//                ObjectMapper objectMapper = new ObjectMapper();
-//                byte[] data = objectMapper.writeValueAsBytes(responseData);
-//
-//                // 输出错误信息到页面
-//                DataBuffer buffer = response.bufferFactory().wrap(data);
-//                response.setStatusCode(HttpStatus.UNAUTHORIZED);
-//                response.getHeaders().add("Content-Type", "application/json;charset=UTF-8");
-//                return response.writeWith(Mono.just(buffer));
-//            } catch (JsonProcessingException e) {
-//                e.printStackTrace();
-//            }
+            ServerHttpResponse response = exchange.getResponse();
+            // 封装错误信息
+            Map<String, Object> responseData =  new HashMap<String,Object>();
+            responseData.put("code", 401);
+            responseData.put("message", "非法请求:"+rui+request.getPath());
+            responseData.put("cause", "Token is empty");
+
+            try {
+                // 将信息转换为 JSON
+                ObjectMapper objectMapper = new ObjectMapper();
+                byte[] data = objectMapper.writeValueAsBytes(responseData);
+
+                // 输出错误信息到页面
+                DataBuffer buffer = response.bufferFactory().wrap(data);
+                response.setStatusCode(HttpStatus.UNAUTHORIZED);
+                response.getHeaders().add("Content-Type", "application/json;charset=UTF-8");
+                return response.writeWith(Mono.just(buffer));
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            System.out.println("忽略Token验证  ..."+rui+request.getPath());
         }
         return chain.filter(exchange);
     }
@@ -87,5 +88,20 @@ public class AuthFilter implements GlobalFilter, Ordered {
     @Override
     public int getOrder() {
         return Ordered.LOWEST_PRECEDENCE;
+    }
+
+    private  Boolean checkIgnoreToken(String routeId,String path){
+        Set<String> ignoreToken=new TreeSet<>();
+        ignoreToken.add("equipment-consumer:/swagger-ui.html.*");
+        ignoreToken.add("equipment-consumer:/swagger-resources.*");
+        ignoreToken.add("equipment-consumer:/v2/api-docs.*");
+
+        boolean isTrue=false;
+        for (String s : ignoreToken) {
+            isTrue=Pattern.matches(s, routeId+":"+path);
+            if(isTrue)return true;
+        }
+        return false;
+
     }
 }
