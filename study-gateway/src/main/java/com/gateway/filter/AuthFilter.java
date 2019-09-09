@@ -48,6 +48,8 @@ public class AuthFilter implements GlobalFilter, Ordered {
 
             String jwt = authorization.substring(BEARER_IDENTIFIER.length());
             TokenUser t=tokenUtil.parseUserFromToken(jwt);
+
+            ServerHttpRequest newRequest = request.mutate().header("Claims_user",t.getName()).build();
 //            HttpServletRequest httpRequest = (HttpServletRequest) request;
 //            httpRequest.setAttribute("Claims_user",t);
         }
