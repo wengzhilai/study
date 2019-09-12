@@ -39,6 +39,7 @@ public class AuthFilter implements GlobalFilter, Ordered {
 
         Route route = exchange.getAttribute(ServerWebExchangeUtils.GATEWAY_ROUTE_ATTR);
         URI rui= route.getUri();
+        String routeId=route.getId();
         ServerHttpRequest request=exchange.getRequest();
         HttpHeaders headers=request.getHeaders();
         String authorization =headers.getFirst("Authorization");
@@ -49,11 +50,12 @@ public class AuthFilter implements GlobalFilter, Ordered {
             String jwt = authorization.substring(BEARER_IDENTIFIER.length());
             TokenUser t=tokenUtil.parseUserFromToken(jwt);
 
-            ServerHttpRequest newRequest = request.mutate().header("Claims_user",t.getName()).build();
+//            ServerHttpRequest newRequest = request.mutate().header("Claims_user",t.getName()).build();
 //            HttpServletRequest httpRequest = (HttpServletRequest) request;
 //            httpRequest.setAttribute("Claims_user",t);
         }
-        else  if(!checkIgnoreToken(route.getId(),request.getPath().toString())){
+        else  if(routeId!=null && !checkIgnoreToken(routeId,request.getPath().toString())){
+
             System.out.println("Token 验证通过不通过 ..."+rui+request.getPath());
 
             ServerHttpResponse response = exchange.getResponse();
@@ -94,9 +96,20 @@ public class AuthFilter implements GlobalFilter, Ordered {
 
     private  Boolean checkIgnoreToken(String routeId,String path){
         Set<String> ignoreToken=new TreeSet<>();
-        ignoreToken.add("equipment-consumer:/swagger-ui.html.*");
-        ignoreToken.add("equipment-consumer:/swagger-resources.*");
-        ignoreToken.add("equipment-consumer:/v2/api-docs.*");
+        ignoreToken.add(".*-consumer:/swagger-ui.html.*");
+        ignoreToken.add(".*-consumer:/swagger-resources.*");
+        ignoreToken.add(".*-consumer:/v2/api-docs.*");
+//
+//        ignoreToken.add("user-consumer:/swagger-ui.html.*");
+//        ignoreToken.add("user-consumer:/swagger-resources.*");
+//        ignoreToken.add("user-consumer:/v2/api-docs.*");
+
+
+//        return true;
+
+        if( Pattern.matches("/null/.*", path) || Pattern.matches("/webjars/.*", path)){
+            return true;
+        }
 
         boolean isTrue=false;
         for (String s : ignoreToken) {

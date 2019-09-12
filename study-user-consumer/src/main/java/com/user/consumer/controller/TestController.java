@@ -1,30 +1,29 @@
-package com.wjbjp.controller;
+package com.user.consumer.controller;
 
-import com.wjbjp.feign.service.TestUserProvider;
-import com.wjbjp.model.DtoDo;
+import com.user.consumer.feign.TestService;
+import com.wzl.commons.model.DtoDo;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.Authorization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.client.ServiceInstance;
-import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 @RestController
 @RequestMapping("Test")
 public class TestController {
-    private static final Logger logger = LoggerFactory.getLogger(TestController.class);
+//    private static final Logger logger = LoggerFactory.getLogger(TestController.class);
 
-//    @Autowired
-//    private LoadBalancerClient loadBalancerClient;
 
     @Autowired
     private RestTemplate restTemplate;
 
     @Autowired
-    private TestUserProvider testC;
+    private TestService testC;
 
     @RequestMapping(value = "test", method = RequestMethod.POST)
+    @ApiOperation(value = "测试", notes = "测试传入参数和传出参数")
     public DtoDo test(@RequestBody DtoDo inobj) {
         return testC.test(inobj);
     }

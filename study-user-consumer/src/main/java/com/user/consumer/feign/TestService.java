@@ -1,13 +1,14 @@
-package com.wjbjp.feign.service;
+package com.user.consumer.feign;
 
-import com.wjbjp.model.DtoDo;
+import com.user.consumer.feign.impl.TestServiceImpl;
+import com.wzl.commons.model.DtoDo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(value = "user-provider",url = "http://localhost:9001", fallback = ServiceFallback.class)
-public interface TestUserProvider {
+@FeignClient(value = "user-provider",url = "http://localhost:9001", fallback = TestServiceImpl.class)
+public interface TestService {
     @GetMapping(value = "/echo/{message}")
     String echo(@PathVariable("message") String message);
 
@@ -20,3 +21,4 @@ public interface TestUserProvider {
     @GetMapping(value = "/Test/test2")
     String test2(@RequestBody String inobj);
 }
+

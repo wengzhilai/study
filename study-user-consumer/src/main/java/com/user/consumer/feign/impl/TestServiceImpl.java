@@ -1,14 +1,14 @@
-package com.wjbjp.feign.service;
+package com.user.consumer.feign.impl;
 
-import com.wjbjp.controller.TestController;
-import com.wjbjp.model.DtoDo;
-import org.springframework.stereotype.Component;
+import com.user.consumer.feign.TestService;
+import com.wzl.commons.model.DtoDo;
+import org.springframework.stereotype.Service;
 
-@Component
-public class ServiceFallback implements TestUserProvider {
+@Service
+public class TestServiceImpl implements TestService {
     @Override
     public String echo(String message) {
-        return "网络有问题1";
+        return null;
     }
 
     @Override
@@ -20,11 +20,11 @@ public class ServiceFallback implements TestUserProvider {
 
     @Override
     public String test1(DtoDo inobj) {
-        return "网络有问题2";
+        return null;
     }
 
     @Override
     public String test2(String inobj) {
-        return "网络有问题3";
+        return null;
     }
 }

@@ -1,4 +1,4 @@
-package com.wjbjp.model.entity;
+package com.user.consumer.model.entity;
 
 import lombok.Data;
 

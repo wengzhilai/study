@@ -1,6 +1,7 @@
-package com.wjbjp.model.entity;
+package com.user.consumer.model.entity;
 
-import com.wjbjp.retention.*;
+import com.wzl.commons.model.mynum.DatabaseGeneratedOption;
+import com.wzl.commons.retention.*;
 import lombok.Data;
 
 @Data
@@ -10,7 +11,7 @@ public class FaLoginEntity {
      * ID
      */
     @Key
-    @DatabaseGenerated(DatabaseGenerated.DatabaseGeneratedOption.Computed)
+    @DatabaseGenerated(DatabaseGeneratedOption.Computed)
     @Display(Name = "ID")
     @Column("ID")
     public int id;

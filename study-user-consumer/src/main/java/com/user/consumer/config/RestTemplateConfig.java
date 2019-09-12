@@ -1,4 +1,4 @@
-package com.wjbjp.config;
+package com.user.consumer.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
