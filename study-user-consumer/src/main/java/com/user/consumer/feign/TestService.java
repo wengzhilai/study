@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(value = "user-provider",url = "http://localhost:9001", fallback = TestServiceImpl.class)
+@FeignClient(value = "dependencies-provider",url = "http://localhost:9003", fallback = TestServiceImpl.class)
 public interface TestService {
     @GetMapping(value = "/echo/{message}")
     String echo(@PathVariable("message") String message);
