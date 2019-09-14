@@ -1,6 +1,6 @@
 package com.user.consumer.feign;
 
-import com.user.consumer.feign.impl.TestServiceImpl;
+import com.user.consumer.feign.impl.LoginServiceImpl;
 import com.user.consumer.model.entity.FaUserEntity;
 import com.wzl.commons.model.Result;
 import com.wzl.commons.model.ResultObj;
@@ -12,7 +12,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(value = "user-provider",url = "http://localhost:9001", fallback = TestServiceImpl.class)
+@FeignClient(value = "user-provider",url = "http://localhost:9001", fallback = LoginServiceImpl.class)
 public interface LoginService {
 
     /**

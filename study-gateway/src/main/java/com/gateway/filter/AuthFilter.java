@@ -102,7 +102,7 @@ public class AuthFilter implements GlobalFilter, Ordered {
 //
 //        ignoreToken.add("user-consumer:/swagger-ui.html.*");
 //        ignoreToken.add("user-consumer:/swagger-resources.*");
-//        ignoreToken.add("user-consumer:/v2/api-docs.*");
+        ignoreToken.add("user-consumer:/Login/userLogin.*");
 
 
 //        return true;

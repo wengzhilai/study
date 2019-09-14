@@ -138,10 +138,19 @@ public class LoginServiceImpl implements LoginService {
         if(reObj.success){
             reObj.msg = "登录成功";
             TokenUser tu = new TokenUser();
-            tu.setName(inEnt.userName);
+            tu.setName(inEnt.loginName);
             tu.setPassword(inEnt.password);
-            String token = TokenUtil.createTokenForUser(tu);
-            reObj.code = token;
+            String token = null;
+            try {
+                token = TokenUtil.createTokenForUser(tu);
+                reObj.code = token;
+                reObj.success=true;
+            } catch (Exception e) {
+                reObj.msg="密码失败"+e.getMessage();
+                reObj.success=false;
+//                e.printStackTrace();
+            }
+
         }
         return reObj;
     }
