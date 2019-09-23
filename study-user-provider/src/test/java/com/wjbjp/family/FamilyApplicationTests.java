@@ -1,5 +1,6 @@
 package com.wjbjp.family;
 
+import cn.hutool.core.convert.Convert;
 import com.alibaba.fastjson.JSON;
 import com.dependencies.mybatis.mapper.MapperHelper;
 import com.dependencies.mybatis.service.MyBatisService;
@@ -176,4 +177,10 @@ public class FamilyApplicationTests {
         System.out.println(JSON.toJSONString(reObj));
     }
 
+    @Test
+    public void ConvertToDate() {
+        String a = "2017-05-06";
+        Date value = Convert.toDate(a);
+        System.out.println(value);
+    }
 }
