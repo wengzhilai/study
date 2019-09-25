@@ -62,4 +62,6 @@ public interface LoginService {
     @GetMapping(value = "/Login/userEditUser")
     Result userEditUser(DtoSave<FaUserEntity> inDto);
 
+
+
 }

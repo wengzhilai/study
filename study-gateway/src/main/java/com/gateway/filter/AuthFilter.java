@@ -11,15 +11,14 @@ import org.springframework.cloud.gateway.support.ServerWebExchangeUtils;
 import org.springframework.core.Ordered;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.server.ServerWebExchange;
-import org.springframework.web.server.WebSession;
 import reactor.core.publisher.Mono;
-import reactor.netty.http.client.HttpClientResponse;
 
 import java.net.URI;
 import java.util.*;
@@ -31,17 +30,32 @@ import java.util.regex.Pattern;
 @Component
 public class AuthFilter implements GlobalFilter, Ordered {
     private static final String BEARER_IDENTIFIER = "Bearer "; // space is important
+    private static final String ALL = "*";
+    private static final String MAX_AGE = "18000L";
+
 
     TokenUtil tokenUtil=new TokenUtil();
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+        ServerHttpRequest request=exchange.getRequest();
+        ServerHttpResponse response = exchange.getResponse();
+
+        HttpHeaders headers = response.getHeaders();
+        headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "POST, GET, PUT, OPTIONS, DELETE, PATCH");
+        headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true");
+        headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, "*");
+        headers.add(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, ALL);
+        headers.add(HttpHeaders.ACCESS_CONTROL_MAX_AGE, MAX_AGE);
+
+        if (request.getMethod() == HttpMethod.OPTIONS) {
+            response.setStatusCode(HttpStatus.OK);
+            return Mono.empty();
+        }
 
 
         Route route = exchange.getAttribute(ServerWebExchangeUtils.GATEWAY_ROUTE_ATTR);
         URI rui= route.getUri();
         String routeId=route.getId();
-        ServerHttpRequest request=exchange.getRequest();
-        HttpHeaders headers=request.getHeaders();
         String authorization =headers.getFirst("Authorization");
 
         if (!StringUtils.isEmpty(authorization) && authorization.startsWith(BEARER_IDENTIFIER)) {
@@ -50,15 +64,12 @@ public class AuthFilter implements GlobalFilter, Ordered {
             String jwt = authorization.substring(BEARER_IDENTIFIER.length());
             TokenUser t=tokenUtil.parseUserFromToken(jwt);
 
-//            ServerHttpRequest newRequest = request.mutate().header("Claims_user",t.getName()).build();
-//            HttpServletRequest httpRequest = (HttpServletRequest) request;
-//            httpRequest.setAttribute("Claims_user",t);
+
         }
         else  if(routeId!=null && !checkIgnoreToken(routeId,request.getPath().toString())){
 
             System.out.println("Token 验证通过不通过 ..."+rui+request.getPath());
 
-            ServerHttpResponse response = exchange.getResponse();
             // 封装错误信息
             Map<String, Object> responseData =  new HashMap<String,Object>();
             responseData.put("code", 401);

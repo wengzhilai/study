@@ -1,5 +1,6 @@
 package com.user.consumer.controller.impl;
 
+import com.user.consumer.controller.BaseController;
 import com.user.consumer.controller.LoginController;
 import com.user.consumer.feign.LoginService;
 import com.user.consumer.feign.TestService;
@@ -20,7 +21,7 @@ import org.springframework.web.client.RestTemplate;
 
 @RestController
 @RequestMapping("Login")
-public class LoginControllerImpl implements LoginController {
+public class LoginControllerImpl extends BaseController implements LoginController {
     @Autowired
     private RestTemplate restTemplate;
 
