@@ -3,7 +3,6 @@ package com.gateway.filter;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gateway.model.TokenUser;
-import com.gateway.utlity.TokenUtil;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.cloud.gateway.route.Route;
@@ -34,18 +33,12 @@ public class AuthFilter implements GlobalFilter, Ordered {
     private static final String MAX_AGE = "18000L";
 
 
-    TokenUtil tokenUtil=new TokenUtil();
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         ServerHttpRequest request=exchange.getRequest();
         ServerHttpResponse response = exchange.getResponse();
 
-        HttpHeaders headers = response.getHeaders();
-        headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "POST, GET, PUT, OPTIONS, DELETE, PATCH");
-        headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true");
-        headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, "*");
-        headers.add(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, ALL);
-        headers.add(HttpHeaders.ACCESS_CONTROL_MAX_AGE, MAX_AGE);
+
 
         if (request.getMethod() == HttpMethod.OPTIONS) {
             response.setStatusCode(HttpStatus.OK);
@@ -56,14 +49,13 @@ public class AuthFilter implements GlobalFilter, Ordered {
         Route route = exchange.getAttribute(ServerWebExchangeUtils.GATEWAY_ROUTE_ATTR);
         URI rui= route.getUri();
         String routeId=route.getId();
-        String authorization =headers.getFirst("Authorization");
+        String authorization =request.getHeaders().getFirst("Authorization");
 
         if (!StringUtils.isEmpty(authorization) && authorization.startsWith(BEARER_IDENTIFIER)) {
             System.out.println("Token 验证通过 ..."+rui+request.getPath());
-
-            String jwt = authorization.substring(BEARER_IDENTIFIER.length());
-            TokenUser t=tokenUtil.parseUserFromToken(jwt);
-
+//
+//            String jwt = authorization.substring(BEARER_IDENTIFIER.length());
+//            TokenUser t=tokenUtil.parseUserFromToken(jwt);
 
         }
         else  if(routeId!=null && !checkIgnoreToken(routeId,request.getPath().toString())){
@@ -93,6 +85,12 @@ public class AuthFilter implements GlobalFilter, Ordered {
         else {
             System.out.println("忽略Token验证  ..."+rui+request.getPath());
         }
+        HttpHeaders responseHeaders = response.getHeaders();
+        responseHeaders.add(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "POST, GET, PUT, OPTIONS, DELETE, PATCH");
+        responseHeaders.add(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true");
+        responseHeaders.add(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, "*");
+        responseHeaders.add(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, ALL);
+        responseHeaders.add(HttpHeaders.ACCESS_CONTROL_MAX_AGE, MAX_AGE);
         return chain.filter(exchange);
     }
 

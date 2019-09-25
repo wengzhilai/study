@@ -137,6 +137,7 @@ public class LoginServiceImpl implements LoginService {
             TokenUser tu = new TokenUser();
             tu.setName(inEnt.loginName);
             tu.setPassword(inEnt.password);
+            tu.setUserId(reObj.data.id);
             String token = null;
             try {
                 token = TokenUtil.createTokenForUser(tu);

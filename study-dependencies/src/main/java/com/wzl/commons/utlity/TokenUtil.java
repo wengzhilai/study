@@ -28,6 +28,7 @@ public class TokenUtil {
                     .parseClaimsJws(token)
                     .getBody();
             user.setName((String)claims.get("userName"));
+            user.setUserId((int)claims.get("userId"));
         }catch(Exception e){
             return null;
         }
@@ -36,10 +37,11 @@ public class TokenUtil {
 
 
 
-    public static String createTokenForUser(SecurityProperties.User user) {
+    public static String createTokenForUser(TokenUser user) {
         return Jwts.builder()
                 .setExpiration(new Date(System.currentTimeMillis() + VALIDITY_TIME_MS))
                 .claim("userName", user.getName())
+                .claim("userId", user.getUserId())
                 .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
     }
