@@ -15,7 +15,7 @@ public interface ModuleService {
      * @param inEnt
      * @return
      */
-    @GetMapping(value = "/module/getUserMenu")
+    @GetMapping(value = "/Module/getUserMenu")
     ResultObj<FaRoleModuleEntityView> getUserMenu(@RequestBody DtoDo inEnt);
 
 }

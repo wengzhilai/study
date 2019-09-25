@@ -12,25 +12,21 @@ import java.util.Enumeration;
 
 public class BaseController {
     protected TokenUser CurrUser;
+
     @ModelAttribute
-    public void  setResAndReq(HttpServletRequest request, HttpServletResponse response){
-        String BEARER_IDENTIFIER = "Bearer "; // space is important
-
-        Enumeration<String> authorizationList =request.getHeaders("Authorization");
-        String authorization=authorizationList.nextElement();
-        if (!StringUtils.isEmpty(authorization) && authorization.startsWith(BEARER_IDENTIFIER)) {
-//            System.out.println("Token 验证通过 ..."+rui+request.getPath());
-//
-            TokenUtil tokenUtil=new TokenUtil();
-            String jwt = authorization.substring(BEARER_IDENTIFIER.length());
-            this.CurrUser=tokenUtil.parseUserFromToken(jwt);
-
+    public void setResAndReq(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            String BEARER_IDENTIFIER = "Bearer "; // space is important
+            Enumeration<String> authorizationList = request.getHeaders("Authorization");
+            String authorization = authorizationList.nextElement();
+            if (!StringUtils.isEmpty(authorization) && authorization.startsWith(BEARER_IDENTIFIER)) {
+                TokenUtil tokenUtil = new TokenUtil();
+                String jwt = authorization.substring(BEARER_IDENTIFIER.length());
+                this.CurrUser = tokenUtil.parseUserFromToken(jwt);
+            }
+        } catch (Exception e) {
+            this.CurrUser = null;
         }
-//        Object obj=request.getAttribute("Claims_user");
-//        if(obj !=null){
-//            this.CurrUser=(TokenUser)obj;
-//
-//
-//        }
+
     }
 }

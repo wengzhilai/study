@@ -81,7 +81,7 @@ public class ModuleServiceImpl implements ModuleService {
         Object[] roleIdList=roleList.stream().map(x->x.roleId).toArray();
 
         resultObj.dataList= dapperRoleModule.getAll(new EntityHelper<>(new FaRoleModuleEntityView()),"a.ROLE_ID in (1,2)",1,100,null);
-
+        resultObj.success=true;
         return  resultObj;
     }
 }

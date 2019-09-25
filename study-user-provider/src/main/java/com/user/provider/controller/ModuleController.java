@@ -4,6 +4,7 @@ import com.user.provider.model.entity.FaModuleEntity;
 import com.user.provider.model.entity.view.FaRoleModuleEntityView;
 import com.wzl.commons.model.DtoDo;
 import com.wzl.commons.model.ResultObj;
+import org.springframework.web.bind.annotation.RequestBody;
 
 public interface ModuleController {
     /**
@@ -11,6 +12,6 @@ public interface ModuleController {
      * @param inEnt
      * @return
      */
-    ResultObj<FaRoleModuleEntityView> getUserMenu(DtoDo inEnt);
+    ResultObj<FaRoleModuleEntityView> getUserMenu(@RequestBody DtoDo inEnt);
 
 }
