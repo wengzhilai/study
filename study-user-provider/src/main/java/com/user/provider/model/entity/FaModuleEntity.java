@@ -27,75 +27,75 @@ public class FaModuleEntity {
      */
     @StringLength(60)
     @Display(Name = "模块名")
-    @Column("ID")
+    @Column("NAME")
     public String name;
     /**
      * 地址
      */
     @StringLength(2000)
     @Display(Name = "地址")
-    @Column("ID")
+    @Column("LOCATION")
     public String location;
     /**
      * 代码
      */
     @StringLength(20)
     @Display(Name = "代码")
-    @Column("ID")
+    @Column("CODE")
     public String code;
     /**
      * 调试
      */
     @Required
     @Display(Name = "调试")
-    @Column("ID")
+    @Column("IS_DEBUG")
     public int is_debug;
     /**
      * 隐藏
      */
     @Required
     @Display(Name = "隐藏")
-    @Column("ID")
+    @Column("IS_HIDE")
     public int is_hide;
     /**
      * 排序
      */
     @Required
     @Display(Name = "排序")
-    @Column("ID")
+    @Column("SHOW_ORDER")
     public int show_order;
     /**
      * 描述
      */
     @StringLength(2000)
     @Display(Name = "描述")
-    @Column("ID")
+    @Column("DESCRIPTION")
     public String description;
     /**
      * 图片
      */
     @StringLength(2000)
     @Display(Name = "图片")
-    @Column("ID")
+    @Column("IMAGE_URL")
     public String image_url;
     /**
      * 桌面角色
      */
     @StringLength(200)
     @Display(Name = "桌面角色")
-    @Column("ID")
+    @Column("DESKTOP_ROLE")
     public String desktop_role;
     /**
      * 宽
      */
     @Display(Name = "宽")
-    @Column("ID")
+    @Column("W")
     public Integer w;
     /**
      * 高
      */
     @Display(Name = "高")
-    @Column("ID")
+    @Column("H")
     public Integer h;
 
     /**

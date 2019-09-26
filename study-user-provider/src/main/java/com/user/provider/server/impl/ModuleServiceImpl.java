@@ -14,6 +14,7 @@ import com.wzl.commons.retention.EntityHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -101,7 +102,7 @@ public class ModuleServiceImpl implements ModuleService {
     private List<FaModuleEntity> getChildItems(List<FaModuleEntity> inList, Integer parentId)
     {
         List<FaModuleEntity> childList = inList.stream().filter(i -> i.parent_id == parentId).collect(Collectors.toList());
-        List<FaModuleEntity> reObj = Arrays.asList();
+        List<FaModuleEntity> reObj = new ArrayList<>();;
         for (FaModuleEntity item : childList) {
             item.children = getChildItems(inList, item.id);
             reObj.add(item);

@@ -5,6 +5,6 @@ import com.user.consumer.model.entity.view.FaRoleModuleEntityView;
 import com.wzl.commons.model.ResultObj;
 
 public interface ModuleController {
-    ResultObj<FaRoleModuleEntityView> getUserMenu();
+    ResultObj<FaModuleEntity> getUserMenu();
 
 }

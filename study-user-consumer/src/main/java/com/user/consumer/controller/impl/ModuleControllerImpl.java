@@ -25,7 +25,7 @@ public class ModuleControllerImpl extends BaseController implements ModuleContro
 
     @RequestMapping(value = "getUserMenu", method = RequestMethod.POST)
     @ApiOperation(value = "获取用户菜单")
-    public ResultObj<FaRoleModuleEntityView> getUserMenu() {
+    public ResultObj<FaModuleEntity> getUserMenu() {
         DtoDo postEnt=new DtoDo();
         postEnt.key=Convert.toStr(this.CurrUser.userId);
         return moduleService.getUserMenu(postEnt);

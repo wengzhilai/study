@@ -1,6 +1,7 @@
 package com.user.consumer.feign;
 
 import com.user.consumer.feign.impl.LoginServiceImpl;
+import com.user.consumer.model.entity.FaModuleEntity;
 import com.user.consumer.model.entity.view.FaRoleModuleEntityView;
 import com.wzl.commons.model.DtoDo;
 import com.wzl.commons.model.ResultObj;
@@ -16,6 +17,6 @@ public interface ModuleService {
      * @return
      */
     @GetMapping(value = "/Module/getUserMenu")
-    ResultObj<FaRoleModuleEntityView> getUserMenu(@RequestBody DtoDo inEnt);
+    ResultObj<FaModuleEntity> getUserMenu(@RequestBody DtoDo inEnt);
 
 }
