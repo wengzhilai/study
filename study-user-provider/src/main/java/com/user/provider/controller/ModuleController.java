@@ -12,6 +12,6 @@ public interface ModuleController {
      * @param inEnt
      * @return
      */
-    ResultObj<FaRoleModuleEntityView> getUserMenu(@RequestBody DtoDo inEnt);
+    ResultObj<FaModuleEntity> getUserMenu(@RequestBody DtoDo inEnt);
 
 }

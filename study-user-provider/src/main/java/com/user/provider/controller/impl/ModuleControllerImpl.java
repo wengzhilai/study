@@ -3,6 +3,7 @@ package com.user.provider.controller.impl;
 import cn.hutool.core.convert.Convert;
 import com.user.provider.controller.ModuleController;
 
+import com.user.provider.model.entity.FaModuleEntity;
 import com.user.provider.model.entity.view.FaRoleModuleEntityView;
 import com.user.provider.server.LoginService;
 import com.user.provider.server.ModuleService;
@@ -24,7 +25,7 @@ public class ModuleControllerImpl implements ModuleController {
 
     @ApiOperation(value="获取用户所有模块")
     @RequestMapping(value = "getUserMenu", method = RequestMethod.POST)
-    public ResultObj<FaRoleModuleEntityView> getUserMenu(@RequestBody DtoDo inEnt) {
+    public ResultObj<FaModuleEntity> getUserMenu(@RequestBody DtoDo inEnt) {
         return moduleService.GetMGetMenuByUserId(Convert.toInt(inEnt.key));
     }
 }

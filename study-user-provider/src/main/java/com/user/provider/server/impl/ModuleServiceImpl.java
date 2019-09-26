@@ -1,5 +1,6 @@
 package com.user.provider.server.impl;
 
+import cn.hutool.core.convert.Convert;
 import com.dependencies.mybatis.service.MyBatisService;
 import com.user.provider.model.entity.FaModuleEntity;
 import com.user.provider.model.entity.view.FaRoleModuleEntityView;
@@ -13,7 +14,10 @@ import com.wzl.commons.retention.EntityHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class ModuleServiceImpl implements ModuleService {
@@ -72,16 +76,36 @@ public class ModuleServiceImpl implements ModuleService {
     }
 
     @Override
-    public ResultObj<FaRoleModuleEntityView> GetMGetMenuByUserId(int userId) {
-        ResultObj<FaRoleModuleEntityView> resultObj=new ResultObj<>();
+    public ResultObj<FaModuleEntity> GetMGetMenuByUserId(int userId) {
+        ResultObj<FaModuleEntity> resultObj=new ResultObj<>();
         List<FaUserRoleEntityView> roleList=dapperUserRole.getAll(
                 new EntityHelper<>(new FaUserRoleEntityView()),
                 x->x.userId==userId
                 );
-        Object[] roleIdList=roleList.stream().map(x->x.roleId).toArray();
 
-        resultObj.dataList= dapperRoleModule.getAll(new EntityHelper<>(new FaRoleModuleEntityView()),"a.ROLE_ID in (1,2)",1,100,null);
+        List<String> roleIdList=roleList.stream().map(x->Convert.toStr(x.roleId)).collect(Collectors.toList());
+        List<FaRoleModuleEntityView> allList= dapperRoleModule.getAll(new EntityHelper<>(new FaRoleModuleEntityView()),"a.ROLE_ID in ("+String.join(",",roleIdList)+")",1,100,null);
+        Set<String> allModuleIdList= allList.stream().collect(Collectors.groupingBy(x->Convert.toStr(x.moduleId))).keySet();
+        List<FaModuleEntity> allModule= moduleMhs.getAll(moduleEh,"ID in ("+String.join(",",allModuleIdList)+")");
+        resultObj.dataList=getChildItems(allModule,null);
         resultObj.success=true;
         return  resultObj;
+    }
+
+    /**
+     * 获取所有子项
+     * @param inList
+     * @param parentId
+     * @return
+     */
+    private List<FaModuleEntity> getChildItems(List<FaModuleEntity> inList, Integer parentId)
+    {
+        List<FaModuleEntity> childList = inList.stream().filter(i -> i.parent_id == parentId).collect(Collectors.toList());
+        List<FaModuleEntity> reObj = Arrays.asList();
+        for (FaModuleEntity item : childList) {
+            item.children = getChildItems(inList, item.id);
+            reObj.add(item);
+        }
+        return childList;
     }
 }

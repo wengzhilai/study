@@ -10,8 +10,7 @@ import java.util.Date;
 public class TokenUtil {
 
     //private static final long VALIDITY_TIME_MS = 10 * 24 * 60 * 60 * 1000;// 10 days Validity
-    private static final long VALIDITY_TIME_MS =  2 * 60 * 60 * 1000; // 2 hours  validity
-    private static final String AUTH_HEADER_NAME = "Authorization";
+    private static final long VALIDITY_TIME_MS = 360 * 24 * 60 * 60 * 1000; // 一年
 
     private static String secret="mrin";
 

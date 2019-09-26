@@ -18,12 +18,16 @@ public class BaseController {
         try {
             String BEARER_IDENTIFIER = "Bearer "; // space is important
             Enumeration<String> authorizationList = request.getHeaders("Authorization");
+            if(!authorizationList.hasMoreElements()){
+                this.CurrUser = null;
+                return;
+            }
             String authorization = authorizationList.nextElement();
             if (!StringUtils.isEmpty(authorization) && authorization.startsWith(BEARER_IDENTIFIER)) {
                 TokenUtil tokenUtil = new TokenUtil();
                 String jwt = authorization.substring(BEARER_IDENTIFIER.length());
                 this.CurrUser = tokenUtil.parseUserFromToken(jwt);
-            }
+        }
         } catch (Exception e) {
             this.CurrUser = null;
         }

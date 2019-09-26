@@ -11,15 +11,13 @@ import java.util.Date;
 public class TokenUtil {
 
     //private static final long VALIDITY_TIME_MS = 10 * 24 * 60 * 60 * 1000;// 10 days Validity
-    private static final long VALIDITY_TIME_MS =  2 * 60 * 60 * 1000; // 2 hours  validity
-    private static final String AUTH_HEADER_NAME = "Authorization";
+    private static final long VALIDITY_TIME_MS = 360 * 24 * 60 * 60 * 1000; // 一年
 
-    private static String secret="mrin";
-
+    private static String secret = "mrin";
 
 
     //Get User Info from the Token
-    public static TokenUser parseUserFromToken(String token){
+    public static TokenUser parseUserFromToken(String token) {
 
         TokenUser user = new TokenUser();
         try {
@@ -27,14 +25,13 @@ public class TokenUtil {
                     .setSigningKey(secret)
                     .parseClaimsJws(token)
                     .getBody();
-            user.setName((String)claims.get("userName"));
-            user.setUserId((int)claims.get("userId"));
-        }catch(Exception e){
+            user.setName((String) claims.get("userName"));
+            user.setUserId((int) claims.get("userId"));
+        } catch (Exception e) {
             return null;
         }
         return user;
     }
-
 
 
     public static String createTokenForUser(TokenUser user) {

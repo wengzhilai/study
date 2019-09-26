@@ -49,6 +49,6 @@ public interface ModuleService {
      * @param userId
      * @return
      */
-    ResultObj<FaRoleModuleEntityView> GetMGetMenuByUserId(int userId);
+    ResultObj<FaModuleEntity> GetMGetMenuByUserId(int userId);
 
 }
