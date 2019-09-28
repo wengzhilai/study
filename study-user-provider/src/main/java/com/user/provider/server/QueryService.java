@@ -30,4 +30,5 @@ public interface QueryService {
     ResultObj<Integer> save(DtoSave<FaQueryEntity> inEnt);
     //endregion
 
+    ResultObj<FaQueryEntity> GetSingleQuery(String code);
 }
