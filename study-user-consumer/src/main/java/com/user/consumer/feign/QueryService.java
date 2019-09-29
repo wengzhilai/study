@@ -1,6 +1,8 @@
 package com.user.consumer.feign;
 
 
+import com.wzl.commons.model.dto.DataGridDataJson;
+import com.wzl.commons.model.dto.query.QuerySearchDto;
 import com.wzl.commons.model.entity.*;
 import com.wzl.commons.model.DtoDo;
 import com.wzl.commons.model.Result;
@@ -15,4 +17,12 @@ public interface QueryService {
 
     @GetMapping(value = "/query/GetSingleQuery")
     ResultObj<FaQueryEntity> GetSingleQuery(@RequestBody DtoDo code);
+
+    /**
+     * 获取数据
+     * @param querySearchModel
+     * @return
+     */
+    @GetMapping(value = "/query/getListData")
+    ResultObj<DataGridDataJson> getListData(@RequestBody QuerySearchDto querySearchModel);
 }

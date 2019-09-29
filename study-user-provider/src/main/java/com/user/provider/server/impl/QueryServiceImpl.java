@@ -76,12 +76,13 @@ public class QueryServiceImpl implements QueryService {
     public ResultObj<DataGridDataJson> getListData(QuerySearchDto inEnt) {
         ResultObj<DataGridDataJson> reObj = new ResultObj<>();
         DataGridDataJson reEnt = new DataGridDataJson();
-        FaQueryEntity query = dapper.getSingle(moduleEh,i -> i.code == inEnt.code);
+        String code=inEnt.code;
+        FaQueryEntity query = dapper.getSingle(moduleEh,i -> i.code == code);
         if (query == null)
         {
             return reObj;
         }
-        List<QueryCfg> cfg = TypeChange.jsonStrToJavaBeanList(query.queryCfgJson,QueryCfg.class);
+//        List<QueryCfg> cfg = TypeChange.jsonStrToJavaBeanList(query.queryCfgJson,QueryCfg.class);
 
         String whereStr = MakeWhereStr(inEnt);
         String AllSql = MakeSql(inEnt, query.queryConf);
@@ -92,14 +93,12 @@ public class QueryServiceImpl implements QueryService {
             String[] sqlList = reObj.msg.split(";");
             if (sqlList.length > 0)
             {
-//                reEnt.rows = DapperHelper.GetDataTable(sqlList[0]);
+                reEnt.rows = dapper.Select(sqlList[0]);
             }
 
             if (sqlList.length > 1)
             {
-                int allNum = 0;
-//                int.TryParse(DapperHelper.ExecuteScalarAsync(sqlList[1]), out allNum);
-                reEnt.total = allNum;
+                reEnt.total = dapper.exec(sqlList[1]);
             }
             reObj.data = reEnt;
         }
@@ -112,7 +111,7 @@ public class QueryServiceImpl implements QueryService {
     }
 
 
-    public String MakeSql(QuerySearchDto inEnt, String querySql) {
+    protected String MakeSql(QuerySearchDto inEnt, String querySql) {
 
         if (inEnt.paraList == null) inEnt.paraList = new ArrayList<>();
         if (inEnt.whereList == null) {
@@ -143,8 +142,10 @@ public class QueryServiceImpl implements QueryService {
         return querySql;
     }
 
-    public String MakeWhereStr(QuerySearchDto inEnt) {
-
+    protected String MakeWhereStr(QuerySearchDto inEnt) {
+        if(inEnt==null || inEnt.whereList==null || inEnt.whereList.size()==0){
+            return "";
+        }
         StringBuilder whereSb = new StringBuilder();
         for (QueryRowBtnShowCondition tmp : inEnt.whereList.stream().filter(x -> x.opType != null && !StringUtils.isAnyBlank(x.opType) && !StringUtils.isAnyBlank(x.value)).collect(Collectors.toList()))
         {
@@ -185,11 +186,11 @@ public class QueryServiceImpl implements QueryService {
                 default:
                     if (tmp.opType == "in")
                     {
-                        whereSb.append(String.format(" {0} {1} ('{2}') and ", tmp.objFiled, tmp.opType, tmp.value.replace(",", "','")));
+                        whereSb.append(String.format(" %s %s ('%s') and ", tmp.objFiled, tmp.opType, tmp.value.replace(",", "','")));
                     }
                     else
                     {
-                        whereSb.append(String.format(" {0} {1} {2} and ", tmp.objFiled, tmp.opType, tmp.value));
+                        whereSb.append(String.format(" %s %s %s and ", tmp.objFiled, tmp.opType, tmp.value));
                     }
                     break;
             }
@@ -199,7 +200,7 @@ public class QueryServiceImpl implements QueryService {
         return whereSb.toString();
     }
 
-    public String MakePageSql(String sql, int pageIndex , int pageSize , String orderStr, String whereStr, List<String> fieldList)
+    protected String MakePageSql(String sql, int pageIndex , int pageSize , String orderStr, String whereStr, List<String> fieldList)
     {
         if (pageIndex < 0) pageIndex = 1;
         if (pageSize < 0) pageSize = 10;
@@ -227,16 +228,16 @@ public class QueryServiceImpl implements QueryService {
             t1File = StringUtils.join(fieldList,",T1.");
             tFile = StringUtils.join(",T.", fieldList);
         }
-        String sqlStr = "        {5}\n" +
-                "        SELECT T.{6} FROM\n" +
+        String sqlStr = "        %6$s\n" +
+                "        SELECT T.%7$s FROM\n" +
                 "            (\n" +
-                "                    {0}\n" +
-                "            ) T {4} {1} LIMIT {2},{3};\n" +
-                "        SELECT COUNT(1) ALL_NUM FROM ({0}) T {4}";
+                "                    %1$s\n" +
+                "            ) T %5$s %2$s LIMIT %3$s,%4$s;\n" +
+                "        SELECT COUNT(1) ALL_NUM FROM (%1$s) T %5$s";
         if (pageIndex == 0) pageIndex = 1;
         if (pageSize == 0) pageSize = 10;
         int startNum = (pageIndex - 1) * pageSize;
-        sqlStr = String.format(sqlStr, String.format(sql, whereStr), orderStr, startNum, startNum + pageSize, whereStr, withStr, tFile, t1File);
+        sqlStr = String.format(sqlStr,sql, orderStr, startNum, startNum + pageSize, whereStr, withStr, tFile, t1File);
         return sqlStr;
     }
 }

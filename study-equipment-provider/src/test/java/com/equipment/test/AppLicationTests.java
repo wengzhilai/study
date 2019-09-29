@@ -70,9 +70,9 @@ public class AppLicationTests {
 
     @Test
     public void Query() {
-        System.out.println(TypeChange.objToString(qc.Query("" +
-                "SELECT ID id,NAME name,TABLE_NAME tableName,INTRODUCE introduce,ADD_TIME addTime,STAUTS stauts\n" +
-                "FROM fa_table_type")));
+        String tt=" 1=%0$s ,2=%0$s";
+        tt=String.format(tt,11,22);
+        System.out.println(tt);
     }
 
 

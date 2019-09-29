@@ -182,9 +182,9 @@ public class FamilyApplicationTests {
 
     @Test
     public void ConvertToDate() {
-        String a = "2017-05-06";
-        Date value = Convert.toDate(a);
-        System.out.println(value);
+        String tt=" 1=%1$s ,2=%1$s";
+        tt=String.format(tt,1,2);
+        System.out.println(tt);
     }
 
     @Test

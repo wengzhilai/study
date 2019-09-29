@@ -1,5 +1,7 @@
 package com.user.consumer.controller;
 
+import com.wzl.commons.model.dto.DataGridDataJson;
+import com.wzl.commons.model.dto.query.QuerySearchDto;
 import com.wzl.commons.model.entity.*;
 import com.wzl.commons.model.DtoDo;
 import com.wzl.commons.model.ResultObj;
@@ -12,5 +14,7 @@ public interface QueryController {
      * @return
      */
     ResultObj<FaQueryEntity> GetSingleQuery(@RequestBody DtoDo inObj);
+
+    ResultObj<DataGridDataJson> getListData(@RequestBody QuerySearchDto querySearchModel);
 
 }

@@ -41,8 +41,8 @@ public interface QueryService {
 
     /**
      * 获取数据
-     * @param querySearchModel
+     * @param inObj
      * @return
      */
-    ResultObj<DataGridDataJson> getListData(QuerySearchDto querySearchModel);
+    ResultObj<DataGridDataJson> getListData(QuerySearchDto inObj);
 }
