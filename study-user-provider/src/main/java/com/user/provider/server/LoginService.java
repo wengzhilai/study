@@ -1,13 +1,10 @@
 package com.user.provider.server;
 
 
-import com.user.provider.model.entity.FaUserEntity;
 import com.wzl.commons.model.Result;
 import com.wzl.commons.model.ResultObj;
-import com.wzl.commons.model.dto.DtoSave;
-import com.wzl.commons.model.dto.EditPwdDto;
-import com.wzl.commons.model.dto.LogingDto;
-import com.wzl.commons.model.dto.ResetPasswordDto;
+import com.wzl.commons.model.dto.*;
+import com.wzl.commons.model.entity.*;
 
 public interface LoginService {
 

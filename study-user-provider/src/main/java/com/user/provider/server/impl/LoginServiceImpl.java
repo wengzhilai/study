@@ -2,8 +2,7 @@ package com.user.provider.server.impl;
 
 import com.dependencies.mybatis.service.MyBatisService;
 
-import com.user.provider.model.entity.FaLoginEntity;
-import com.user.provider.model.entity.FaUserEntity;
+import com.wzl.commons.model.entity.*;
 import com.user.provider.server.LoginService;
 import com.wzl.commons.model.Result;
 import com.wzl.commons.model.ResultObj;

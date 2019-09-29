@@ -1,7 +1,9 @@
 package com.user.provider.server;
 
 
-import com.user.provider.model.entity.FaQueryEntity;
+import com.wzl.commons.model.dto.DataGridDataJson;
+import com.wzl.commons.model.dto.query.QuerySearchDto;
+import com.wzl.commons.model.entity.*;
 import com.wzl.commons.model.Result;
 import com.wzl.commons.model.ResultObj;
 import com.wzl.commons.model.dto.DtoSave;
@@ -30,5 +32,17 @@ public interface QueryService {
     ResultObj<Integer> save(DtoSave<FaQueryEntity> inEnt);
     //endregion
 
+    /**
+     * 根据代码查询配置
+     * @param code
+     * @return
+     */
     ResultObj<FaQueryEntity> GetSingleQuery(String code);
+
+    /**
+     * 获取数据
+     * @param querySearchModel
+     * @return
+     */
+    ResultObj<DataGridDataJson> getListData(QuerySearchDto querySearchModel);
 }

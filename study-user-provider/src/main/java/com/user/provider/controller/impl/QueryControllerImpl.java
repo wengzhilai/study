@@ -1,7 +1,7 @@
 package com.user.provider.controller.impl;
 
 import com.user.provider.controller.QueryController;
-import com.user.provider.model.entity.FaQueryEntity;
+import com.wzl.commons.model.entity.*;
 import com.user.provider.server.ModuleService;
 import com.user.provider.server.QueryService;
 import com.wzl.commons.model.DtoDo;

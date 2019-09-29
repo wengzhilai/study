@@ -1,7 +1,7 @@
 package com.user.provider.family.user;
 
 import com.user.provider.family.BaseController;
-import com.user.provider.model.entity.FaLoginEntity;
+import com.wzl.commons.model.entity.*;
 import com.wzl.commons.model.RegDto;
 import com.wzl.commons.model.Result;
 import com.wzl.commons.model.ResultObj;

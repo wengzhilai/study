@@ -1,7 +1,7 @@
 package com.user.provider.controller.impl;
 
 import com.user.provider.controller.LoginController;
-import com.user.provider.model.entity.FaUserEntity;
+import com.wzl.commons.model.entity.*;
 import com.user.provider.server.LoginService;
 import com.wzl.commons.model.Result;
 import com.wzl.commons.model.ResultObj;

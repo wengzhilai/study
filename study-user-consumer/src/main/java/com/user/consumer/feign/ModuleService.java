@@ -1,8 +1,7 @@
 package com.user.consumer.feign;
 
 import com.user.consumer.feign.impl.LoginServiceImpl;
-import com.user.consumer.model.entity.FaModuleEntity;
-import com.user.consumer.model.entity.view.FaRoleModuleEntityView;
+import com.wzl.commons.model.entity.*;
 import com.wzl.commons.model.DtoDo;
 import com.wzl.commons.model.ResultObj;
 import org.springframework.cloud.openfeign.FeignClient;

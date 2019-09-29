@@ -1,7 +1,6 @@
 package com.user.provider.controller;
 
-import com.user.provider.model.entity.FaModuleEntity;
-import com.user.provider.model.entity.view.FaRoleModuleEntityView;
+import com.wzl.commons.model.entity.*;
 import com.wzl.commons.model.DtoDo;
 import com.wzl.commons.model.ResultObj;
 import org.springframework.web.bind.annotation.RequestBody;

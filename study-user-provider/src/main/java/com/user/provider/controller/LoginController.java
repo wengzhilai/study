@@ -1,7 +1,7 @@
 package com.user.provider.controller;
 
 
-import com.user.provider.model.entity.FaUserEntity;
+import com.wzl.commons.model.entity.*;
 import com.wzl.commons.model.Result;
 import com.wzl.commons.model.ResultObj;
 import com.wzl.commons.model.dto.EditPwdDto;

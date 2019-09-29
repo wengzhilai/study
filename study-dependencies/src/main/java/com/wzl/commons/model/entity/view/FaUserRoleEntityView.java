@@ -1,4 +1,4 @@
-package com.user.provider.model.entity.view;
+package com.wzl.commons.model.entity.view;
 
 import com.wzl.commons.model.mynum.DatabaseGeneratedOption;
 import com.wzl.commons.retention.*;

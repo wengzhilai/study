@@ -1,7 +1,7 @@
 package com.user.provider.server;
 
-import com.user.provider.model.entity.FaModuleEntity;
-import com.user.provider.model.entity.view.FaRoleModuleEntityView;
+
+import com.wzl.commons.model.entity.*;
 import com.wzl.commons.model.Result;
 import com.wzl.commons.model.ResultObj;
 import com.wzl.commons.model.dto.DtoSave;

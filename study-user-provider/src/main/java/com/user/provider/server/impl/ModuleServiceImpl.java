@@ -2,13 +2,13 @@ package com.user.provider.server.impl;
 
 import cn.hutool.core.convert.Convert;
 import com.dependencies.mybatis.service.MyBatisService;
-import com.user.provider.model.entity.FaModuleEntity;
-import com.user.provider.model.entity.view.FaRoleModuleEntityView;
-import com.user.provider.model.entity.view.FaUserRoleEntityView;
+import com.wzl.commons.model.entity.*;
 import com.user.provider.server.ModuleService;
 import com.wzl.commons.model.Result;
 import com.wzl.commons.model.ResultObj;
 import com.wzl.commons.model.dto.DtoSave;
+import com.wzl.commons.model.entity.view.FaRoleModuleEntityView;
+import com.wzl.commons.model.entity.view.FaUserRoleEntityView;
 import com.wzl.commons.model.mynum.DatabaseGeneratedOption;
 import com.wzl.commons.retention.EntityHelper;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -3,8 +3,7 @@ package com.user.provider.controller.impl;
 import cn.hutool.core.convert.Convert;
 import com.user.provider.controller.ModuleController;
 
-import com.user.provider.model.entity.FaModuleEntity;
-import com.user.provider.model.entity.view.FaRoleModuleEntityView;
+import com.wzl.commons.model.entity.*;
 import com.user.provider.server.LoginService;
 import com.user.provider.server.ModuleService;
 import com.wzl.commons.model.DtoDo;

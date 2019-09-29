@@ -1,7 +1,7 @@
 package com.user.consumer.feign;
 
 
-import com.user.consumer.model.entity.FaQueryEntity;
+import com.wzl.commons.model.entity.*;
 import com.wzl.commons.model.DtoDo;
 import com.wzl.commons.model.Result;
 import com.wzl.commons.model.ResultObj;
