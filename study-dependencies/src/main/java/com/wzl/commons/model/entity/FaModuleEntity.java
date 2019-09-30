@@ -11,7 +11,7 @@ public class FaModuleEntity {
      * ID
      */
     @Key
-    @DatabaseGenerated(DatabaseGeneratedOption.None)
+    @DatabaseGenerated(DatabaseGeneratedOption.Computed)
     @Required
     @Display(Name = "ID")
     @Column("ID")

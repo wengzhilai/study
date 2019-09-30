@@ -14,7 +14,7 @@ public interface RoleController {
      * @param key
      * @return
      */
-    FaRoleEntity singleByKey(@RequestBody int key);
+    ResultObj<FaRoleEntity> singleByKey(@RequestBody int key);
 
     /**
      * 删除

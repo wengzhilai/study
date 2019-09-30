@@ -24,19 +24,19 @@ public class RoleControllerImpl implements RoleController {
 
     @RequestMapping(value = "singleByKey", method = RequestMethod.POST)
     @ApiOperation(value = "查询单个角色")
-    public FaRoleEntity singleByKey(@RequestBody DtoDo inObj) {
+    public ResultObj<FaRoleEntity> singleByKey(@RequestBody DtoDo inObj) {
         return service.singleByKey(Convert.toInt(inObj.key));
     }
 
     @RequestMapping(value = "delete", method = RequestMethod.POST)
     @ApiOperation(value = "删除角色")
-    public Result delete(DtoDo inObj) {
+    public Result delete(@RequestBody DtoDo inObj) {
         return service.delete(Convert.toInt(inObj.key));
     }
 
     @RequestMapping(value = "save", method = RequestMethod.POST)
     @ApiOperation(value = "保存角色")
-    public ResultObj<Integer> save(DtoSave<FaRoleEntity> inEnt) {
+    public ResultObj<Integer> save(@RequestBody DtoSave<FaRoleEntity> inEnt) {
         return service.save(inEnt);
     }
 }

@@ -18,7 +18,7 @@ public interface RoleService {
      * @return
      */
     @GetMapping(value = "/role/singleByKey")
-    FaRoleEntity singleByKey(@RequestBody int key);
+    ResultObj<FaRoleEntity> singleByKey(@RequestBody int key);
 
     /**
      * 删除

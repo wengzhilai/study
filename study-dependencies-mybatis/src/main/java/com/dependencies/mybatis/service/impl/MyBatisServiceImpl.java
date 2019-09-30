@@ -9,6 +9,7 @@ import com.wzl.commons.model.mynum.DatabaseGeneratedOption;
 import com.wzl.commons.retention.EntityHelper;
 import com.wzl.commons.utlity.lambda2sql.Lambda2Sql;
 import com.wzl.commons.utlity.lambda2sql.SqlPredicate;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -99,17 +100,26 @@ public class MyBatisServiceImpl<T> implements MyBatisService<T> {
     }
 
     public int update(EntityHelper<T> entityHelper, List<String> saveFieldList,List<String> whereList) {
+        if(whereList==null || whereList.size()==0){
+            return 0;
+        }
         int reInt = mh.updateByList(entityHelper, saveFieldList,whereList);
         return reInt;
     }
 
     public int update(EntityHelper<T> entityHelper, List<String> saveFieldList, String whereStr) {
+        if(StringUtils.isAnyBlank(whereStr)){
+            return 0;
+        }
         int reInt = mh.update(entityHelper, saveFieldList,whereStr);
         return reInt;
     }
 
     @Override
     public int update(EntityHelper<T> entityHelper, String whereStr) {
+        if(StringUtils.isAnyBlank(whereStr)){
+            return 0;
+        }
         HashMap<String, String> map= entityHelper.getEntityMapNameColumn();
         List<String> saveFieldList=new ArrayList<>(map.keySet());
 
@@ -134,6 +144,9 @@ public class MyBatisServiceImpl<T> implements MyBatisService<T> {
     }
 
     public int delete(EntityHelper<T> entityHelper, String whereStr) {
+        if(StringUtils.isAnyBlank(whereStr)){
+            return 0;
+        }
         int reInt = mh.delete(entityHelper, whereStr);
         return reInt;
     }

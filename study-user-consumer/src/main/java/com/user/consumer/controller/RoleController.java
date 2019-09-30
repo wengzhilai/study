@@ -15,7 +15,7 @@ public interface RoleController {
      * @param inObj
      * @return
      */
-    FaRoleEntity singleByKey(@RequestBody DtoDo inObj);
+    ResultObj<FaRoleEntity> singleByKey(@RequestBody DtoDo inObj);
 
     /**
      * 删除

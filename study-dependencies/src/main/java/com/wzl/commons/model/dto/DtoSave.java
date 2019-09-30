@@ -7,6 +7,9 @@ import java.util.List;
  * @param <T>
  */
 public class DtoSave<T> {
+    public DtoSave(){
+
+    }
     public DtoSave(T data, List<String> saveFieldList, List<String> ignoreFieldList, List<String> whereList) {
         this.data = data;
         this.saveFieldList = saveFieldList;

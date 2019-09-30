@@ -21,7 +21,7 @@ public class RoleControllerImpl implements RoleController {
 
     @ApiOperation(value="获取Role对象")
     @RequestMapping(value = "singleByKey", method = RequestMethod.POST)
-    public FaRoleEntity singleByKey(@RequestBody int key) {
+    public ResultObj<FaRoleEntity> singleByKey(@RequestBody int key) {
         return service.singleByKey(key);
     }
 

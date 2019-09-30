@@ -16,7 +16,7 @@ public interface RoleService {
      * @param key
      * @return
      */
-    FaRoleEntity singleByKey(int key);
+    ResultObj<FaRoleEntity> singleByKey(int key);
 
     /**
      * 删除

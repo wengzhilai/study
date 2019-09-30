@@ -12,7 +12,7 @@ import java.util.List;
 public class FaRoleEntity {
 
     @Key
-    @DatabaseGenerated(DatabaseGeneratedOption.None)
+    @DatabaseGenerated(DatabaseGeneratedOption.Computed)
     @Required
     @Display(Name = "ID")
     @Column("ID")
