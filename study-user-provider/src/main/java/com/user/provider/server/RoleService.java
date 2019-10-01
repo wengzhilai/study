@@ -1,8 +1,7 @@
 package com.user.provider.server;
 
 
-import com.wzl.commons.model.Result;
-import com.wzl.commons.model.ResultObj;
+import com.wzl.commons.model.*;
 import com.wzl.commons.model.dto.DataGridDataJson;
 import com.wzl.commons.model.dto.DtoSave;
 import com.wzl.commons.model.dto.query.QuerySearchDto;
@@ -33,5 +32,6 @@ public interface RoleService {
     ResultObj<Integer> save(DtoSave<FaRoleEntity> inEnt);
     //endregion
 
+    //——代码分隔线——
 
 }

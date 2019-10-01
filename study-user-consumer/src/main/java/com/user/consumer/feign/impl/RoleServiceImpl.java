@@ -1,8 +1,7 @@
 package com.user.consumer.feign.impl;
 
 import com.user.consumer.feign.RoleService;
-import com.wzl.commons.model.Result;
-import com.wzl.commons.model.ResultObj;
+import com.wzl.commons.model.*;
 import com.wzl.commons.model.dto.DtoSave;
 import com.wzl.commons.model.entity.FaRoleEntity;
 import org.springframework.stereotype.Service;
@@ -32,4 +31,7 @@ public class RoleServiceImpl implements RoleService {
         reObj.msg="网络有问题";
         return reObj;
     }
+
+    //——代码分隔线——
+
 }

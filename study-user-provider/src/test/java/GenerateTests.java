@@ -16,7 +16,7 @@ import java.io.IOException;
 public class GenerateTests {
 
     @Test
-    public void TestSingleByPrimaryKey() {
+    public void MakeClassFile() {
         PathConfig cfg=new PathConfig();
         cfg.tableName="Role";
         cfg.consumerPath="/Users/wengzhilai/Desktop/java/study/study-user-consumer/src/main/java/com/user/consumer/";
@@ -28,6 +28,27 @@ public class GenerateTests {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        ;
+    }
+
+    @Test
+    public void AddFunciton() {
+        PathConfig cfg=new PathConfig();
+        cfg.tableName="Role";
+        cfg.consumerPath="/Users/wengzhilai/Desktop/java/study/study-user-consumer/src/main/java/com/user/consumer/";
+        cfg.providerPath="/Users/wengzhilai/Desktop/java/study/study-user-provider/src/main/java/com/user/provider/";
+        cfg.consumerPackageName="com.user.consumer";
+        cfg.providerPackageName="com.user.provider";
+
+        try {
+            String funName="test";
+            String reObjStr="Result";
+            String inObj="DtoDo";
+            String msg="测试";
+            String tableName="Role";
+
+            GenerateFile.MakeNewFunction(cfg,funName,reObjStr,inObj,msg,tableName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

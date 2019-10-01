@@ -1,16 +1,14 @@
 package com.user.consumer.feign;
 
-
 import com.user.consumer.feign.impl.RoleServiceImpl;
-import com.wzl.commons.model.Result;
-import com.wzl.commons.model.ResultObj;
+import com.wzl.commons.model.*;
 import com.wzl.commons.model.dto.DtoSave;
 import com.wzl.commons.model.entity.FaRoleEntity;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(value = "user-provider-role",url = "http://localhost:9001", fallback = RoleServiceImpl.class)
+@FeignClient(value = "user-provider-role",url = "http://localhost:9001",fallback = RoleServiceImpl.class)
 public interface RoleService {
     //region 基本方法
     /**
@@ -38,5 +36,6 @@ public interface RoleService {
     ResultObj<Integer> save(@RequestBody DtoSave<FaRoleEntity> inEnt);
     //endregion
 
+    //——代码分隔线——
 
 }

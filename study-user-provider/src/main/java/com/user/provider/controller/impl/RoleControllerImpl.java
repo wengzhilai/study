@@ -2,8 +2,7 @@ package com.user.provider.controller.impl;
 
 import com.user.provider.controller.RoleController;
 import com.user.provider.server.RoleService;
-import com.wzl.commons.model.Result;
-import com.wzl.commons.model.ResultObj;
+import com.wzl.commons.model.*;
 import com.wzl.commons.model.dto.DtoSave;
 import com.wzl.commons.model.entity.FaRoleEntity;
 import io.swagger.annotations.ApiOperation;
@@ -36,4 +35,7 @@ public class RoleControllerImpl implements RoleController {
     public ResultObj<Integer> save(@RequestBody DtoSave<FaRoleEntity> inEnt) {
         return service.save(inEnt);
     }
+
+    //——代码分隔线——
+
 }

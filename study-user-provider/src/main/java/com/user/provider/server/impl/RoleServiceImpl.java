@@ -72,4 +72,7 @@ public class RoleServiceImpl implements RoleService {
 
         return resultObj;
     }
+
+    //——代码分隔线——
+
 }
