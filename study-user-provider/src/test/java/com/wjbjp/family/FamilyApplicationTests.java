@@ -30,7 +30,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(classes =FamilyApplicationTests.class )
 public class FamilyApplicationTests {
    @Autowired
    TestController tc;
