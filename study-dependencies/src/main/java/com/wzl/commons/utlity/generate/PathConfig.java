@@ -439,7 +439,7 @@ public class PathConfig {
 
     public String getFunConsumerControllerImplText(String  funName,String reObjStr,String inObj,String msg){
         String contentStr= "" +
-                "    @RequestMapping(value = \"save\", method = RequestMethod.POST)\n" +
+                "    @RequestMapping(value = \"%1$s\", method = RequestMethod.POST)\n" +
                 "    @ApiOperation(value = \"%4$s\")\n" +
                 "    public %2$s %1$s(@RequestBody %3$s inEnt) {\n" +
                 "        return service.%1$s(inEnt);\n" +
@@ -458,7 +458,7 @@ public class PathConfig {
                 "     * @param inEnt\n" +
                 "     * @return\n" +
                 "     */\n" +
-                "    @GetMapping(value = \"/%5$s/%4$s\")\n" +
+                "    @GetMapping(value = \"/%5$s/%1$s\")\n" +
                 "    %2$s %1$s(@RequestBody %3$s inEnt);\n" +
                 "\n" +
                 "    //——代码分隔线——\n}";
