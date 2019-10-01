@@ -5,7 +5,9 @@ import com.wzl.commons.model.Result;
 import com.wzl.commons.model.ResultObj;
 import com.wzl.commons.model.dto.DtoSave;
 import com.wzl.commons.model.entity.FaRoleEntity;
+import org.springframework.stereotype.Service;
 
+@Service
 public class RoleServiceImpl implements RoleService {
     @Override
     public ResultObj<FaRoleEntity> singleByKey(int key) {
