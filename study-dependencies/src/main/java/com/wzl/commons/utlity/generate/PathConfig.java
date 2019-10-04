@@ -2,9 +2,15 @@ package com.wzl.commons.utlity.generate;
 
 import cn.hutool.core.convert.Convert;
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 public class PathConfig {
@@ -13,11 +19,15 @@ public class PathConfig {
      */
     public String consumerPath;
 
-
     /**
      * 生产者路径
      */
     public String providerPath;
+
+    /**
+     * 实体路径
+     */
+    public String entityPath;
 
     /**
      * 表名
@@ -32,10 +42,19 @@ public class PathConfig {
      */
     public String providerPackageName;
 
+    /**
+     * 字段字符串
+     */
+    public String clumStr;
+
+    /**
+     * 表名备注
+     */
+    public String tableNameRmark;
 
 
-    public String getConsumerControllerInterfaceText(String packageName,String tableName){
-        String contentStr= "package %1$s;\n" +
+    public String getConsumerControllerInterfaceText(String packageName, String tableName) {
+        String contentStr = "package %1$s;\n" +
                 "\n" +
                 "\n" +
                 "import com.wzl.commons.model.*;\n" +
@@ -71,12 +90,12 @@ public class PathConfig {
                 "\n" +
                 "}\n";
 
-        contentStr=String.format(contentStr,packageName,tableName);
-        return  contentStr;
+        contentStr = String.format(contentStr, packageName, tableName);
+        return contentStr;
     }
 
-    public String getConsumerControllerImplText(String packageName,String tableName){
-        String contentStr= "package %1$s;\n" +
+    public String getConsumerControllerImplText(String packageName, String tableName) {
+        String contentStr = "package %1$s;\n" +
                 "\n" +
                 "import cn.hutool.core.convert.Convert;\n" +
                 "import com.user.consumer.controller.%2$sController;\n" +
@@ -120,12 +139,12 @@ public class PathConfig {
                 "\n" +
                 "}\n";
 
-        contentStr=String.format(contentStr,packageName,tableName,tableName.toLowerCase());
-        return  contentStr;
+        contentStr = String.format(contentStr, packageName, tableName, tableName.toLowerCase());
+        return contentStr;
     }
 
-    public String getConsumerFeignInterfaceText(String packageName,String tableName){
-        String contentStr= "package %1$s;\n" +
+    public String getConsumerFeignInterfaceText(String packageName, String tableName) {
+        String contentStr = "package %1$s;\n" +
                 "\n" +
                 "import %1$s.impl.RoleServiceImpl;\n" +
                 "import com.wzl.commons.model.*;\n" +
@@ -167,12 +186,12 @@ public class PathConfig {
                 "\n" +
                 "}\n";
 
-        contentStr=String.format(contentStr,packageName,tableName,tableName.toLowerCase());
-        return  contentStr;
+        contentStr = String.format(contentStr, packageName, tableName, tableName.toLowerCase());
+        return contentStr;
     }
 
-    public String getConsumerFeignImplText(String packageName,String tableName){
-        String contentStr= "package %1$s;\n" +
+    public String getConsumerFeignImplText(String packageName, String tableName) {
+        String contentStr = "package %1$s;\n" +
                 "\n" +
                 "import com.user.consumer.feign.%2$sService;\n" +
                 "import com.wzl.commons.model.*;\n" +
@@ -210,12 +229,12 @@ public class PathConfig {
                 "\n" +
                 "}\n";
 
-        contentStr=String.format(contentStr,packageName,tableName);
-        return  contentStr;
+        contentStr = String.format(contentStr, packageName, tableName);
+        return contentStr;
     }
 
-    public String getProviderControllerInterfaceText(String packageName,String tableName){
-        String contentStr= "package %1$s;\n" +
+    public String getProviderControllerInterfaceText(String packageName, String tableName) {
+        String contentStr = "package %1$s;\n" +
                 "\n" +
                 "\n" +
                 "import com.wzl.commons.model.*;\n" +
@@ -251,12 +270,12 @@ public class PathConfig {
                 "\n" +
                 "}\n";
 
-        contentStr=String.format(contentStr,packageName,tableName);
-        return  contentStr;
+        contentStr = String.format(contentStr, packageName, tableName);
+        return contentStr;
     }
 
-    public String getProviderControllerImplText(String packageName,String tableName){
-        String contentStr= "package %1$s;\n" +
+    public String getProviderControllerImplText(String packageName, String tableName) {
+        String contentStr = "package %1$s;\n" +
                 "\n" +
                 "import com.user.provider.controller.%2$sController;\n" +
                 "import com.user.provider.server.%2$sService;\n" +
@@ -298,12 +317,12 @@ public class PathConfig {
                 "\n" +
                 "}\n";
 
-        contentStr=String.format(contentStr,packageName,tableName,tableName.toLowerCase());
-        return  contentStr;
+        contentStr = String.format(contentStr, packageName, tableName, tableName.toLowerCase());
+        return contentStr;
     }
 
-    public String getProviderServerInterFaceText(String packageName,String tableName){
-        String contentStr= "package %1$s;\n" +
+    public String getProviderServerInterFaceText(String packageName, String tableName) {
+        String contentStr = "package %1$s;\n" +
                 "\n" +
                 "\n" +
                 "import com.wzl.commons.model.*;\n" +
@@ -341,12 +360,12 @@ public class PathConfig {
                 "\n" +
                 "}\n";
 
-        contentStr=String.format(contentStr,packageName,tableName);
-        return  contentStr;
+        contentStr = String.format(contentStr, packageName, tableName);
+        return contentStr;
     }
 
-    public String getProviderServerImplText(String packageName,String tableName){
-        String contentStr= "package %1$s;\n" +
+    public String getProviderServerImplText(String packageName, String tableName) {
+        String contentStr = "package %1$s;\n" +
                 "\n" +
                 "import com.dependencies.mybatis.service.MyBatisService;\n" +
                 "import com.user.provider.server.%2$sService;\n" +
@@ -413,16 +432,13 @@ public class PathConfig {
                 "\n" +
                 "}\n";
 
-        contentStr=String.format(contentStr,packageName,tableName);
-        return  contentStr;
+        contentStr = String.format(contentStr, packageName, tableName);
+        return contentStr;
     }
 
 
-
-
-
-    public String getFunConsumerControllerInterfaceText(String  funName,String reObjStr,String inObj,String msg){
-        String contentStr= "" +
+    public String getFunConsumerControllerInterfaceText(String funName, String reObjStr, String inObj, String msg) {
+        String contentStr = "" +
                 "    /**\n" +
                 "     * %4$s\n" +
                 "     * @param inEnt\n" +
@@ -433,12 +449,12 @@ public class PathConfig {
                 "\n" +
                 "    //——代码分隔线——\n}";
 
-        contentStr=String.format(contentStr,funName,reObjStr,inObj,msg);
-        return  contentStr;
+        contentStr = String.format(contentStr, funName, reObjStr, inObj, msg);
+        return contentStr;
     }
 
-    public String getFunConsumerControllerImplText(String  funName,String reObjStr,String inObj,String msg){
-        String contentStr= "" +
+    public String getFunConsumerControllerImplText(String funName, String reObjStr, String inObj, String msg) {
+        String contentStr = "" +
                 "    @RequestMapping(value = \"%1$s\", method = RequestMethod.POST)\n" +
                 "    @ApiOperation(value = \"%4$s\")\n" +
                 "    public %2$s %1$s(@RequestBody %3$s inEnt) {\n" +
@@ -447,11 +463,11 @@ public class PathConfig {
                 "\n" +
                 "    //——代码分隔线——\n}";
 
-        contentStr=String.format(contentStr,funName,reObjStr,inObj,msg);
-        return  contentStr;
+        contentStr = String.format(contentStr, funName, reObjStr, inObj, msg);
+        return contentStr;
     }
 
-    public String getFunConsumerFeignInterfaceText(String  funName,String reObjStr,String inObj,String msg,String tableName) {
+    public String getFunConsumerFeignInterfaceText(String funName, String reObjStr, String inObj, String msg, String tableName) {
         String contentStr = "" +
                 "    /**\n" +
                 "     * %4$s\n" +
@@ -467,8 +483,8 @@ public class PathConfig {
         return contentStr;
     }
 
-    public String getFunConsumerFeignImplText(String  funName,String reObjStr,String inObj){
-        String contentStr= "" +
+    public String getFunConsumerFeignImplText(String funName, String reObjStr, String inObj) {
+        String contentStr = "" +
                 "    public %2$s %1$s(%3$s inEnt) {\n" +
                 "        %2$s reObj=new ResultObj<> ();\n" +
                 "        reObj.success=false;\n" +
@@ -478,12 +494,12 @@ public class PathConfig {
                 "\n" +
                 "    //——代码分隔线——\n}";
 
-        contentStr=String.format(contentStr,funName,reObjStr,inObj);
-        return  contentStr;
+        contentStr = String.format(contentStr, funName, reObjStr, inObj);
+        return contentStr;
     }
 
-    public String getFunProviderControllerInterfaceText(String  funName,String reObjStr,String inObj,String msg){
-        String contentStr= "" +
+    public String getFunProviderControllerInterfaceText(String funName, String reObjStr, String inObj, String msg) {
+        String contentStr = "" +
                 "    /**\n" +
                 "     * %4$s\n" +
                 "     * @param inEnt\n" +
@@ -493,12 +509,12 @@ public class PathConfig {
                 "\n" +
                 "    //——代码分隔线——\n}";
 
-        contentStr=String.format(contentStr,funName,reObjStr,inObj,msg);
-        return  contentStr;
+        contentStr = String.format(contentStr, funName, reObjStr, inObj, msg);
+        return contentStr;
     }
 
-    public String getFunProviderControllerImplText(String  funName,String reObjStr,String inObj,String msg){
-        String contentStr= "" +
+    public String getFunProviderControllerImplText(String funName, String reObjStr, String inObj, String msg) {
+        String contentStr = "" +
                 "    @ApiOperation(value=\"%4$s\")\n" +
                 "    @RequestMapping(value = \"%1$s\", method = RequestMethod.POST)\n" +
                 "    public %2$s %1$s(@RequestBody %3$s inEnt) {\n" +
@@ -506,12 +522,12 @@ public class PathConfig {
                 "    }\n" +
                 "\n" +
                 "    //——代码分隔线——\n}";
-        contentStr=String.format(contentStr,funName,reObjStr,inObj,msg);
-        return  contentStr;
+        contentStr = String.format(contentStr, funName, reObjStr, inObj, msg);
+        return contentStr;
     }
 
-    public String getFunProviderServerInterFaceText(String  funName,String reObjStr,String inObj,String msg){
-        String contentStr= "" +
+    public String getFunProviderServerInterFaceText(String funName, String reObjStr, String inObj, String msg) {
+        String contentStr = "" +
                 "    /**\n" +
                 "     * %4$s\n" +
                 "     * @param inEnt\n" +
@@ -521,12 +537,12 @@ public class PathConfig {
                 "\n" +
                 "    //——代码分隔线——\n}";
 
-        contentStr=String.format(contentStr,funName,reObjStr,inObj,msg);
-        return  contentStr;
+        contentStr = String.format(contentStr, funName, reObjStr, inObj, msg);
+        return contentStr;
     }
 
-    public String getFunProviderServerImplText(String  funName,String reObjStr,String inObj,String msg){
-        String contentStr= "" +
+    public String getFunProviderServerImplText(String funName, String reObjStr, String inObj, String msg) {
+        String contentStr = "" +
                 "    public %2$s %1$s(%3$s inEnt) {\n" +
                 "        %2$s reObj=new ResultObj<> ();\n" +
                 "        reObj.success=false;\n" +
@@ -536,13 +552,14 @@ public class PathConfig {
                 "\n" +
                 "    //——代码分隔线——\n}";
 
-        contentStr=String.format(contentStr,funName,reObjStr,inObj);
-        return  contentStr;
+        contentStr = String.format(contentStr, funName, reObjStr, inObj);
+        return contentStr;
     }
 
 
     /**
      * 修改文件内容
+     *
      * @param allfileName
      * @param oldstr
      * @param newStr
@@ -556,14 +573,14 @@ public class PathConfig {
             long lastPoint = 0; //记住上一次的偏移量
 
             while ((line = raf.readLine()) != null) {
-                line=new String(line.getBytes("ISO-8859-1"),"utf-8");
+                line = new String(line.getBytes("ISO-8859-1"), "utf-8");
                 long ponit = raf.getFilePointer();
-                if(line.contains(oldstr)){
-                    String str=line.replace(oldstr, newStr);
+                if (line.contains(oldstr)) {
+                    String str = line.replace(oldstr, newStr);
                     raf.seek(lastPoint);
 //                    raf.writeBytes(str);
                     raf.write(str.getBytes("utf-8"));
-                    ponit=lastPoint+str.length();
+                    ponit = lastPoint + str.length();
                     raf.seek(ponit);
 
                 }
@@ -579,5 +596,133 @@ public class PathConfig {
             }
         }
         return true;
+    }
+
+    /**
+     * 生成实体类字符串
+     *
+     * @return
+     */
+    public String makeEntity() {
+        String contentStr = "";
+        List<Filed> allFiled = getFiledList();
+        StringBuffer attributeStr = new StringBuffer();
+        for (Filed filed : allFiled) {
+            StringBuffer sb = new StringBuffer();
+            sb.append(String.format("\n" +
+                    "    /**\n" +
+                    "    * %1$s\n" +
+                    "    */", filed.remark));
+            if (filed.isKey) {
+                sb.append("    @Key\n");
+                sb.append("    @DatabaseGenerated(DatabaseGeneratedOption.Computed)\n");
+                sb.append("    @Required\n");
+            } else if (filed.required) {
+                sb.append("    @Required\n");
+            }
+            sb.append(String.format("    @Display(Name = \"%1$s\")\n", filed.remark));
+            sb.append(String.format("    @Column(\"%1$s\")\n", filed.name));
+            sb.append(String.format("    public %2$s %2$s;\n", filed.type, filed.name.toLowerCase()));
+            attributeStr.append(sb);
+        }
+
+        String classStr = "package com.wzl.commons.model.entity;\n" +
+                "\n" +
+                "import com.wzl.commons.model.mynum.DatabaseGeneratedOption;\n" +
+                "import com.wzl.commons.retention.*;\n" +
+                "\n" +
+                "import java.util.List;\n" +
+                "\n" +
+                "/**\n" +
+                " * %1$s\n" +
+                " */\n" +
+                "@Table(\"%2$s\")\n" +
+                "public class %4$sEntity {\n" +
+                "\n" +
+                "%3$s" +
+                "}";
+        classStr = String.format(classStr, this.tableNameRmark, this.tableName, attributeStr, this.makeCamelName(this.tableName,true));
+        return contentStr;
+    }
+
+    /**
+     * 将输入项转换成列表
+     * @return
+     */
+    private  List<Filed> getFiledList(){
+        List<Filed> allFiled = new ArrayList<>();
+        if (StringUtils.isAllBlank(this.clumStr)) {
+            return allFiled;
+        }
+        String[] rowsArr = this.clumStr.split("\r\n");
+        for (String row : rowsArr) {
+            if (!StringUtils.isAllBlank(row)) {
+                String[] filedArr = row.split("\t");
+                if (filedArr.length > 3) {
+                    Filed filed = new Filed();
+                    filed.name = filedArr[0];
+                    filed.remark = filedArr[1];
+                    filed.type = getFiledType(filedArr[2]);
+                    filed.size = getFiledLength(filedArr[2]);
+                    filed.isKey = Convert.toBool(filedArr[3]);
+                    filed.required = Convert.toBool(filedArr[4]);
+                    allFiled.add(filed);
+                }
+            }
+        }
+        return allFiled;
+    }
+
+    private String getFiledType(String typeStr) {
+        String reObj = "";
+        switch (typeStr) {
+            case "int":
+                reObj = "int";
+                break;
+            case "decimal":
+                reObj = "BigDecimal";
+                break;
+            case "datetime":
+                reObj = "Date";
+                break;
+            default:
+                reObj = "String";
+                break;
+        }
+        return reObj;
+    }
+
+    private int getFiledLength(String typeStr) {
+        int reObj = 0;
+        if (!StringUtils.isAllBlank(typeStr)) {
+            String tmpStr = typeStr.replace("(", ",").replace(")", ",");
+            String[] typeSplit = typeStr.split(",");
+            if (typeSplit.length > 2) {
+                reObj = Convert.toInt(typeSplit[1], 0);
+            }
+        }
+        return reObj;
+    }
+
+    /**
+     * 生成骆峰命名
+     * @param name 需转换的名字
+     * @param fristUper 首字母是否大写
+     * @return
+     */
+    public String makeCamelName(String name,Boolean fristUper) {
+        String reObj = "";
+        if (StringUtils.isAllBlank(name)) {
+            return reObj;
+        }
+
+        List<String> nameArr = new ArrayList<>(Arrays.asList(name.split("_")));
+        nameArr = nameArr.stream().map(x -> clumStr.toLowerCase()).collect(Collectors.toList());
+        nameArr = nameArr.stream().map(x -> x.substring(0, 1).toUpperCase() + x.substring(1)).collect(Collectors.toList());
+        reObj = String.join("", nameArr);
+        if (!fristUper) {
+            reObj = reObj.substring(0, 1).toUpperCase() + reObj.substring(1);
+        }
+        return reObj;
     }
 }

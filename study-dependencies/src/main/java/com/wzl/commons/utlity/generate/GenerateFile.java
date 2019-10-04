@@ -2,6 +2,7 @@ package com.wzl.commons.utlity.generate;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Statement;
 
 public class GenerateFile {
 
@@ -136,5 +137,13 @@ public class GenerateFile {
             cfg.modifyFileContent(path,"    //——代码分隔线——",content);
         }
 
+    }
+
+    public static void MakeEntity(PathConfig cfg) throws IOException {
+
+        FileWriter fw = new FileWriter(cfg.entityPath+ cfg.makeCamelName(cfg.tableName,true)+"Entity.java");
+        fw.write(cfg.makeEntity());
+        fw.flush();
+        fw.close();
     }
 }

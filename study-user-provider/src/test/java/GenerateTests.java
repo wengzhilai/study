@@ -15,6 +15,9 @@ import java.io.IOException;
 @SpringBootTest(classes =GenerateTests.class )
 public class GenerateTests {
 
+    /**
+     * 生成程序文件
+     */
     @Test
     public void MakeClassFile() {
         PathConfig cfg=new PathConfig();
@@ -30,6 +33,9 @@ public class GenerateTests {
         }
     }
 
+    /**
+     * 添加新方法
+     */
     @Test
     public void AddFunciton() {
         PathConfig cfg=new PathConfig();
@@ -50,5 +56,19 @@ public class GenerateTests {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void MakeEntity(){
+        PathConfig cfg=new PathConfig();
+        cfg.tableName="fa_role";
+        cfg.clumStr="" +
+                "";
+        try {
+            GenerateFile.MakeEntity(cfg);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }
