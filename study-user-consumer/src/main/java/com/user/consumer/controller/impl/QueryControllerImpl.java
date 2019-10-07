@@ -1,12 +1,13 @@
 package com.user.consumer.controller.impl;
 
+import cn.hutool.core.convert.Convert;
 import com.user.consumer.controller.QueryController;
 import com.user.consumer.feign.ModuleService;
 import com.user.consumer.feign.QueryService;
-import com.wzl.commons.model.dto.DataGridDataJson;
+import com.wzl.commons.model.dto.*;
 import com.wzl.commons.model.dto.query.QuerySearchDto;
 import com.wzl.commons.model.entity.*;
-import com.wzl.commons.model.DtoDo;
+import com.wzl.commons.model.*;
 import com.wzl.commons.model.ResultObj;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,4 +34,18 @@ public class QueryControllerImpl implements QueryController {
     public ResultObj<DataGridDataJson> getListData(QuerySearchDto inObj) {
         return service.getListData(inObj);
     }
+
+    @RequestMapping(value = "singleByKey", method = RequestMethod.POST)
+    @ApiOperation(value = "查询单个Query")
+    public ResultObj<FaQueryEntity> singleByKey(@RequestBody DtoDo inEnt) {
+        return service.singleByKey(Convert.toInt(inEnt.key));
+    }
+
+    @RequestMapping(value = "save", method = RequestMethod.POST)
+    @ApiOperation(value = "保存Query")
+    public ResultObj<Integer> save(@RequestBody DtoSave<FaQueryEntity> inEnt) {
+        return service.save(inEnt);
+    }
+
+    //——代码分隔线——
 }

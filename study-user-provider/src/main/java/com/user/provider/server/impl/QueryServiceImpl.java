@@ -2,6 +2,7 @@ package com.user.provider.server.impl;
 
 import cn.hutool.core.date.DateTime;
 import com.dependencies.mybatis.service.MyBatisService;
+import com.wzl.commons.model.DtoDo;
 import com.wzl.commons.model.KV;
 import com.wzl.commons.model.dto.DataGridDataJson;
 import com.wzl.commons.model.dto.query.QueryCfg;
@@ -32,9 +33,11 @@ public class QueryServiceImpl implements QueryService {
     EntityHelper<FaQueryEntity> moduleEh = new EntityHelper<>(new FaQueryEntity());
 
     @Override
-    public FaQueryEntity singleByKey(int key) {
+    public ResultObj<FaQueryEntity> singleByKey(int key) {
         moduleEh.data.id = key;
-        return dapper.getSingleByPrimaryKey(moduleEh, key);
+        ResultObj<FaQueryEntity> resultObj=new ResultObj<FaQueryEntity>(true);
+        resultObj.data=dapper.getSingleByPrimaryKey(moduleEh, key);
+        return resultObj;
     }
 
     @Override
@@ -46,7 +49,12 @@ public class QueryServiceImpl implements QueryService {
 
     @Override
     public ResultObj<Integer> save(DtoSave<FaQueryEntity> inEnt) {
-        ResultObj<Integer> resultObj = new ResultObj<>();
+        ResultObj<Integer> resultObj = new ResultObj<>(true);
+        if(inEnt.whereList==null){
+            resultObj.success=false;
+            resultObj.msg="where条件不能为空";
+            return resultObj;
+        }
         moduleEh.data = inEnt.data;
         if (inEnt.data.id == 0) {
             if (moduleEh.data.id == 0 && moduleEh.dbKeyType == DatabaseGeneratedOption.Computed) {
@@ -240,4 +248,7 @@ public class QueryServiceImpl implements QueryService {
         sqlStr = String.format(sqlStr,sql, orderStr, startNum, startNum + pageSize, whereStr, withStr, tFile, t1File);
         return sqlStr;
     }
+
+
+    //——代码分隔线——
 }

@@ -1,6 +1,7 @@
 package com.user.provider.server;
 
 
+import com.wzl.commons.model.DtoDo;
 import com.wzl.commons.model.dto.DataGridDataJson;
 import com.wzl.commons.model.dto.query.QuerySearchDto;
 import com.wzl.commons.model.entity.*;
@@ -15,7 +16,7 @@ public interface QueryService {
      * @param key
      * @return
      */
-    FaQueryEntity singleByKey(int key);
+    ResultObj<FaQueryEntity> singleByKey(int key);
 
     /**
      * 删除
@@ -45,4 +46,8 @@ public interface QueryService {
      * @return
      */
     ResultObj<DataGridDataJson> getListData(QuerySearchDto inObj);
+
+
+
+    //——代码分隔线——
 }

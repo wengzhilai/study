@@ -39,18 +39,18 @@ public class GenerateTests {
     @Test
     public void AddFunciton() {
         PathConfig cfg=new PathConfig();
-        cfg.tableName="Role";
+        cfg.tableName="Query";
         cfg.consumerPath="/Users/wengzhilai/Desktop/java/study/study-user-consumer/src/main/java/com/user/consumer/";
         cfg.providerPath="/Users/wengzhilai/Desktop/java/study/study-user-provider/src/main/java/com/user/provider/";
         cfg.consumerPackageName="com.user.consumer";
         cfg.providerPackageName="com.user.provider";
 
         try {
-            String funName="test";
-            String reObjStr="Result";
-            String inObj="DtoDo";
-            String msg="测试";
-            String tableName="Role";
+            String funName="save";
+            String reObjStr="ResultObj<Integer>";
+            String inObj="DtoSave<FaQueryEntity>";
+            String msg="保存Query";
+            String tableName="Query";
 
             GenerateFile.MakeNewFunction(cfg,funName,reObjStr,inObj,msg,tableName);
         } catch (IOException e) {

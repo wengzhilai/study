@@ -1,7 +1,7 @@
 package com.user.provider.controller.impl;
 
 import com.user.provider.controller.QueryController;
-import com.wzl.commons.model.dto.DataGridDataJson;
+import com.wzl.commons.model.dto.*;
 import com.wzl.commons.model.dto.query.QuerySearchDto;
 import com.wzl.commons.model.entity.*;
 import com.user.provider.server.ModuleService;
@@ -33,4 +33,18 @@ public class QueryControllerImpl implements QueryController {
     public ResultObj<DataGridDataJson> getListData(@RequestBody QuerySearchDto inObj) {
         return service.getListData(inObj);
     }
+
+    @ApiOperation(value="查询单个Query")
+    @RequestMapping(value = "singleByKey", method = RequestMethod.POST)
+    public ResultObj<FaQueryEntity> singleByKey(@RequestBody int inEnt) {
+        return service.singleByKey(inEnt);
+    }
+
+    @ApiOperation(value="保存Query")
+    @RequestMapping(value = "save", method = RequestMethod.POST)
+    public ResultObj<Integer> save(@RequestBody DtoSave<FaQueryEntity> inEnt) {
+        return service.save(inEnt);
+    }
+
+    //——代码分隔线——
 }

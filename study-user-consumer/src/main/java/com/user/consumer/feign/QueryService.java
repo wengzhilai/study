@@ -25,4 +25,22 @@ public interface QueryService {
      */
     @GetMapping(value = "/query/getListData")
     ResultObj<DataGridDataJson> getListData(@RequestBody QuerySearchDto querySearchModel);
+
+    /**
+     * 查询单个Query
+     * @param inEnt
+     * @return
+     */
+    @GetMapping(value = "/query/singleByKey")
+    ResultObj<FaQueryEntity> singleByKey(@RequestBody int inEnt);
+
+    /**
+     * 保存Query
+     * @param inEnt
+     * @return
+     */
+    @GetMapping(value = "/query/save")
+    ResultObj<Integer> save(@RequestBody DtoSave<FaQueryEntity> inEnt);
+
+    //——代码分隔线——
 }
