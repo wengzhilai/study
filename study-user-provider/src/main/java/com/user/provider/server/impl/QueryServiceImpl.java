@@ -50,18 +50,17 @@ public class QueryServiceImpl implements QueryService {
     @Override
     public ResultObj<Integer> save(DtoSave<FaQueryEntity> inEnt) {
         ResultObj<Integer> resultObj = new ResultObj<>(true);
-        if(inEnt.whereList==null){
-            resultObj.success=false;
-            resultObj.msg="where条件不能为空";
-            return resultObj;
-        }
+
         moduleEh.data = inEnt.data;
         if (inEnt.data.id == 0) {
-            if (moduleEh.data.id == 0 && moduleEh.dbKeyType == DatabaseGeneratedOption.Computed) {
+            if (moduleEh.dbKeyType == DatabaseGeneratedOption.Computed) {
                 moduleEh.data.id = dapper.getIncreasingId(moduleEh);
             }
-            resultObj.data = dapper.insert(moduleEh, inEnt.saveFieldList, null);
+            resultObj.data = dapper.insert(moduleEh, null, null);
         } else {
+            if(inEnt.whereList==null || inEnt.whereList.size()==0){
+                inEnt.whereList=Arrays.asList("id");
+            }
             resultObj.data = dapper.update(moduleEh, inEnt.saveFieldList, inEnt.whereList);
             resultObj.success = resultObj.data > 0;
         }

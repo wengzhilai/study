@@ -23,7 +23,6 @@ public interface QueryController {
      * @return
      */
     ResultObj<FaQueryEntity> singleByKey(@RequestBody DtoDo inEnt);
-    //endregion
 
     /**
      * 保存Query
@@ -31,7 +30,14 @@ public interface QueryController {
      * @return
      */
     ResultObj<Integer> save(@RequestBody DtoSave<FaQueryEntity> inEnt);
-    //endregion
+
+    /**
+     * 删除Query
+     * @param inEnt
+     * @return
+     */
+    Result delete(@RequestBody DtoDo inEnt);
+
 
     //——代码分隔线——
 }

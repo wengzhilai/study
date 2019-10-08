@@ -445,7 +445,6 @@ public class PathConfig {
                 "     * @return\n" +
                 "     */\n" +
                 "    %2$s %1$s(@RequestBody %3$s inEnt);\n" +
-                "    //endregion\n" +
                 "\n" +
                 "    //——代码分隔线——\n}";
 
@@ -486,7 +485,7 @@ public class PathConfig {
     public String getFunConsumerFeignImplText(String funName, String reObjStr, String inObj) {
         String contentStr = "" +
                 "    public %2$s %1$s(%3$s inEnt) {\n" +
-                "        %2$s reObj=new ResultObj<> ();\n" +
+                "        %2$s reObj=new %2$s ();\n" +
                 "        reObj.success=false;\n" +
                 "        reObj.msg=\"网络有问题\";\n" +
                 "        return reObj;\n" +
@@ -604,7 +603,6 @@ public class PathConfig {
      * @return
      */
     public String makeEntity() {
-        String contentStr = "";
         List<Filed> allFiled = getFiledList();
         StringBuffer attributeStr = new StringBuffer();
         for (Filed filed : allFiled) {
@@ -612,7 +610,7 @@ public class PathConfig {
             sb.append(String.format("\n" +
                     "    /**\n" +
                     "    * %1$s\n" +
-                    "    */", filed.remark));
+                    "    */\n", filed.remark));
             if (filed.isKey) {
                 sb.append("    @Key\n");
                 sb.append("    @DatabaseGenerated(DatabaseGeneratedOption.Computed)\n");
@@ -622,7 +620,7 @@ public class PathConfig {
             }
             sb.append(String.format("    @Display(Name = \"%1$s\")\n", filed.remark));
             sb.append(String.format("    @Column(\"%1$s\")\n", filed.name));
-            sb.append(String.format("    public %2$s %2$s;\n", filed.type, filed.name.toLowerCase()));
+            sb.append(String.format("    public %1$s %2$s;\n", filed.type, makeCamelName(filed.name.toLowerCase(),false)));
             attributeStr.append(sb);
         }
 
@@ -631,7 +629,7 @@ public class PathConfig {
                 "import com.wzl.commons.model.mynum.DatabaseGeneratedOption;\n" +
                 "import com.wzl.commons.retention.*;\n" +
                 "\n" +
-                "import java.util.List;\n" +
+                "import java.util.Date;\n" +
                 "\n" +
                 "/**\n" +
                 " * %1$s\n" +
@@ -642,7 +640,7 @@ public class PathConfig {
                 "%3$s" +
                 "}";
         classStr = String.format(classStr, this.tableNameRmark, this.tableName, attributeStr, this.makeCamelName(this.tableName,true));
-        return contentStr;
+        return classStr;
     }
 
     /**
@@ -654,18 +652,18 @@ public class PathConfig {
         if (StringUtils.isAllBlank(this.clumStr)) {
             return allFiled;
         }
-        String[] rowsArr = this.clumStr.split("\r\n");
+        String[] rowsArr = this.clumStr.split("\n");
         for (String row : rowsArr) {
             if (!StringUtils.isAllBlank(row)) {
                 String[] filedArr = row.split("\t");
                 if (filedArr.length > 3) {
                     Filed filed = new Filed();
-                    filed.name = filedArr[0];
-                    filed.remark = filedArr[1];
+                    filed.name = filedArr[1];
+                    filed.remark = filedArr[0];
                     filed.type = getFiledType(filedArr[2]);
                     filed.size = getFiledLength(filedArr[2]);
-                    filed.isKey = Convert.toBool(filedArr[3]);
-                    filed.required = Convert.toBool(filedArr[4]);
+                    filed.isKey = Convert.toBool(filedArr[5]);
+                    filed.required = Convert.toBool(filedArr[7]);
                     allFiled.add(filed);
                 }
             }
@@ -717,11 +715,14 @@ public class PathConfig {
         }
 
         List<String> nameArr = new ArrayList<>(Arrays.asList(name.split("_")));
-        nameArr = nameArr.stream().map(x -> clumStr.toLowerCase()).collect(Collectors.toList());
+        nameArr = nameArr.stream().map(x -> x.toLowerCase()).collect(Collectors.toList());
         nameArr = nameArr.stream().map(x -> x.substring(0, 1).toUpperCase() + x.substring(1)).collect(Collectors.toList());
         reObj = String.join("", nameArr);
-        if (!fristUper) {
+        if (fristUper) {
             reObj = reObj.substring(0, 1).toUpperCase() + reObj.substring(1);
+        }
+        else {
+            reObj = reObj.substring(0, 1).toLowerCase() + reObj.substring(1);
         }
         return reObj;
     }

@@ -2,6 +2,7 @@ package com.user.consumer.feign.impl;
 
 import com.user.consumer.feign.QueryService;
 import com.wzl.commons.model.DtoDo;
+import com.wzl.commons.model.Result;
 import com.wzl.commons.model.ResultObj;
 import com.wzl.commons.model.dto.*;
 import com.wzl.commons.model.dto.query.QuerySearchDto;
@@ -31,6 +32,14 @@ public class QueryServiceImpl implements QueryService {
         reObj.msg="网络有问题";
         return reObj;
     }
+
+    public Result delete(DtoDo inEnt) {
+        Result reObj=new Result ();
+        reObj.success=false;
+        reObj.msg="网络有问题";
+        return reObj;
+    }
+
 
     //——代码分隔线——
 }

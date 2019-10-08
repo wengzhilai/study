@@ -1,13 +1,13 @@
 package com.user.provider.controller.impl;
 
+import cn.hutool.core.convert.Convert;
 import com.user.provider.controller.QueryController;
 import com.wzl.commons.model.dto.*;
 import com.wzl.commons.model.dto.query.QuerySearchDto;
 import com.wzl.commons.model.entity.*;
 import com.user.provider.server.ModuleService;
 import com.user.provider.server.QueryService;
-import com.wzl.commons.model.DtoDo;
-import com.wzl.commons.model.ResultObj;
+import com.wzl.commons.model.*;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,6 +44,12 @@ public class QueryControllerImpl implements QueryController {
     @RequestMapping(value = "save", method = RequestMethod.POST)
     public ResultObj<Integer> save(@RequestBody DtoSave<FaQueryEntity> inEnt) {
         return service.save(inEnt);
+    }
+
+    @ApiOperation(value="删除Query")
+    @RequestMapping(value = "delete", method = RequestMethod.POST)
+    public Result delete(@RequestBody DtoDo inEnt) {
+        return service.delete(Convert.toInt(inEnt.key));
     }
 
     //——代码分隔线——

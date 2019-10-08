@@ -42,5 +42,14 @@ public interface QueryService {
     @GetMapping(value = "/query/save")
     ResultObj<Integer> save(@RequestBody DtoSave<FaQueryEntity> inEnt);
 
+    /**
+     * 删除Query
+     * @param inEnt
+     * @return
+     */
+    @GetMapping(value = "/query/delete")
+    Result delete(@RequestBody DtoDo inEnt);
+
+
     //——代码分隔线——
 }

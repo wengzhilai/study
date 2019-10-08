@@ -1,10 +1,9 @@
 package com.user.provider.controller;
 
+import com.wzl.commons.model.*;
 import com.wzl.commons.model.dto.*;
 import com.wzl.commons.model.dto.query.QuerySearchDto;
 import com.wzl.commons.model.entity.*;
-import com.wzl.commons.model.DtoDo;
-import com.wzl.commons.model.ResultObj;
 import org.springframework.web.bind.annotation.RequestBody;
 
 public interface QueryController {
@@ -35,6 +34,13 @@ public interface QueryController {
      * @return
      */
     ResultObj<Integer> save(@RequestBody DtoSave<FaQueryEntity> inEnt);
+
+    /**
+     * 删除Query
+     * @param inEnt
+     * @return
+     */
+    Result delete(@RequestBody DtoDo inEnt);
 
     //——代码分隔线——
 }
