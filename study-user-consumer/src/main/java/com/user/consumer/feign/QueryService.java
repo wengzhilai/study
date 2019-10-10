@@ -50,14 +50,5 @@ public interface QueryService {
     @GetMapping(value = "/query/delete")
     Result delete(@RequestBody DtoDo inEnt);
 
-
-    /**
-     * 删除Query
-     * @param inEnt
-     * @return
-     */
-    @GetMapping(value = "/query/delete")
-    Result delete(@RequestBody DtoDo inEnt);
-
     //——代码分隔线——
 }

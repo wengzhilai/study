@@ -38,13 +38,5 @@ public interface QueryController {
      */
     Result delete(@RequestBody DtoDo inEnt);
 
-
-    /**
-     * 删除Query
-     * @param inEnt
-     * @return
-     */
-    Result delete(@RequestBody DtoDo inEnt);
-
     //——代码分隔线——
 }
