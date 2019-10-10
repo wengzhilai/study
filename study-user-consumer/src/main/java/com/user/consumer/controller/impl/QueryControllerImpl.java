@@ -54,5 +54,11 @@ public class QueryControllerImpl implements QueryController {
     }
 
 
+    @RequestMapping(value = "delete", method = RequestMethod.POST)
+    @ApiOperation(value = "删除Query")
+    public Result delete(@RequestBody DtoDo inEnt) {
+        return service.delete(inEnt);
+    }
+
     //——代码分隔线——
 }

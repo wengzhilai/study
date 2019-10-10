@@ -1,11 +1,14 @@
 package com.wzl.commons.utlity.generate;
 
 import cn.hutool.core.convert.Convert;
+import cn.hutool.db.Db;
+import cn.hutool.db.Entity;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -603,7 +606,13 @@ public class PathConfig {
      * @return
      */
     public String makeEntity() {
-        List<Filed> allFiled = getFiledList();
+        List<Filed> allFiled;
+        if(!StringUtils.isAnyBlank(this.clumStr)){
+            allFiled = getFiledList(this.clumStr);
+        }
+        else {
+            allFiled = getFiledListByMysql(this.tableName);
+        }
         StringBuffer attributeStr = new StringBuffer();
         for (Filed filed : allFiled) {
             StringBuffer sb = new StringBuffer();
@@ -645,14 +654,15 @@ public class PathConfig {
 
     /**
      * 将输入项转换成列表
+     * @param clumContent PowerDesigner的行列信息
      * @return
      */
-    private  List<Filed> getFiledList(){
+    private  List<Filed> getFiledList(String clumContent){
         List<Filed> allFiled = new ArrayList<>();
-        if (StringUtils.isAllBlank(this.clumStr)) {
+        if (StringUtils.isAllBlank(clumContent)) {
             return allFiled;
         }
-        String[] rowsArr = this.clumStr.split("\n");
+        String[] rowsArr = clumContent.split("\n");
         for (String row : rowsArr) {
             if (!StringUtils.isAllBlank(row)) {
                 String[] filedArr = row.split("\t");
@@ -667,6 +677,37 @@ public class PathConfig {
                     allFiled.add(filed);
                 }
             }
+        }
+        return allFiled;
+    }
+
+    /**
+     * 获取mysql的表结构
+     * @param tableName
+     * @return
+     */
+    private  List<Filed> getFiledListByMysql(String tableName){
+        List<Filed> allFiled = new ArrayList<>();
+        try {
+            String sql="select column_name name, column_comment remark,COLUMN_TYPE type,IS_NULLABLE required,COLUMN_KEY='PRI' isKey  from information_schema.columns where table_schema ='fa' and table_name = '%1$s' ;";
+            sql=String.format(sql,tableName);
+            List<Entity> allFiled1= Db.use().query( sql);
+            for (Entity entity : allFiled1) {
+                Filed tmp=new Filed();
+                tmp.isKey=entity.getBool("isKey");
+                tmp.name=entity.getStr("name");
+                tmp.remark=entity.getStr("remark");
+                if(StringUtils.isAnyBlank(tmp.remark)){
+                    tmp.remark=tmp.name;
+                }
+                tmp.required=entity.getBool("required");
+                tmp.type=getFiledType(entity.getStr("type"));
+                tmp.size = getFiledLength(entity.getStr("type"));
+
+                allFiled.add(tmp);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return allFiled;
     }

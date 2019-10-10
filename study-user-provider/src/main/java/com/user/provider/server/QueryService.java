@@ -47,6 +47,5 @@ public interface QueryService {
      */
     ResultObj<DataGridDataJson> getListData(QuerySearchDto inObj);
 
-
     //——代码分隔线——
 }

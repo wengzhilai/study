@@ -52,5 +52,6 @@ public class QueryControllerImpl implements QueryController {
         return service.delete(Convert.toInt(inEnt.key));
     }
 
+
     //——代码分隔线——
 }

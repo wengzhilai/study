@@ -248,6 +248,5 @@ public class QueryServiceImpl implements QueryService {
         return sqlStr;
     }
 
-
     //——代码分隔线——
 }

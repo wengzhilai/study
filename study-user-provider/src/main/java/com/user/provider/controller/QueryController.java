@@ -42,5 +42,6 @@ public interface QueryController {
      */
     Result delete(@RequestBody DtoDo inEnt);
 
+
     //——代码分隔线——
 }
