@@ -35,9 +35,11 @@ public class ModuleServiceImpl implements ModuleService {
     EntityHelper<FaModuleEntity> moduleEh = new EntityHelper<>(new FaModuleEntity());
 
     @Override
-    public FaModuleEntity singleByKey(int key) {
-        moduleEh.data.id=key;
-       return  moduleMhs.getSingleByPrimaryKey(moduleEh,key);
+    public ResultObj<FaModuleEntity> singleByKey(int key) {
+        moduleEh.data.id = key;
+        ResultObj<FaModuleEntity> resultObj=new ResultObj<>(true);
+        resultObj.data=moduleMhs.getSingleByPrimaryKey(moduleEh, key);
+        return resultObj;
     }
 
     @Override
@@ -49,15 +51,21 @@ public class ModuleServiceImpl implements ModuleService {
 
     @Override
     public ResultObj<Integer> save(DtoSave<FaModuleEntity> inEnt) {
-        ResultObj<Integer> resultObj= new ResultObj<>();
+        ResultObj<Integer> resultObj= new ResultObj<>(true);
+        if(inEnt.data.parentId==0){
+            inEnt.data.parentId=null;
+        }
         moduleEh.data=inEnt.data;
         if(inEnt.data.id==0){
             if (moduleEh.data.id == 0 && moduleEh.dbKeyType == DatabaseGeneratedOption.Computed) {
                 moduleEh.data.id = moduleMhs.getIncreasingId(moduleEh);
             }
-            resultObj.data= moduleMhs.insert(moduleEh,inEnt.saveFieldList,null);
+            resultObj.data= moduleMhs.insert(moduleEh,null,null);
         }
         else {
+            if(inEnt.whereList==null || inEnt.whereList.size()==0){
+                inEnt.whereList=Arrays.asList("id");
+            }
             resultObj.data=moduleMhs.update(moduleEh,inEnt.saveFieldList,inEnt.whereList);
             resultObj.success=resultObj.data>0;
         }
@@ -67,7 +75,7 @@ public class ModuleServiceImpl implements ModuleService {
     @Override
     public ResultObj<FaModuleEntity> getMenu() {
         ResultObj<FaModuleEntity> resultObj= new ResultObj<>();
-        resultObj.dataList= moduleMhs.getAll(moduleEh,x->x.is_hide==0,1,100,null);
+        resultObj.dataList= moduleMhs.getAll(moduleEh,x->x.isHide==0,1,100,null);
         return resultObj;
     }
 
@@ -101,7 +109,7 @@ public class ModuleServiceImpl implements ModuleService {
      */
     private List<FaModuleEntity> getChildItems(List<FaModuleEntity> inList, Integer parentId)
     {
-        List<FaModuleEntity> childList = inList.stream().filter(i -> i.parent_id == parentId).collect(Collectors.toList());
+        List<FaModuleEntity> childList = inList.stream().filter(i -> i.parentId == parentId).collect(Collectors.toList());
         List<FaModuleEntity> reObj = new ArrayList<>();;
         for (FaModuleEntity item : childList) {
             item.children = getChildItems(inList, item.id);
@@ -109,4 +117,7 @@ public class ModuleServiceImpl implements ModuleService {
         }
         return childList;
     }
+
+    //——代码分隔线——
+
 }

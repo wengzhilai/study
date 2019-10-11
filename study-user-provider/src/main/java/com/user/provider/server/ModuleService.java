@@ -14,7 +14,7 @@ public interface ModuleService {
      * @param key
      * @return
      */
-    FaModuleEntity singleByKey(int key);
+    ResultObj<FaModuleEntity> singleByKey(int key);
 
     /**
      * 删除
@@ -50,5 +50,7 @@ public interface ModuleService {
      * @return
      */
     ResultObj<FaModuleEntity> GetMGetMenuByUserId(int userId);
+
+    //——代码分隔线——
 
 }

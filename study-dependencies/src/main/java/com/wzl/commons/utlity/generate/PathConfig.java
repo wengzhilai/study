@@ -647,9 +647,51 @@ public class PathConfig {
                 "public class %4$sEntity {\n" +
                 "\n" +
                 "%3$s" +
-                "}";
-        classStr = String.format(classStr, this.tableNameRmark, this.tableName, attributeStr, this.makeCamelName(this.tableName,true));
+                "}\n" +
+                "/*\n" +
+                "%5$s\n" +
+                "*/\n" +
+                "\n" +
+                "\n" +
+                "/*\n" +
+                "%6$s\n" +
+                "*/\n" +
+                "";
+        classStr = String.format(classStr, this.tableNameRmark, this.tableName, attributeStr, this.makeCamelName(this.tableName,true),makeAllSql(allFiled),makeAllQueryCfg(allFiled));
         return classStr;
+    }
+
+    /**
+     * 生成SQL
+     * @param allFiled
+     * @return
+     */
+    private String makeAllSql(List<Filed> allFiled){
+        String sql="" +
+                "select \n" +
+                "%1$s \n" +
+                "from %2$s";
+        String allListStr= String.join(",\n",allFiled.stream().map(x->"  "+x.name+" "+ makeCamelName(x.name,false)).collect(Collectors.toList()));
+        sql=String.format(sql,allListStr,this.tableName);
+        return sql;
+    }
+
+    private String makeAllQueryCfg(List<Filed> allFiled){
+        String itemCfg="" +
+                "  \"%1$s\": {\n" +
+                "    \"title\": \"%2$s\",\n" +
+                "    \"type\": \"%3$s\",\n" +
+                "    \"editable\": true\n" +
+                "  }";
+        String allCfgListStr= String.join(",\n",allFiled.stream().map(x->String.format(itemCfg,makeCamelName(x.name,false),x.remark,x.type)).collect(Collectors.toList()));
+
+        String reStr="" +
+                "{\n" +
+                "%1$s\n" +
+                "}";
+
+        reStr=String.format(reStr,allCfgListStr);
+        return reStr;
     }
 
     /**

@@ -64,24 +64,22 @@ public class GenerateTests {
     public void MakeEntity(){
         PathConfig cfg=new PathConfig();
         cfg.entityPath="D:\\IdeaProjects\\study_new\\study-dependencies\\src\\main\\java\\com\\wzl\\commons\\model\\entity\\";
-        cfg.tableName="fa_bulletin";
-        cfg.tableNameRmark="公告";
+        cfg.tableName="FA_USER";
+        cfg.tableNameRmark="用户";
         cfg.clumStr="" +
                 "ID\tID\tint\t\t\tTRUE\tFALSE\tTRUE\n" +
-                "标题\tTITLE\tvarchar(255)\t255\t\tFALSE\tFALSE\tTRUE\n" +
-                "图片\tPIC\tvarchar(255)\t255\t\tFALSE\tFALSE\tFALSE\n" +
-                "公告类型\tTYPE_CODE\tvarchar(50)\t50\t\tFALSE\tFALSE\tFALSE\n" +
-                "内容\tCONTENT\ttext\t\t\tFALSE\tFALSE\tFALSE\n" +
-                "发布人ID\tUSER_ID\tint\t\t\tFALSE\tFALSE\tFALSE\n" +
-                "发布人\tPUBLISHER\tvarchar(255)\t255\t\tFALSE\tFALSE\tTRUE\n" +
-                "生效时间\tISSUE_DATE\tdatetime\t\t\tFALSE\tFALSE\tTRUE\n" +
-                "显示\tIS_SHOW\tnumeric(1)\t1\t\tFALSE\tFALSE\tTRUE\n" +
-                "重要\tIS_IMPORT\tnumeric(1)\t1\t\tFALSE\tFALSE\tTRUE\n" +
-                "置顶\tIS_URGENT\tnumeric(1)\t1\t\tFALSE\tFALSE\tTRUE\n" +
-                "自动打开\tAUTO_PEN\tnumeric(1)\t1\t\tFALSE\tFALSE\tTRUE\n" +
-                "创建时间\tCREATE_TIME\tdatetime\t\t\tFALSE\tFALSE\tTRUE\n" +
-                "修改时间\tUPDATE_TIME\tdatetime\t\t\tFALSE\tFALSE\tTRUE\n" +
-                "REGION\tREGION\tvarchar(10)\t10\t\tFALSE\tFALSE\tTRUE";
+                "姓名\tNAME\tvarchar(80)\t80\t\tFALSE\tFALSE\tFALSE\n" +
+                "登录名\tLOGIN_NAME\tvarchar(20)\t20\t\tFALSE\tFALSE\tFALSE\n" +
+                "头像图片\tICON_FILES_ID\tint\t\t\tFALSE\tFALSE\tFALSE\n" +
+                "归属地\tDISTRICT_ID\tint\t\t\tFALSE\tTRUE\tTRUE\n" +
+                "锁定\tIS_LOCKED\tnumeric(1)\t1\t\tFALSE\tFALSE\tFALSE\n" +
+                "创建时间\tCREATE_TIME\tdatetime\t\t\tFALSE\tFALSE\tFALSE\n" +
+                "登录次数\tLOGIN_COUNT\tint\t\t\tFALSE\tFALSE\tFALSE\n" +
+                "最后登录时间\tLAST_LOGIN_TIME\tdatetime\t\t\tFALSE\tFALSE\tFALSE\n" +
+                "最后离开时间\tLAST_LOGOUT_TIME\tdatetime\t\t\tFALSE\tFALSE\tFALSE\n" +
+                "最后活动时间\tLAST_ACTIVE_TIME\tdatetime\t\t\tFALSE\tFALSE\tFALSE\n" +
+                "备注\tREMARK\tvarchar(2000)\t2,000\t\tFALSE\tFALSE\tFALSE" +
+                "";
         try {
             GenerateFile.MakeEntity(cfg);
         } catch (IOException e) {

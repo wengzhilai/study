@@ -61,8 +61,11 @@ public class RoleServiceImpl implements RoleService {
                 eh.data.id = dapper.getIncreasingId(eh);
                 inEnt.saveFieldList.add("id");
             }
-            resultObj.data = dapper.insert(eh, inEnt.saveFieldList, null);
+            resultObj.data = dapper.insert(eh, null, null);
         } else {
+            if(inEnt.whereList==null || inEnt.whereList.size()==0){
+                inEnt.whereList=Arrays.asList("id");
+            }
             resultObj.data = dapper.update(eh, inEnt.saveFieldList, inEnt.whereList);
             dapper.alter("delete from fa_role_module where ROLE_ID = "+eh.data.id);
         }

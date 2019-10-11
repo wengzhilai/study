@@ -130,3 +130,103 @@ public class FaBulletinEntity {
     @Column("REGION")
     public String region;
 }
+/*
+select 
+  ID id,
+  TITLE title,
+  PIC pic,
+  TYPE_CODE typeCode,
+  CONTENT content,
+  USER_ID userId,
+  PUBLISHER publisher,
+  ISSUE_DATE issueDate,
+  IS_SHOW isShow,
+  IS_IMPORT isImport,
+  IS_URGENT isUrgent,
+  AUTO_PEN autoPen,
+  CREATE_TIME createTime,
+  UPDATE_TIME updateTime,
+  REGION region 
+from fa_bulletin
+*/
+
+
+/*
+{
+  "ID": {
+    "title": "ID",
+    "type": "int",
+    "editable": true
+  },
+  "TITLE": {
+    "title": "标题",
+    "type": "String",
+    "editable": true
+  },
+  "PIC": {
+    "title": "图片",
+    "type": "String",
+    "editable": true
+  },
+  "TYPE_CODE": {
+    "title": "公告类型",
+    "type": "String",
+    "editable": true
+  },
+  "CONTENT": {
+    "title": "内容",
+    "type": "String",
+    "editable": true
+  },
+  "USER_ID": {
+    "title": "发布人ID",
+    "type": "int",
+    "editable": true
+  },
+  "PUBLISHER": {
+    "title": "发布人",
+    "type": "String",
+    "editable": true
+  },
+  "ISSUE_DATE": {
+    "title": "生效时间",
+    "type": "Date",
+    "editable": true
+  },
+  "IS_SHOW": {
+    "title": "显示",
+    "type": "String",
+    "editable": true
+  },
+  "IS_IMPORT": {
+    "title": "重要",
+    "type": "String",
+    "editable": true
+  },
+  "IS_URGENT": {
+    "title": "置顶",
+    "type": "String",
+    "editable": true
+  },
+  "AUTO_PEN": {
+    "title": "自动打开",
+    "type": "String",
+    "editable": true
+  },
+  "CREATE_TIME": {
+    "title": "创建时间",
+    "type": "Date",
+    "editable": true
+  },
+  "UPDATE_TIME": {
+    "title": "修改时间",
+    "type": "Date",
+    "editable": true
+  },
+  "REGION": {
+    "title": "REGION",
+    "type": "String",
+    "editable": true
+  }
+}
+*/
