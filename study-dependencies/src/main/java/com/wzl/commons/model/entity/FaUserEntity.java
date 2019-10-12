@@ -3,8 +3,8 @@ package com.wzl.commons.model.entity;
 import com.wzl.commons.model.mynum.DatabaseGeneratedOption;
 import com.wzl.commons.retention.*;
 
-import javax.management.openmbean.ArrayType;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 用户
@@ -50,7 +50,7 @@ public class FaUserEntity {
     @Required
     @Display(Name = "归属地")
     @Column("DISTRICT_ID")
-    public int districtId;
+    public Integer districtId;
 
     /**
     * 锁定
@@ -114,11 +114,11 @@ public class FaUserEntity {
     /**
      * 用户角色
      */
-    public int roleIdList;
+    public List<Integer> roleIdList;
     /**
      * 可编辑的用户ID
      */
-    public ArrayType<Integer> canEditIdList;
+    public List<Integer> canEditIdList;
 
 }
 /*

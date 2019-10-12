@@ -123,13 +123,13 @@ public class PathConfig {
                 "    @RequestMapping(value = \"singleByKey\", method = RequestMethod.POST)\n" +
                 "    @ApiOperation(value = \"查询单个角色\")\n" +
                 "    public ResultObj<Fa%2$sEntity> singleByKey(@RequestBody DtoDo inObj) {\n" +
-                "        return service.singleByKey(Convert.toInt(inObj.key));\n" +
+                "        return service.singleByKey(inObj);\n" +
                 "    }\n" +
                 "\n" +
                 "    @RequestMapping(value = \"delete\", method = RequestMethod.POST)\n" +
                 "    @ApiOperation(value = \"删除角色\")\n" +
                 "    public Result delete(@RequestBody DtoDo inObj) {\n" +
-                "        return service.delete(Convert.toInt(inObj.key));\n" +
+                "        return service.delete(inObj);\n" +
                 "    }\n" +
                 "\n" +
                 "    @RequestMapping(value = \"save\", method = RequestMethod.POST)\n" +
@@ -149,7 +149,7 @@ public class PathConfig {
     public String getConsumerFeignInterfaceText(String packageName, String tableName) {
         String contentStr = "package %1$s;\n" +
                 "\n" +
-                "import %1$s.impl.RoleServiceImpl;\n" +
+                "import %1$s.impl.%2$sServiceImpl;\n" +
                 "import com.wzl.commons.model.*;\n" +
                 "import com.wzl.commons.model.dto.DtoSave;\n" +
                 "import com.wzl.commons.model.entity.Fa%2$sEntity;\n" +
@@ -162,19 +162,19 @@ public class PathConfig {
                 "    //region 基本方法\n" +
                 "    /**\n" +
                 "     * 查询单条\n" +
-                "     * @param key\n" +
+                "     * @param inEnt\n" +
                 "     * @return\n" +
                 "     */\n" +
                 "    @GetMapping(value = \"/%3$s/singleByKey\")\n" +
-                "    ResultObj<Fa%2$sEntity> singleByKey(@RequestBody int key);\n" +
+                "    ResultObj<Fa%2$sEntity> singleByKey(@RequestBody DtoDo inEnt);\n" +
                 "\n" +
                 "    /**\n" +
                 "     * 删除\n" +
-                "     * @param key\n" +
+                "     * @param inEnt\n" +
                 "     * @return\n" +
                 "     */\n" +
                 "    @GetMapping(value = \"/%3$s/delete\")\n" +
-                "    Result delete(@RequestBody int key);\n" +
+                "    Result delete(@RequestBody DtoDo inEnt);\n" +
                 "\n" +
                 "    /**\n" +
                 "     * 保存基本信息\n" +
@@ -205,7 +205,7 @@ public class PathConfig {
                 "@Service\n" +
                 "public class %2$sServiceImpl implements %2$sService {\n" +
                 "    @Override\n" +
-                "    public ResultObj<Fa%2$sEntity> singleByKey(int key) {\n" +
+                "    public ResultObj<Fa%2$sEntity> singleByKey(DtoDo inEnt) {\n" +
                 "        ResultObj<Fa%2$sEntity>  reObj=new ResultObj<> ();\n" +
                 "        reObj.success=false;\n" +
                 "        reObj.msg=\"网络有问题\";\n" +
@@ -213,7 +213,7 @@ public class PathConfig {
                 "    }\n" +
                 "\n" +
                 "    @Override\n" +
-                "    public Result delete(int key) {\n" +
+                "    public Result delete(DtoDo inEnt) {\n" +
                 "        Result reObj=new Result();\n" +
                 "        reObj.success=false;\n" +
                 "        reObj.msg=\"网络有问题\";\n" +
@@ -249,17 +249,17 @@ public class PathConfig {
                 "    //region 基本方法\n" +
                 "    /**\n" +
                 "     * 查询单条\n" +
-                "     * @param key\n" +
+                "     * @param inEnt\n" +
                 "     * @return\n" +
                 "     */\n" +
-                "    ResultObj<Fa%2$sEntity> singleByKey(@RequestBody int key);\n" +
+                "    ResultObj<Fa%2$sEntity> singleByKey(@RequestBody DtoDo inEnt);\n" +
                 "\n" +
                 "    /**\n" +
                 "     * 删除\n" +
-                "     * @param key\n" +
+                "     * @param inEnt\n" +
                 "     * @return\n" +
                 "     */\n" +
-                "    Result delete(@RequestBody int key);\n" +
+                "    Result delete(@RequestBody DtoDo inEnt);\n" +
                 "\n" +
                 "    /**\n" +
                 "     * 保存基本信息\n" +
@@ -300,14 +300,14 @@ public class PathConfig {
                 "\n" +
                 "    @ApiOperation(value=\"获取%2$s对象\")\n" +
                 "    @RequestMapping(value = \"singleByKey\", method = RequestMethod.POST)\n" +
-                "    public ResultObj<Fa%2$sEntity> singleByKey(@RequestBody int key) {\n" +
-                "        return service.singleByKey(key);\n" +
+                "    public ResultObj<Fa%2$sEntity> singleByKey(@RequestBody DtoDo inEnt) {\n" +
+                "        return service.singleByKey(inEnt);\n" +
                 "    }\n" +
                 "\n" +
                 "    @ApiOperation(value=\"删除%2$s对象\")\n" +
                 "    @RequestMapping(value = \"delete\", method = RequestMethod.POST)\n" +
-                "    public Result delete(@RequestBody int key) {\n" +
-                "        return service.delete(key);\n" +
+                "    public Result delete(@RequestBody DtoDo inEnt) {\n" +
+                "        return service.delete(inEnt);\n" +
                 "    }\n" +
                 "\n" +
                 "    @ApiOperation(value=\"删除%2$s对象\")\n" +
@@ -339,17 +339,17 @@ public class PathConfig {
                 "    //region 基本方法\n" +
                 "    /**\n" +
                 "     * 查询单条\n" +
-                "     * @param key\n" +
+                "     * @param inEnt\n" +
                 "     * @return\n" +
                 "     */\n" +
-                "    ResultObj<Fa%2$sEntity> singleByKey(int key);\n" +
+                "    ResultObj<Fa%2$sEntity> singleByKey(DtoDo inEnt);\n" +
                 "\n" +
                 "    /**\n" +
                 "     * 删除\n" +
-                "     * @param key\n" +
+                "     * @param inEnt\n" +
                 "     * @return\n" +
                 "     */\n" +
-                "    Result delete(int key);\n" +
+                "    Result delete(DtoDo inEnt);\n" +
                 "\n" +
                 "    /**\n" +
                 "     * 保存基本信息\n" +
@@ -380,7 +380,7 @@ public class PathConfig {
                 "import org.apache.commons.lang3.StringUtils;\n" +
                 "import org.springframework.beans.factory.annotation.Autowired;\n" +
                 "import org.springframework.stereotype.Service;\n" +
-                "\n" +
+                "import cn.hutool.core.convert.Convert;\n" +
                 "import java.util.ArrayList;\n" +
                 "import java.util.Arrays;\n" +
                 "import java.util.List;\n" +
@@ -394,16 +394,16 @@ public class PathConfig {
                 "    EntityHelper<Fa%2$sEntity> eh = new EntityHelper<>(new Fa%2$sEntity());\n" +
                 "\n" +
                 "    @Override\n" +
-                "    public ResultObj<Fa%2$sEntity> singleByKey(int key) {\n" +
+                "    public ResultObj<Fa%2$sEntity> singleByKey(DtoDo inEnt) {\n" +
                 "        ResultObj<Fa%2$sEntity> reObj=new ResultObj<>(true);\n" +
-                "        reObj.data=dapper.getSingleByPrimaryKey(eh, key);\n" +
+                "        reObj.data=dapper.getSingleByPrimaryKey(eh, Convert.toInt(inEnt.key));\n" +
                 "        return reObj;\n" +
                 "    }\n" +
                 "\n" +
                 "    @Override\n" +
-                "    public Result delete(int key) {\n" +
+                "    public Result delete(DtoDo inEnt) {\n" +
                 "        Result reObj = new Result();\n" +
-                "\n" +
+                "        Integer key = Convert.toInt(inEnt.key);\n" +
                 "        reObj.success = dapper.delete(eh, x -> x.id == key) > 0;\n" +
                 "        return reObj;\n" +
                 "    }\n" +
@@ -424,6 +424,9 @@ public class PathConfig {
                 "            }\n" +
                 "            resultObj.data = dapper.insert(eh, inEnt.saveFieldList, null);\n" +
                 "        } else {\n" +
+                "            if(inEnt.whereList==null || inEnt.whereList.size()==0){\n" +
+                "                inEnt.whereList = Arrays.asList(\"id\");\n" +
+                "            }\n" +
                 "            resultObj.data = dapper.update(eh, inEnt.saveFieldList, inEnt.whereList);\n" +
                 "        }\n" +
                 "        resultObj.success = resultObj.data > 0;\n" +

@@ -6,6 +6,9 @@ spring:
       discovery:
         server-addr: 144.202.58.141:8848
 
+  jackson:
+    date-format: yyyy-MM-dd HH:mm
+
 feign:
   sentinel:
     enabled: true

@@ -81,7 +81,7 @@ public class QueryServiceImpl implements QueryService {
     }
 
     public ResultObj<DataGridDataJson> getListData(QuerySearchDto inEnt) {
-        ResultObj<DataGridDataJson> reObj = new ResultObj<>();
+        ResultObj<DataGridDataJson> reObj = new ResultObj<>(true);
         DataGridDataJson reEnt = new DataGridDataJson();
         String code=inEnt.code;
         FaQueryEntity query = dapper.getSingle(moduleEh,i -> i.code == code);

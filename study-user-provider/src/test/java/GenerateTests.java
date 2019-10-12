@@ -21,9 +21,11 @@ public class GenerateTests {
     @Test
     public void MakeClassFile() {
         PathConfig cfg=new PathConfig();
-        cfg.tableName="Role";
-        cfg.consumerPath="/Users/wengzhilai/Desktop/java/study/study-user-consumer/src/main/java/com/user/consumer/";
-        cfg.providerPath="/Users/wengzhilai/Desktop/java/study/study-user-provider/src/main/java/com/user/provider/";
+        cfg.tableName="User";
+//        cfg.consumerPath="/Users/wengzhilai/Desktop/java/study/study-user-consumer/src/main/java/com/user/consumer/";
+//        cfg.providerPath="/Users/wengzhilai/Desktop/java/study/study-user-provider/src/main/java/com/user/provider/";
+        cfg.consumerPath="D:\\IdeaProjects\\study_new\\study-user-consumer/src/main/java/com/user/consumer/";
+        cfg.providerPath="D:\\IdeaProjects\\study_new\\study-user-provider/src/main/java/com/user/provider/";
         cfg.consumerPackageName="com.user.consumer";
         cfg.providerPackageName="com.user.provider";
         try {

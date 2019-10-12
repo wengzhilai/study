@@ -31,7 +31,8 @@ public class QueryControllerImpl implements QueryController {
     @ApiOperation(value="获取Query所有数据")
     @RequestMapping(value = "getListData", method = RequestMethod.POST)
     public ResultObj<DataGridDataJson> getListData(@RequestBody QuerySearchDto inObj) {
-        return service.getListData(inObj);
+        ResultObj<DataGridDataJson> resultObj=service.getListData(inObj);
+        return resultObj;
     }
 
     @ApiOperation(value="查询单个Query")
