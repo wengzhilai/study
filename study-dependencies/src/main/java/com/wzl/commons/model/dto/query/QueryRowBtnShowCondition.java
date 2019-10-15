@@ -4,11 +4,7 @@ import lombok.Data;
 
 @Data
 public class QueryRowBtnShowCondition {
-    /**
-    * 对象字段
-    */
-    @Display(Name = "对象字段")
-    public String objFiled;
+
     /**
     * 操作符 如：between、in、《、》、=、like
     */

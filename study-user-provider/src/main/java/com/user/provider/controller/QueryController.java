@@ -43,5 +43,12 @@ public interface QueryController {
     Result delete(@RequestBody DtoDo inEnt);
 
 
+    /**
+     * 下载文件
+     * @param inEnt
+     * @return
+     */
+    Result downFile(@RequestBody DtoDo inEnt);
+
     //——代码分隔线——
 }

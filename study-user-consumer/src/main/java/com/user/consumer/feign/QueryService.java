@@ -50,5 +50,13 @@ public interface QueryService {
     @GetMapping(value = "/query/delete")
     Result delete(@RequestBody DtoDo inEnt);
 
+    /**
+     * 下载文件
+     * @param inEnt
+     * @return
+     */
+    @GetMapping(value = "/query/downFile")
+    Result downFile(@RequestBody DtoDo inEnt);
+
     //——代码分隔线——
 }

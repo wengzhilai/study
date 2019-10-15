@@ -47,5 +47,12 @@ public interface QueryService {
      */
     ResultObj<DataGridDataJson> getListData(QuerySearchDto inObj);
 
+    /**
+     * 下载文件
+     * @param inEnt
+     * @return
+     */
+    Result downFile(DtoDo inEnt);
+
     //——代码分隔线——
 }

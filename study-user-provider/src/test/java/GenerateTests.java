@@ -42,18 +42,18 @@ public class GenerateTests {
     public void AddFunciton() {
         PathConfig cfg=new PathConfig();
         cfg.tableName="Query";
-//        cfg.consumerPath="/Users/wengzhilai/Desktop/java/study/study-user-consumer/src/main/java/com/user/consumer/";
-//        cfg.providerPath="/Users/wengzhilai/Desktop/java/study/study-user-provider/src/main/java/com/user/provider/";
-        cfg.consumerPath="D:\\IdeaProjects\\study_new\\study-user-consumer/src/main/java/com/user/consumer/";
-        cfg.providerPath="D:\\IdeaProjects\\study_new\\study-user-provider/src/main/java/com/user/provider/";
+        cfg.consumerPath="/Users/wengzhilai/Desktop/java/study/study-user-consumer/src/main/java/com/user/consumer/";
+        cfg.providerPath="/Users/wengzhilai/Desktop/java/study/study-user-provider/src/main/java/com/user/provider/";
+//        cfg.consumerPath="D:\\IdeaProjects\\study_new\\study-user-consumer/src/main/java/com/user/consumer/";
+//        cfg.providerPath="D:\\IdeaProjects\\study_new\\study-user-provider/src/main/java/com/user/provider/";
         cfg.consumerPackageName="com.user.consumer";
         cfg.providerPackageName="com.user.provider";
 
         try {
-            String funName="delete";
+            String funName="downFile";
             String reObjStr="Result";
             String inObj="DtoDo";
-            String msg="删除Query";
+            String msg="下载文件";
             String tableName="Query";
 
             GenerateFile.MakeNewFunction(cfg,funName,reObjStr,inObj,msg,tableName);

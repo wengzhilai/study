@@ -54,5 +54,11 @@ public class QueryControllerImpl implements QueryController {
     }
 
 
+    @ApiOperation(value="下载文件")
+    @RequestMapping(value = "downFile", method = RequestMethod.POST)
+    public Result downFile(@RequestBody DtoDo inEnt) {
+        return service.downFile(inEnt);
+    }
+
     //——代码分隔线——
 }

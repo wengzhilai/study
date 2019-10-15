@@ -138,7 +138,7 @@ public class QueryServiceImpl implements QueryService {
         }
         //替换地址参数
         for (KV tmp : inEnt.paraList) {
-            if (tmp.v == "@(NOWDATA)")
+            if (tmp.v.equals("@(NOWDATA)"))
             {
                 tmp.k = DateTime.now().toString("yyyy-MM-dd");
             }
@@ -153,10 +153,16 @@ public class QueryServiceImpl implements QueryService {
         if(inEnt==null || inEnt.whereList==null || inEnt.whereList.size()==0){
             return "";
         }
-        StringBuilder whereSb = new StringBuilder();
+//        StringBuilder whereSb = new StringBuilder();
+        List<String> whereList=new ArrayList<>();
         for (QueryRowBtnShowCondition tmp : inEnt.whereList.stream().filter(x -> x.opType != null && !StringUtils.isAnyBlank(x.opType) && !StringUtils.isAnyBlank(x.value)).collect(Collectors.toList()))
         {
             if (tmp.fieldType == null) tmp.fieldType = "string";
+            if (tmp.opType.equals("is null") || tmp.opType.equals("is not null")) {
+                whereList.add(String.format(" %s %s ", tmp.fieldName, tmp.opType));
+                continue;
+            }
+
             String nowType = tmp.fieldType.toLowerCase();
             int subIndex = tmp.fieldType.indexOf(".");
             if (subIndex > -1)
@@ -169,11 +175,11 @@ public class QueryServiceImpl implements QueryService {
                     switch (tmp.opType)
                     {
                         case "in":
-                            whereSb.append(String.format(" %s %s ('%s') and ", tmp.objFiled, tmp.opType, tmp.value.replace(",", "','")));
+                            whereList.add(String.format(" %s %s ('%s') ", tmp.fieldName, tmp.opType, tmp.value.replace(",", "','")));
                             break;
                         default:
-                            if (tmp.opType == "like") tmp.value = "%" + tmp.value + "%";
-                            whereSb.append(String.format(" %s %s '%s' and ", tmp.objFiled, tmp.opType, tmp.value));
+                            if (tmp.opType.equals("like")) tmp.value = "%" + tmp.value + "%";
+                            whereList.add(String.format(" %s %s '%s' ", tmp.fieldName, tmp.opType, tmp.value));
                             break;
                     }
                     break;
@@ -183,28 +189,27 @@ public class QueryServiceImpl implements QueryService {
                     {
                         case "not between":
                         case "between":
-                            whereSb.append(String.format(" %s %s '%s' and ", tmp.objFiled, tmp.opType, StringUtils.join(Arrays.stream(tmp.value.split("~")).map(x -> x.trim()),"' and '")));
+                            whereList.add(String.format(" %s %s '%s' ", tmp.fieldName, tmp.opType, StringUtils.join(Arrays.stream(tmp.value.split("~")).map(x -> x.trim()),"' and '")));
                             break;
                         default:
-                            whereSb.append(String.format(" %s %s '%s' and ", tmp.objFiled, tmp.opType, tmp.value));
+                            whereList.add(String.format(" %s %s '%s' ", tmp.fieldName, tmp.opType, tmp.value));
                             break;
                     }
                     break;
                 default:
-                    if (tmp.opType == "in")
+                    if (tmp.opType.equals("in"))
                     {
-                        whereSb.append(String.format(" %s %s ('%s') and ", tmp.objFiled, tmp.opType, tmp.value.replace(",", "','")));
+                        whereList.add(String.format(" %s %s ('%s') ", tmp.fieldName, tmp.opType, tmp.value.replace(",", "','")));
                     }
                     else
                     {
-                        whereSb.append(String.format(" %s %s %s and ", tmp.objFiled, tmp.opType, tmp.value));
+                        whereList.add(String.format(" %s %s %s ", tmp.fieldName, tmp.opType, tmp.value));
                     }
                     break;
             }
         }
-        if (whereSb.length() > 4)
-            whereSb = whereSb.delete(whereSb.length() - 4, 4);
-        return whereSb.toString();
+
+        return String.join(" and ",whereList);
     }
 
     protected String MakePageSql(String sql, int pageIndex , int pageSize , String orderStr, String whereStr, List<String> fieldList)
@@ -246,6 +251,13 @@ public class QueryServiceImpl implements QueryService {
         int startNum = (pageIndex - 1) * pageSize;
         sqlStr = String.format(sqlStr,sql, orderStr, startNum, startNum + pageSize, whereStr, withStr, tFile, t1File);
         return sqlStr;
+    }
+
+    public Result downFile(DtoDo inEnt) {
+        Result reObj=new ResultObj<> ();
+        reObj.success=false;
+        reObj.msg="开发中...";
+        return reObj;
     }
 
     //——代码分隔线——
