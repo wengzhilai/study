@@ -1,5 +1,6 @@
 package com.user.provider.server.impl;
 
+import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateTime;
 import com.dependencies.mybatis.service.MyBatisService;
 import com.wzl.commons.model.DtoDo;
@@ -20,9 +21,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.io.ByteArrayOutputStream;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -89,7 +89,6 @@ public class QueryServiceImpl implements QueryService {
         {
             return reObj;
         }
-//        List<QueryCfg> cfg = TypeChange.jsonStrToJavaBeanList(query.queryCfgJson,QueryCfg.class);
 
         String whereStr = MakeWhereStr(inEnt);
         String AllSql = MakeSql(inEnt, query.queryConf);
@@ -111,7 +110,6 @@ public class QueryServiceImpl implements QueryService {
         }
         catch(Exception e)
         {
-//            LogHelper.WriteErrorLog(this.GetType(),"执行分页数据失败",e);
             return reObj;
         }
         return reObj;
@@ -253,11 +251,43 @@ public class QueryServiceImpl implements QueryService {
         return sqlStr;
     }
 
-    public Result downFile(DtoDo inEnt) {
-        Result reObj=new ResultObj<> ();
-        reObj.success=false;
-        reObj.msg="开发中...";
-        return reObj;
+    public byte[] downFile(QuerySearchDto inEnt) {
+        String code=inEnt.code;
+        FaQueryEntity query = dapper.getSingle(moduleEh,i -> i.code == code);
+        if (query == null)
+        {
+            return null;
+        }
+
+        String whereStr = MakeWhereStr(inEnt);
+        String AllSql = MakeSql(inEnt, query.queryConf);
+        if (StringUtils.isAllBlank(inEnt.getOrderStr())) inEnt.setOrderStr( "(SELECT 0)");
+        String sql = MakePageSql(AllSql, 1, 10000, inEnt.orderStr, whereStr,null);
+        try
+        {
+            String[] sqlList = sql.split(";");
+            if (sqlList.length > 0)
+            {
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                int i=0;
+                List<Map> list=dapper.SelectMap(sqlList[0]);
+                for (HashMap<String,Object> item : dapper.Select(sqlList[0])) {
+                    if(i==0){
+                        String str=String.join("," ,item.keySet().stream().map(x->Convert.toStr(x.replace(",","_"))).collect(Collectors.toList()))+"\r\n";
+                        bos.write(str.getBytes());
+                    }
+                    String str=String.join("," ,item.values().stream().map(x->x==null?",": Convert.toStr(x).replace(",","_")).collect(Collectors.toList()))+"\r\n";
+                    bos.write(str.getBytes());
+                    i++;
+                }
+                return bos.toByteArray();
+            }
+        }
+        catch(Exception e)
+        {
+            return null;
+        }
+        return null;
     }
 
     //——代码分隔线——

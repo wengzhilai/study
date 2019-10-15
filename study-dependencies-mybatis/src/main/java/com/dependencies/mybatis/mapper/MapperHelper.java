@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.*;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface MapperHelper {
@@ -24,6 +25,10 @@ public interface MapperHelper {
 
     @Select("${sql}")
     List<HashMap<String,Object>> Select(@Param("sql") String sql);
+
+    @Select("${sql}")
+
+    List<Map> SelectMap(@Param("sql") String sql);
 
 
     @SelectProvider(type = MybatisSQLTemplate.class, method = "getSingleSql")

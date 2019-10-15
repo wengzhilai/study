@@ -13,10 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -55,6 +52,10 @@ public class MyBatisServiceImpl<T> implements MyBatisService<T> {
 
     public List<HashMap<String,Object>> Select(String sql){
         return mh.Select(sql);
+    }
+
+    public List<Map> SelectMap(String sql){
+        return mh.SelectMap(sql);
     }
 
     public T getSingleByPrimaryKey(EntityHelper<T> entityHelper,int key) {

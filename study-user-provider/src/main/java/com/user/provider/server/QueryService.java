@@ -52,7 +52,7 @@ public interface QueryService {
      * @param inEnt
      * @return
      */
-    Result downFile(DtoDo inEnt);
+    byte[] downFile(QuerySearchDto inEnt);
 
     //——代码分隔线——
 }

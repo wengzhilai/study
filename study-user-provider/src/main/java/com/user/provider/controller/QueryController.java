@@ -6,6 +6,8 @@ import com.wzl.commons.model.dto.query.QuerySearchDto;
 import com.wzl.commons.model.entity.*;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.servlet.http.HttpServletResponse;
+
 public interface QueryController {
     /**
      * 根据代码查询Query
@@ -48,7 +50,7 @@ public interface QueryController {
      * @param inEnt
      * @return
      */
-    Result downFile(@RequestBody DtoDo inEnt);
+    String downFile(@RequestBody QuerySearchDto inEnt,HttpServletResponse response);
 
     //——代码分隔线——
 }

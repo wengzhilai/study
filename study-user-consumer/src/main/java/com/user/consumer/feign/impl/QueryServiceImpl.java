@@ -41,7 +41,7 @@ public class QueryServiceImpl implements QueryService {
     }
 
 
-    public Result downFile(DtoDo inEnt) {
+    public Result downFile(QuerySearchDto inEnt) {
         Result reObj=new Result ();
         reObj.success=false;
         reObj.msg="网络有问题";

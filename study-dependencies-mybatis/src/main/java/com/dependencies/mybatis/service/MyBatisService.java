@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public interface MyBatisService<T> {
     int exec(String sql);
@@ -67,4 +68,12 @@ public interface MyBatisService<T> {
      * @return
      */
     List<HashMap<String,Object>> Select(String sql);
+
+    /**
+     * 查询所有
+     * @param sql
+     * @return
+     */
+    List<Map> SelectMap(String sql);
+
 }

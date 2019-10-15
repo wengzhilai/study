@@ -15,6 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+
 @RestController
 @RequestMapping("query")
 public class QueryControllerImpl implements QueryController {
@@ -56,8 +62,27 @@ public class QueryControllerImpl implements QueryController {
 
     @ApiOperation(value="下载文件")
     @RequestMapping(value = "downFile", method = RequestMethod.POST)
-    public Result downFile(@RequestBody DtoDo inEnt) {
-        return service.downFile(inEnt);
+    public String downFile(@RequestBody QuerySearchDto inEnt,HttpServletResponse response) {
+        response.setContentType("application/force-download");// 设置强制下载不打开
+        response.addHeader("Content-Disposition", "attachment;fileName=" + inEnt.code + ".csv");// 设置文件名
+        byte[] buffer = service.downFile(inEnt);
+        FileInputStream fis = null;
+        try {
+            OutputStream os = response.getOutputStream();
+            os.write(buffer);
+            return "下载成功";
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (fis != null) {
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return "下载失败";
     }
 
     //——代码分隔线——
