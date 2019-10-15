@@ -56,7 +56,7 @@ public interface QueryService {
      * @return
      */
     @GetMapping(value = "/query/downFile")
-    Result downFile(@RequestBody QuerySearchDto inEnt);
+    String downFile(@RequestBody QuerySearchDto inEnt);
 
     //——代码分隔线——
 }

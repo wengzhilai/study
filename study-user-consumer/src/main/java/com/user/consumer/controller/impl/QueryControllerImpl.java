@@ -57,7 +57,7 @@ public class QueryControllerImpl implements QueryController {
 
     @RequestMapping(value = "downFile", method = RequestMethod.POST)
     @ApiOperation(value = "下载文件")
-    public Result downFile(@RequestBody QuerySearchDto inEnt) {
+    public String downFile(@RequestBody QuerySearchDto inEnt) {
         return service.downFile(inEnt);
     }
 

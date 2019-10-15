@@ -43,7 +43,7 @@ public interface QueryController {
      * @param inEnt
      * @return
      */
-    Result downFile(@RequestBody QuerySearchDto inEnt);
+    String downFile(@RequestBody QuerySearchDto inEnt);
 
     //——代码分隔线——
 }
