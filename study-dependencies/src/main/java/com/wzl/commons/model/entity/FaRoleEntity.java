@@ -35,7 +35,7 @@ public class FaRoleEntity {
      */
     @Display(Name = "类型")
     @Column("TYPE")
-    public Integer type;
+    public int type;
     /**
      * 模块ID集合
      */

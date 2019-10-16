@@ -41,8 +41,8 @@ public class FaUserEntity {
     * 头像图片
     */
     @Display(Name = "头像图片")
-    @Column("ICON_FILES_ID")
-    public int iconFilesId;
+    @Column("ICON_FILES")
+    public String iconFiles;
 
     /**
     * 归属地
@@ -50,14 +50,14 @@ public class FaUserEntity {
     @Required
     @Display(Name = "归属地")
     @Column("DISTRICT_ID")
-    public Integer districtId;
+    public int districtId;
 
     /**
     * 锁定
     */
     @Display(Name = "锁定")
     @Column("IS_LOCKED")
-    public Integer isLocked;
+    public int isLocked;
 
     /**
     * 创建时间
@@ -71,7 +71,7 @@ public class FaUserEntity {
     */
     @Display(Name = "登录次数")
     @Column("LOGIN_COUNT")
-    public Integer loginCount;
+    public int loginCount;
 
     /**
     * 最后登录时间

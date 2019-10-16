@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 public interface QueryController {
     /**
      * 根据代码查询Query
+     *
      * @param inObj
      * @return
      */
@@ -18,6 +19,7 @@ public interface QueryController {
 
     /**
      * 获取数据
+     *
      * @param querySearchModel
      * @return
      */
@@ -25,6 +27,7 @@ public interface QueryController {
 
     /**
      * 查询单个Query
+     *
      * @param inEnt
      * @return
      */
@@ -32,6 +35,7 @@ public interface QueryController {
 
     /**
      * 保存Query
+     *
      * @param inEnt
      * @return
      */
@@ -39,6 +43,7 @@ public interface QueryController {
 
     /**
      * 删除Query
+     *
      * @param inEnt
      * @return
      */
@@ -47,10 +52,11 @@ public interface QueryController {
 
     /**
      * 下载文件
-     * @param inEnt
+     *
+     * @param postJson
      * @return
      */
-    String downFile(@RequestBody QuerySearchDto inEnt,HttpServletResponse response);
+    void downFile(String postJson, HttpServletResponse response);
 
     //——代码分隔线——
 }

@@ -38,7 +38,7 @@ public class FaUserRoleModuleEntityView
      */
     @Display(Name = "类型")
     @Column("r.`TYPE`")
-    public Integer roleType ;
+    public int roleType ;
 
 
     /**

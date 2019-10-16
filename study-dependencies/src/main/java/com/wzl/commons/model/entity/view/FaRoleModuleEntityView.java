@@ -43,7 +43,7 @@ public class FaRoleModuleEntityView {
     */
     @Display(Name = "上级")
     @Column("c.PARENT_ID")
-    public Integer parentId;
+    public int parentId;
     /**
     * 模块名
     */
@@ -71,7 +71,7 @@ public class FaRoleModuleEntityView {
     @Required
     @Display(Name = "调试")
     @Column("c.IS_DEBUG")
-    public Integer isDebug;
+    public int isDebug;
     /**
     * 隐藏
     */
@@ -112,11 +112,11 @@ public class FaRoleModuleEntityView {
     */
     @Display(Name = "宽")
     @Column("c.W")
-    public Integer w;
+    public int w;
     /**
     * 高
     */
     @Display(Name = "高")
     @Column("c.H")
-    public Integer h;
+    public int h;
 }

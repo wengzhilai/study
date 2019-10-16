@@ -7,6 +7,7 @@ import com.wzl.commons.model.ResultObj;
 import com.wzl.commons.model.dto.*;
 import com.wzl.commons.model.dto.query.QuerySearchDto;
 import com.wzl.commons.model.entity.FaQueryEntity;
+import feign.Response;
 
 public class QueryServiceImpl implements QueryService {
     @Override
@@ -41,8 +42,8 @@ public class QueryServiceImpl implements QueryService {
     }
 
 
-    public String downFile(QuerySearchDto inEnt) {
-        return "网络有问题";
+    public Response downFile(String postJson) {
+        return null;
     }
 
     //——代码分隔线——

@@ -2,6 +2,7 @@ package com.user.provider.server.impl;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateTime;
+import com.alibaba.fastjson.JSONObject;
 import com.dependencies.mybatis.service.MyBatisService;
 import com.wzl.commons.model.DtoDo;
 import com.wzl.commons.model.KV;
@@ -261,6 +262,9 @@ public class QueryServiceImpl implements QueryService {
 
         String whereStr = MakeWhereStr(inEnt);
         String AllSql = MakeSql(inEnt, query.queryConf);
+
+        JSONObject jsonObj= TypeChange.jsonStrToJsonObject(query.queryCfgJson);
+
         if (StringUtils.isAllBlank(inEnt.getOrderStr())) inEnt.setOrderStr( "(SELECT 0)");
         String sql = MakePageSql(AllSql, 1, 10000, inEnt.orderStr, whereStr,null);
         try
@@ -273,8 +277,9 @@ public class QueryServiceImpl implements QueryService {
                 List<Map> list=dapper.SelectMap(sqlList[0]);
                 for (HashMap<String,Object> item : dapper.Select(sqlList[0])) {
                     if(i==0){
-                        String str=String.join("," ,item.keySet().stream().map(x->Convert.toStr(x.replace(",","_"))).collect(Collectors.toList()))+"\r\n";
+                        String str=String.join("," ,item.keySet().stream().map(x->Convert.toStr(jsonObj.getJSONObject(x).getString("title").replace(",","_"))).collect(Collectors.toList()))+"\r\n";
                         bos.write(str.getBytes());
+
                     }
                     String str=String.join("," ,item.values().stream().map(x->x==null?",": Convert.toStr(x).replace(",","_")).collect(Collectors.toList()))+"\r\n";
                     bos.write(str.getBytes());

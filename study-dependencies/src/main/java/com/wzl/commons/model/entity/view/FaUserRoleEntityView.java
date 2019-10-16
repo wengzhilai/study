@@ -34,7 +34,7 @@ public class FaUserRoleEntityView
      */
     @Display(Name = "类型")
     @Column("r.`TYPE`")
-    public Integer type ;
+    public int type ;
 
 
     /**

@@ -27,7 +27,7 @@ public class FaModuleEntity {
     */
     @Display(Name = "上级")
     @Column("PARENT_ID")
-    public Integer parentId;
+    public int parentId;
 
     /**
     * 模块名
@@ -56,7 +56,7 @@ public class FaModuleEntity {
     @Required
     @Display(Name = "调试")
     @Column("IS_DEBUG")
-    public Integer isDebug;
+    public int isDebug;
 
     /**
     * 隐藏
@@ -64,7 +64,7 @@ public class FaModuleEntity {
     @Required
     @Display(Name = "隐藏")
     @Column("IS_HIDE")
-    public Integer isHide;
+    public int isHide;
 
     /**
     * 排序
@@ -72,7 +72,7 @@ public class FaModuleEntity {
     @Required
     @Display(Name = "排序")
     @Column("SHOW_ORDER")
-    public Integer showOrder;
+    public int showOrder;
 
     /**
     * 描述
@@ -100,14 +100,14 @@ public class FaModuleEntity {
     */
     @Display(Name = "宽")
     @Column("W")
-    public Integer w;
+    public int w;
 
     /**
     * 高
     */
     @Display(Name = "高")
     @Column("H")
-    public Integer h;
+    public int h;
 
     /**
      * 所有子项

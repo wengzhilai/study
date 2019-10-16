@@ -53,7 +53,7 @@ public class ModuleServiceImpl implements ModuleService {
     public ResultObj<Integer> save(DtoSave<FaModuleEntity> inEnt) {
         ResultObj<Integer> resultObj= new ResultObj<>(true);
         if(inEnt.data.parentId==0){
-            inEnt.data.parentId=null;
+            inEnt.data.parentId=0;
         }
         moduleEh.data=inEnt.data;
         if(inEnt.data.id==0){
@@ -96,7 +96,7 @@ public class ModuleServiceImpl implements ModuleService {
         List<FaRoleModuleEntityView> allList= dapperRoleModule.getAll(new EntityHelper<>(new FaRoleModuleEntityView()),"a.ROLE_ID in ("+String.join(",",roleIdList)+")",1,100,null);
         Set<String> allModuleIdList= allList.stream().collect(Collectors.groupingBy(x->Convert.toStr(x.moduleId))).keySet();
         List<FaModuleEntity> allModule= moduleMhs.getAll(moduleEh,"ID in ("+String.join(",",allModuleIdList)+")");
-        resultObj.dataList=getChildItems(allModule,null);
+        resultObj.dataList=getChildItems(allModule,0);
         resultObj.success=true;
         return  resultObj;
     }

@@ -8,9 +8,13 @@ import com.wzl.commons.model.DtoDo;
 import com.wzl.commons.model.Result;
 import com.wzl.commons.model.ResultObj;
 import com.wzl.commons.model.dto.DtoSave;
+import feign.Response;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 @FeignClient(value = "user-provider-uery",url = "http://localhost:9001")
 public interface QueryService {
@@ -52,11 +56,11 @@ public interface QueryService {
 
     /**
      * 下载文件
-     * @param inEnt
+     * @param postJson
      * @return
      */
-    @GetMapping(value = "/query/downFile")
-    String downFile(@RequestBody QuerySearchDto inEnt);
+    @GetMapping(value = "/query/downFile",consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    Response downFile(@RequestBody String postJson);
 
     //——代码分隔线——
 }

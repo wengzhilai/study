@@ -8,8 +8,10 @@ import com.wzl.commons.model.entity.*;
 import com.user.provider.server.ModuleService;
 import com.user.provider.server.QueryService;
 import com.wzl.commons.model.*;
+import com.wzl.commons.utlity.TypeChange;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -61,28 +63,18 @@ public class QueryControllerImpl implements QueryController {
 
 
     @ApiOperation(value="下载文件")
-    @RequestMapping(value = "downFile", method = RequestMethod.POST)
-    public String downFile(@RequestBody QuerySearchDto inEnt,HttpServletResponse response) {
+    @RequestMapping(value = "downFile",consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public void downFile(@RequestBody String postJson,HttpServletResponse response) {
+        QuerySearchDto inEnt =TypeChange.jsonStrToJavaBean(postJson,QuerySearchDto.class);
         response.setContentType("application/force-download");// 设置强制下载不打开
         response.addHeader("Content-Disposition", "attachment;fileName=" + inEnt.code + ".csv");// 设置文件名
         byte[] buffer = service.downFile(inEnt);
-        FileInputStream fis = null;
         try {
             OutputStream os = response.getOutputStream();
             os.write(buffer);
-            return "下载成功";
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            if (fis != null) {
-                try {
-                    fis.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
         }
-        return "下载失败";
     }
 
     //——代码分隔线——

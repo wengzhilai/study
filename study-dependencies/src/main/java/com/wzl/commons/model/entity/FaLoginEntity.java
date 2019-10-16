@@ -60,7 +60,7 @@ public class FaLoginEntity {
     */
     @Display(Name = "锁定")
     @Column("IS_LOCKED")
-    public Integer isLocked;
+    public int isLocked;
     /**
     * 修改密码时间
     */
@@ -80,7 +80,7 @@ public class FaLoginEntity {
     */
     @Display(Name = "失败次数")
     @Column("FAIL_COUNT")
-    public Integer failCount;
+    public int failCount;
 
 }
 

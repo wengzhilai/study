@@ -63,7 +63,6 @@ public class FaQueryEntity {
     */
     @Display(Name = "查询语句")
     @Column("QUERY_CONF")
-
     public String queryConf;
     /**
     * 配置信息

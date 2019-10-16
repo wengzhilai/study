@@ -5,6 +5,7 @@ import com.wzl.commons.model.dto.query.QuerySearchDto;
 import com.wzl.commons.model.entity.*;
 import com.wzl.commons.model.*;
 import com.wzl.commons.model.ResultObj;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 
 public interface QueryController {
@@ -40,10 +41,10 @@ public interface QueryController {
 
     /**
      * 下载文件
-     * @param inEnt
+     * @param postJson
      * @return
      */
-    String downFile(@RequestBody QuerySearchDto inEnt);
+    ResponseEntity<byte[]> downFile(String postJson);
 
     //——代码分隔线——
 }
