@@ -92,10 +92,10 @@ public class FileController {
         return reObj;
     }
 
-    @GetMapping("/downloadFile/{fileName:.+}")
-    public ResponseEntity<Resource> downloadFile(@PathVariable String fileName,String path, HttpServletRequest request) {
+    @GetMapping("/downloadFile/{path1}/{path2}/{fileName:.+}")
+    public ResponseEntity<Resource> downloadFile(@PathVariable String fileName,@PathVariable String path1,@PathVariable String path2, HttpServletRequest request) {
         // Load file as Resource
-        Resource resource = fileService.loadFileAsResource(fileName, path);
+        Resource resource = fileService.loadFileAsResource(fileName, path1+"/"+path2);
 
         // Try to determine file's content type
         String contentType = null;
