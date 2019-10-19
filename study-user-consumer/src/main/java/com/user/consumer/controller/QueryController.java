@@ -8,6 +8,8 @@ import com.wzl.commons.model.ResultObj;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.HashMap;
+
 public interface QueryController {
     /**
      * 根据代码查询Query
@@ -16,7 +18,7 @@ public interface QueryController {
      */
     ResultObj<FaQueryEntity> GetSingleQuery(@RequestBody DtoDo inObj);
 
-    ResultObj<DataGridDataJson> getListData(@RequestBody QuerySearchDto querySearchModel);
+    ResultObj<HashMap<String,Object>> getListData(@RequestBody QuerySearchDto querySearchModel);
 
     /**
      * 查询单个Query

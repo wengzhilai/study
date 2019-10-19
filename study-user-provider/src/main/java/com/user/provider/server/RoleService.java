@@ -2,10 +2,7 @@ package com.user.provider.server;
 
 
 import com.wzl.commons.model.*;
-import com.wzl.commons.model.dto.DataGridDataJson;
 import com.wzl.commons.model.dto.DtoSave;
-import com.wzl.commons.model.dto.query.QuerySearchDto;
-import com.wzl.commons.model.entity.FaQueryEntity;
 import com.wzl.commons.model.entity.FaRoleEntity;
 
 public interface RoleService {

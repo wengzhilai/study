@@ -23,4 +23,6 @@ public class ResultObj<T>  extends Result{
     public T data;
 
     public List<T> dataList;
+
+    public Integer total;
 }

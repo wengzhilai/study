@@ -22,6 +22,7 @@ import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.HashMap;
 
 @RestController
 @RequestMapping("query")
@@ -38,8 +39,8 @@ public class QueryControllerImpl implements QueryController {
 
     @ApiOperation(value="获取Query所有数据")
     @RequestMapping(value = "getListData", method = RequestMethod.POST)
-    public ResultObj<DataGridDataJson> getListData(@RequestBody QuerySearchDto inObj) {
-        ResultObj<DataGridDataJson> resultObj=service.getListData(inObj);
+    public ResultObj<HashMap<String,Object>> getListData(@RequestBody QuerySearchDto inObj) {
+        ResultObj<HashMap<String,Object>> resultObj=service.getListData(inObj);
         return resultObj;
     }
 

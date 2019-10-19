@@ -1,7 +1,6 @@
 package com.user.consumer.feign;
 
 
-import com.wzl.commons.model.dto.DataGridDataJson;
 import com.wzl.commons.model.dto.query.QuerySearchDto;
 import com.wzl.commons.model.entity.*;
 import com.wzl.commons.model.DtoDo;
@@ -13,8 +12,8 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+
+import java.util.HashMap;
 
 @FeignClient(value = "user-provider-uery",url = "http://localhost:9001")
 public interface QueryService {
@@ -28,7 +27,7 @@ public interface QueryService {
      * @return
      */
     @GetMapping(value = "/query/getListData")
-    ResultObj<DataGridDataJson> getListData(@RequestBody QuerySearchDto querySearchModel);
+    ResultObj<HashMap<String,Object>> getListData(@RequestBody QuerySearchDto querySearchModel);
 
     /**
      * 查询单个Query

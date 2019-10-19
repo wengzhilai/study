@@ -4,10 +4,7 @@ import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateTime;
 import com.alibaba.fastjson.JSONObject;
 import com.dependencies.mybatis.service.MyBatisService;
-import com.wzl.commons.model.DtoDo;
 import com.wzl.commons.model.KV;
-import com.wzl.commons.model.dto.DataGridDataJson;
-import com.wzl.commons.model.dto.query.QueryCfg;
 import com.wzl.commons.model.dto.query.QueryRowBtnShowCondition;
 import com.wzl.commons.model.dto.query.QuerySearchDto;
 import com.wzl.commons.model.entity.*;
@@ -81,9 +78,8 @@ public class QueryServiceImpl implements QueryService {
         return resultObj;
     }
 
-    public ResultObj<DataGridDataJson> getListData(QuerySearchDto inEnt) {
-        ResultObj<DataGridDataJson> reObj = new ResultObj<>(true);
-        DataGridDataJson reEnt = new DataGridDataJson();
+    public ResultObj<HashMap<String,Object>> getListData(QuerySearchDto inEnt) {
+        ResultObj<HashMap<String,Object>> reObj = new ResultObj<>(true);
         String code=inEnt.code;
         FaQueryEntity query = dapper.getSingle(moduleEh,i -> i.code == code);
         if (query == null)
@@ -100,14 +96,13 @@ public class QueryServiceImpl implements QueryService {
             String[] sqlList = reObj.msg.split(";");
             if (sqlList.length > 0)
             {
-                reEnt.rows = dapper.Select(sqlList[0]);
+                reObj.dataList = dapper.Select(sqlList[0]);
             }
 
             if (sqlList.length > 1)
             {
-                reEnt.total = dapper.exec(sqlList[1]);
+                reObj.total = dapper.exec(sqlList[1]);
             }
-            reObj.data = reEnt;
         }
         catch(Exception e)
         {

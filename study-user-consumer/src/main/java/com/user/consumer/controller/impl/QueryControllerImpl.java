@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -43,8 +44,8 @@ public class QueryControllerImpl implements QueryController {
 
     @RequestMapping(value = "getListData", method = RequestMethod.POST)
     @ApiOperation(value = "获取数据")
-    public ResultObj<DataGridDataJson> getListData(QuerySearchDto inObj) {
-        ResultObj<DataGridDataJson> resultObj=service.getListData(inObj);
+    public ResultObj<HashMap<String,Object>> getListData(QuerySearchDto inObj) {
+        ResultObj<HashMap<String,Object>> resultObj=service.getListData(inObj);
         return resultObj;
     }
 

@@ -9,6 +9,8 @@ import com.wzl.commons.model.dto.query.QuerySearchDto;
 import com.wzl.commons.model.entity.FaQueryEntity;
 import feign.Response;
 
+import java.util.HashMap;
+
 public class QueryServiceImpl implements QueryService {
     @Override
     public ResultObj<FaQueryEntity> GetSingleQuery(DtoDo code) {
@@ -16,7 +18,7 @@ public class QueryServiceImpl implements QueryService {
     }
 
     @Override
-    public ResultObj<DataGridDataJson> getListData(QuerySearchDto querySearchModel) {
+    public ResultObj<HashMap<String,Object>> getListData(QuerySearchDto querySearchModel) {
         return null;
     }
 

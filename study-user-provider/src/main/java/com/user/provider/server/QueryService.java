@@ -1,13 +1,13 @@
 package com.user.provider.server;
 
 
-import com.wzl.commons.model.DtoDo;
-import com.wzl.commons.model.dto.DataGridDataJson;
 import com.wzl.commons.model.dto.query.QuerySearchDto;
 import com.wzl.commons.model.entity.*;
 import com.wzl.commons.model.Result;
 import com.wzl.commons.model.ResultObj;
 import com.wzl.commons.model.dto.DtoSave;
+
+import java.util.HashMap;
 
 public interface QueryService {
     //region 基本方法
@@ -45,7 +45,7 @@ public interface QueryService {
      * @param inObj
      * @return
      */
-    ResultObj<DataGridDataJson> getListData(QuerySearchDto inObj);
+    ResultObj<HashMap<String,Object>> getListData(QuerySearchDto inObj);
 
     /**
      * 下载文件

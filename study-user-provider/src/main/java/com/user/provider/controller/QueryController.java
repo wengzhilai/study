@@ -7,6 +7,7 @@ import com.wzl.commons.model.entity.*;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 
 public interface QueryController {
     /**
@@ -23,7 +24,7 @@ public interface QueryController {
      * @param querySearchModel
      * @return
      */
-    ResultObj<DataGridDataJson> getListData(@RequestBody QuerySearchDto querySearchModel);
+    ResultObj<HashMap<String,Object>> getListData(@RequestBody QuerySearchDto querySearchModel);
 
     /**
      * 查询单个Query
