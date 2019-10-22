@@ -1,6 +1,7 @@
 package com.quartz.controller.impl;
 
-import com.quartz.jobs.HelloWorldJob;
+import cn.hutool.core.convert.Convert;
+import com.quartz.jobs.*;
 import com.quartz.models.QuartzTaskModel;
 import com.wzl.commons.model.DtoDo;
 import com.wzl.commons.model.Result;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 import static org.quartz.CronScheduleBuilder.cronSchedule;
@@ -21,9 +23,7 @@ import static org.quartz.CronScheduleBuilder.cronSchedule;
 @RestController
 @RequestMapping("quartzTask")
 public class QuartzTaskControllerImpl {
-//
-//    @Autowired
-//    JobFactory jobFactory;
+
 
     @Autowired
     SchedulerFactory schedulerFactory;
@@ -33,26 +33,36 @@ public class QuartzTaskControllerImpl {
     @RequestMapping(value = "/start", method = RequestMethod.POST)
     @ApiOperation(value = "开启任务")
     public Result start() throws SchedulerException {
+//        if(!scheduler.isStarted()) {
+            //创建JobDetail实例，并与HelloWordlJob类绑定
+            JobDetail jobDetail = JobBuilder.newJob(HelloWorldJob.class).withIdentity("jobHello", "jobGroup1").build();
+            JobDetail jobDetailTask = JobBuilder.newJob(LoadTaskJob.class).withIdentity("jobLoadTask", "jobGroup1").build();
 
-        //创建JobDetail实例，并与HelloWordlJob类绑定
-        JobDetail jobDetail = JobBuilder.newJob(HelloWorldJob.class).withIdentity("job1", "jobGroup1")
-                .build();
-        //创建触发器Trigger实例(立即执行，每隔1S执行一次)
-        Trigger trigger = TriggerBuilder.newTrigger()
-                .withIdentity("trigger1", "triggerGroup1")
-                .startNow()
-                .withSchedule(cronSchedule("1/5 * * * * ?"))
-                .build();
-        //开始执行
-        scheduler.scheduleJob(jobDetail, trigger);
-        scheduler.start();
+            //创建触发器Trigger实例(立即执行，每隔1S执行一次)
+            Trigger trigger = TriggerBuilder.newTrigger()
+                    .withIdentity("trigger1", "triggerGroup1")
+                    .startNow()
+                    .withSchedule(cronSchedule("1/5 * * * * ?"))
+                    .build();
+            Trigger trigger1 = TriggerBuilder.newTrigger()
+                    .withIdentity("trigger2", "triggerGroup1")
+                    .startNow()
+                    .withSchedule(cronSchedule("1/5 * * * * ?"))
+                    .build();
+            //开始执行
+            scheduler.scheduleJob(jobDetail, trigger);
+            scheduler.scheduleJob(jobDetailTask, trigger1);
+            scheduler.start();
+//        }
         return new Result(true);
     }
 
     @RequestMapping(value = "/stop", method = RequestMethod.POST)
     @ApiOperation(value = "开启任务")
     public Result stop() throws SchedulerException {
-        scheduler.shutdown();
+        if(scheduler.isStarted()) {
+            scheduler.shutdown();
+        }
         return new Result(true);
     }
 
@@ -72,32 +82,36 @@ public class QuartzTaskControllerImpl {
 
     @RequestMapping(value = "/list", method = RequestMethod.POST)
     @ApiOperation(value = "获取任务列表")
-    public ResultObj<QuartzTaskModel> list() {
-        ResultObj<QuartzTaskModel> reObj = new ResultObj<>();
-//        //1、通过调度工厂获得调度器
-//        GroupMatcher<TriggerKey> matcherTrigger = GroupMatcher.anyGroup();
-//        Set<TriggerKey> allTrigger = scheduler.getTriggerKeys(matcherTrigger);
-//
-//        for (TriggerKey triggerKey : allTrigger) {
-//            QuartzTaskModel task = new QuartzTaskModel();
-//            Trigger jobTrigger = scheduler.getTrigger(triggerKey);
-//            JobDetail jobDetail = scheduler.getJobDetail(jobTrigger.getJobKey());
-//            task.keyName = jobTrigger.getKey().getName();
-//            task.keyGroup = jobTrigger.getKey().getGroup();
-//            task.jobDataListStr = TypeChange.objToString(jobTrigger.getJobDataMap());
-//            task.calendarName = jobTrigger.getCalendarName();
-//            task.description = jobTrigger.getDescription();
-//            if (jobTrigger.EndTimeUtc != null) task.EndTime = jobTrigger.EndTimeUtc.Value.ToString("yyyy-MM-dd HH-mm-ss");
-//            if (jobTrigger.FinalFireTimeUtc != null) task.FinalFireTimeUtc = jobTrigger.FinalFireTimeUtc.Value.ToString("yyyy-MM-dd HH-mm-ss");
-//            //返回下一次计划触发Quartz.ITrigger的时间
-//            if (jobTrigger.GetNextFireTimeUtc() != null) task.NextFireTime = jobTrigger.GetNextFireTimeUtc().Value.ToString("yyyy-MM-dd HH-mm-ss");
-//            //优先级
-//            task.Priority = jobTrigger.Priority;
-//            //触发器调度应该开始的时间
-//            task.StartTimeUtc = jobTrigger.StartTimeUtc.ToString("yyyy-MM-dd HH-mm-ss");
-//            reObj.DataList.Add(task);
-//        }
-//        return reObj;
+    public ResultObj<QuartzTaskModel> list() throws SchedulerException {
+        ResultObj<QuartzTaskModel> reObj = new ResultObj<>(true);
+        reObj.dataList=new ArrayList<>();
+        //1、通过调度工厂获得调度器
+        GroupMatcher<TriggerKey> matcherTrigger = GroupMatcher.anyGroup();
+        if(scheduler.isStarted()) {
+            Set<TriggerKey> allTrigger = scheduler.getTriggerKeys(matcherTrigger);
+            for (TriggerKey triggerKey : allTrigger) {
+                QuartzTaskModel task = new QuartzTaskModel();
+                Trigger jobTrigger = scheduler.getTrigger(triggerKey);
+                JobDetail jobDetail = scheduler.getJobDetail(jobTrigger.getJobKey());
+                task.keyName = jobTrigger.getKey().getName();
+                task.keyGroup = jobTrigger.getKey().getGroup();
+                task.jobDataListStr = TypeChange.objToString(jobTrigger.getJobDataMap());
+                task.calendarName = jobTrigger.getCalendarName();
+                task.description = jobTrigger.getDescription();
+                if (jobTrigger.getEndTime() != null)
+                    task.endTime = TypeChange.dateToString(jobTrigger.getEndTime(), "yyyy-MM-dd HH-mm-ss");
+                if (jobTrigger.getFinalFireTime() != null)
+                    task.finalFireTimeUtc = TypeChange.dateToString(jobTrigger.getFinalFireTime(), "yyyy-MM-dd HH-mm-ss");
+                //返回下一次计划触发Quartz.ITrigger的时间
+                if (jobTrigger.getNextFireTime() != null)
+                    task.nextFireTime = TypeChange.dateToString(jobTrigger.getNextFireTime(), "yyyy-MM-dd HH-mm-ss");
+                //优先级
+                task.priority = jobTrigger.getPriority();
+                //触发器调度应该开始的时间
+                task.startTimeUtc = TypeChange.dateToString(jobTrigger.getStartTime(), "yyyy-MM-dd HH-mm-ss");
+                reObj.dataList.add(task);
+            }
+        }
         return reObj;
     }
 }

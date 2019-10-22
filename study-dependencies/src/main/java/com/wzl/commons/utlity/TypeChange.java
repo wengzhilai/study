@@ -3,6 +3,8 @@ package com.wzl.commons.utlity;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -43,6 +45,7 @@ public class TypeChange {
 
     /**
      * 字符串转JavaBean列表
+     *
      * @param inStr
      * @param _classType
      * @param <T>
@@ -50,5 +53,17 @@ public class TypeChange {
      */
     public static <T> List<T> jsonStrToJavaBeanList(String inStr, Class<T> _classType) {
         return JSON.parseArray(inStr, _classType);
+    }
+
+    /**
+     * pattern
+     * @param inTime
+     * @param pattern 格式化字符串 yyyy-MM-dd HH:mm:ss
+     * @return
+     */
+    public static String dateToString(Date inTime, String pattern) {
+        SimpleDateFormat formatter = new SimpleDateFormat(pattern);
+        String dateString = formatter.format(inTime);
+        return dateString;
     }
 }
