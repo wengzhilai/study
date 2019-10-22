@@ -1,0 +1,11 @@
+url = jdbc:mysql://127.0.0.1:3306/fa?serverTimezone=UTC&useSSL=false&characterEncoding=utf-8
+user = fa
+pass = fa
+
+## 可选配置
+# 是否在日志中显示执行的SQL
+showSql = true
+# 是否格式化显示的SQL
+formatSql = true
+# 是否显示SQL参数
+showParams = true

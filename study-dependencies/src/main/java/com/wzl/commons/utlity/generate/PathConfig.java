@@ -55,6 +55,11 @@ public class PathConfig {
      */
     public String tableNameRmark;
 
+    /**
+     * 生成文件数，用于生成文件
+     */
+    public List<Integer> makeFileNum=Arrays.asList(1,2,3,4,5,6,7,8);
+
 
     public String getConsumerControllerInterfaceText(String packageName, String tableName) {
         String contentStr = "package %1$s;\n" +
@@ -329,10 +334,7 @@ public class PathConfig {
                 "\n" +
                 "\n" +
                 "import com.wzl.commons.model.*;\n" +
-                "import com.wzl.commons.model.dto.DataGridDataJson;\n" +
                 "import com.wzl.commons.model.dto.DtoSave;\n" +
-                "import com.wzl.commons.model.dto.query.QuerySearchDto;\n" +
-                "import com.wzl.commons.model.entity.FaQueryEntity;\n" +
                 "import com.wzl.commons.model.entity.Fa%2$sEntity;\n" +
                 "\n" +
                 "public interface %2$sService {\n" +
@@ -371,7 +373,7 @@ public class PathConfig {
         String contentStr = "package %1$s;\n" +
                 "\n" +
                 "import com.dependencies.mybatis.service.MyBatisService;\n" +
-                "import com.user.provider.server.%2$sService;\n" +
+                "import %1$s.%2$sService;\n" +
                 "import com.wzl.commons.model.*;\n" +
                 "import com.wzl.commons.model.dto.DtoSave;\n" +
                 "import com.wzl.commons.model.entity.Fa%2$sEntity;\n" +

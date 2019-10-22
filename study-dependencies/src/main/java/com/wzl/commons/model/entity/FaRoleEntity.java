@@ -2,6 +2,7 @@ package com.wzl.commons.model.entity;
 
 import com.wzl.commons.model.mynum.DatabaseGeneratedOption;
 import com.wzl.commons.retention.*;
+import lombok.Data;
 
 import java.util.List;
 
@@ -9,6 +10,7 @@ import java.util.List;
  * 系统角色
  */
 @Table("fa_role")
+@Data
 public class FaRoleEntity {
 
     @Key

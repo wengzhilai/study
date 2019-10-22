@@ -13,6 +13,15 @@ public class GenerateFile {
      */
     public static void Start(PathConfig cfg) throws IOException {
 
+
+        if(cfg.makeFileNum.contains(8))
+        {
+            FileWriter fw = new FileWriter(cfg.consumerPath+"controller/impl/"+cfg.tableName+"ControllerImpl.java");
+            fw.write(cfg.getConsumerControllerImplText(cfg.consumerPackageName + ".controller.impl", cfg.tableName));
+            fw.flush();
+            fw.close();
+        }
+        if(cfg.makeFileNum.contains(7))
         {
             FileWriter fw = new FileWriter(cfg.consumerPath+"controller/"+cfg.tableName+"Controller.java");
             fw.write(cfg.getConsumerControllerInterfaceText(cfg.consumerPackageName + ".controller", cfg.tableName));
@@ -20,20 +29,7 @@ public class GenerateFile {
             fw.close();
         }
 
-        {
-            FileWriter fw = new FileWriter(cfg.consumerPath+"controller/impl/"+cfg.tableName+"ControllerImpl.java");
-            fw.write(cfg.getConsumerControllerImplText(cfg.consumerPackageName + ".controller.impl", cfg.tableName));
-            fw.flush();
-            fw.close();
-        }
-
-        {
-            FileWriter fw = new FileWriter(cfg.consumerPath+"feign/"+cfg.tableName+"Service.java");
-            fw.write(cfg.getConsumerFeignInterfaceText(cfg.consumerPackageName + ".feign", cfg.tableName));
-            fw.flush();
-            fw.close();
-        }
-
+        if(cfg.makeFileNum.contains(6))
         {
             FileWriter fw = new FileWriter(cfg.consumerPath+"feign/impl/"+cfg.tableName+"ServiceImpl.java");
             fw.write(cfg.getConsumerFeignImplText(cfg.consumerPackageName + ".feign.impl", cfg.tableName));
@@ -41,8 +37,25 @@ public class GenerateFile {
             fw.close();
         }
 
+        if(cfg.makeFileNum.contains(5))
+        {
+            FileWriter fw = new FileWriter(cfg.consumerPath+"feign/"+cfg.tableName+"Service.java");
+            fw.write(cfg.getConsumerFeignInterfaceText(cfg.consumerPackageName + ".feign", cfg.tableName));
+            fw.flush();
+            fw.close();
+        }
 
 
+
+        if(cfg.makeFileNum.contains(4))
+        {
+            FileWriter fw = new FileWriter(cfg.providerPath+"controller/impl/"+cfg.tableName+"ControllerImpl.java");
+            fw.write(cfg.getProviderControllerImplText(cfg.providerPackageName + ".controller.impl", cfg.tableName));
+            fw.flush();
+            fw.close();
+        }
+
+        if(cfg.makeFileNum.contains(3))
         {
 
             FileWriter fw = new FileWriter(cfg.providerPath+"controller/"+cfg.tableName+"Controller.java");
@@ -51,20 +64,7 @@ public class GenerateFile {
             fw.close();
         }
 
-        {
-            FileWriter fw = new FileWriter(cfg.providerPath+"controller/impl/"+cfg.tableName+"ControllerImpl.java");
-            fw.write(cfg.getProviderControllerImplText(cfg.providerPackageName + ".controller.impl", cfg.tableName));
-            fw.flush();
-            fw.close();
-        }
-
-        {
-            FileWriter fw = new FileWriter(cfg.providerPath+"server/"+cfg.tableName+"Service.java");
-            fw.write(cfg.getProviderServerInterFaceText(cfg.providerPackageName + ".server", cfg.tableName));
-            fw.flush();
-            fw.close();
-        }
-
+        if(cfg.makeFileNum.contains(2))
         {
             FileWriter fw = new FileWriter(cfg.providerPath+"server/impl/"+cfg.tableName+"ServiceImpl.java");
             fw.write(cfg.getProviderServerImplText(cfg.providerPackageName + ".server.impl", cfg.tableName));
@@ -72,6 +72,13 @@ public class GenerateFile {
             fw.close();
         }
 
+        if(cfg.makeFileNum.contains(1))
+        {
+            FileWriter fw = new FileWriter(cfg.providerPath+"server/"+cfg.tableName+"Service.java");
+            fw.write(cfg.getProviderServerInterFaceText(cfg.providerPackageName + ".server", cfg.tableName));
+            fw.flush();
+            fw.close();
+        }
     }
 
     /**

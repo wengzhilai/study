@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 
 @RunWith(SpringRunner.class)
@@ -21,13 +22,15 @@ public class GenerateTests {
     @Test
     public void MakeClassFile() {
         PathConfig cfg=new PathConfig();
-        cfg.tableName="User";
+        cfg.tableName="Script";
 //        cfg.consumerPath="/Users/wengzhilai/Desktop/java/study/study-user-consumer/src/main/java/com/user/consumer/";
 //        cfg.providerPath="/Users/wengzhilai/Desktop/java/study/study-user-provider/src/main/java/com/user/provider/";
-        cfg.consumerPath="D:\\IdeaProjects\\study_new\\study-user-consumer/src/main/java/com/user/consumer/";
-        cfg.providerPath="D:\\IdeaProjects\\study_new\\study-user-provider/src/main/java/com/user/provider/";
-        cfg.consumerPackageName="com.user.consumer";
-        cfg.providerPackageName="com.user.provider";
+        cfg.consumerPath="D:\\IdeaProjects\\study_new\\study-quartz\\src\\main\\java\\com\\quartz\\";
+        cfg.providerPath="D:\\IdeaProjects\\study_new\\study-quartz\\src\\main\\java\\com\\quartz\\";
+        cfg.consumerPackageName="com.quartz";
+        cfg.providerPackageName="com.quartz";
+
+        cfg.makeFileNum=Arrays.asList(1,2);
         try {
             GenerateFile.Start(cfg);
         } catch (IOException e) {
@@ -66,21 +69,15 @@ public class GenerateTests {
     public void MakeEntity(){
         PathConfig cfg=new PathConfig();
         cfg.entityPath="D:\\IdeaProjects\\study_new\\study-dependencies\\src\\main\\java\\com\\wzl\\commons\\model\\entity\\";
-        cfg.tableName="FA_USER";
-        cfg.tableNameRmark="用户";
+        cfg.tableName="FA_SCRIPT_TASK_LOG";
+        cfg.tableNameRmark="任务日志";
         cfg.clumStr="" +
                 "ID\tID\tint\t\t\tTRUE\tFALSE\tTRUE\n" +
-                "姓名\tNAME\tvarchar(80)\t80\t\tFALSE\tFALSE\tFALSE\n" +
-                "登录名\tLOGIN_NAME\tvarchar(20)\t20\t\tFALSE\tFALSE\tFALSE\n" +
-                "头像图片\tICON_FILES_ID\tint\t\t\tFALSE\tFALSE\tFALSE\n" +
-                "归属地\tDISTRICT_ID\tint\t\t\tFALSE\tTRUE\tTRUE\n" +
-                "锁定\tIS_LOCKED\tnumeric(1)\t1\t\tFALSE\tFALSE\tFALSE\n" +
-                "创建时间\tCREATE_TIME\tdatetime\t\t\tFALSE\tFALSE\tFALSE\n" +
-                "登录次数\tLOGIN_COUNT\tint\t\t\tFALSE\tFALSE\tFALSE\n" +
-                "最后登录时间\tLAST_LOGIN_TIME\tdatetime\t\t\tFALSE\tFALSE\tFALSE\n" +
-                "最后离开时间\tLAST_LOGOUT_TIME\tdatetime\t\t\tFALSE\tFALSE\tFALSE\n" +
-                "最后活动时间\tLAST_ACTIVE_TIME\tdatetime\t\t\tFALSE\tFALSE\tFALSE\n" +
-                "备注\tREMARK\tvarchar(2000)\t2,000\t\tFALSE\tFALSE\tFALSE" +
+                "口径任务ID\tSCRIPT_TASK_ID\tint\t\t\tFALSE\tTRUE\tTRUE\n" +
+                "记录时间\tLOG_TIME\tdatetime\t\t\tFALSE\tFALSE\tTRUE\n" +
+                "日志级别\tLOG_TYPE\tnumeric(1)\t1\t\tFALSE\tFALSE\tTRUE\n" +
+                "日志说明\tMESSAGE\ttext\t\t\tFALSE\tFALSE\tFALSE\n" +
+                "SQL内容\tSQL_TEXT\ttext\t\t\tFALSE\tFALSE\tFALSE" +
                 "";
         try {
             GenerateFile.MakeEntity(cfg);
