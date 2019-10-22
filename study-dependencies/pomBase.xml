@@ -47,6 +47,7 @@
         <fastjson.version>1.2.59</fastjson.version>
 
         <jaque.version>2.4.4</jaque.version>
+        <hutool-all.version>4.6.7</hutool-all.version>
     </properties>
 
     <dependencyManagement>
@@ -148,6 +149,11 @@
                 <groupId>com.trigersoft</groupId>
                 <artifactId>jaque</artifactId>
                 <version>${jaque.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool-all.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
