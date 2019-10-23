@@ -56,6 +56,7 @@ public class FaScriptTaskEntity {
     /**
     * 时间表达式
     */
+    @Required
     @Display(Name = "时间表达式")
     @Column("RUN_WHEN")
     public String runWhen;
@@ -63,6 +64,7 @@ public class FaScriptTaskEntity {
     /**
     * 脚本参数
     */
+    @Required
     @Display(Name = "脚本参数")
     @Column("RUN_ARGS")
     public String runArgs;

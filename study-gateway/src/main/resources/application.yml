@@ -14,6 +14,13 @@ spring:
         filters:
         - StripPrefix=1
 
+      - id: user-quartz
+        uri: http://localhost:9200
+        order: -1
+        predicates:
+        - Path=/quartz/**
+        filters:
+        - StripPrefix=1
 
       - id: equipment-consumer
         uri: http://localhost:9004

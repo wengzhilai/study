@@ -30,10 +30,19 @@ public class QuartzTaskControllerImpl {
     @Autowired
     Scheduler scheduler ;
 
+    @RequestMapping(value = "/isStarted", method = RequestMethod.POST)
+    @ApiOperation(value = "开启任务")
+    public ResultObj<Boolean> isStarted() throws SchedulerException {
+        ResultObj<Boolean> resultObj= new ResultObj<>(true);
+        resultObj.data=!scheduler.isShutdown();
+        return resultObj;
+    }
+
     @RequestMapping(value = "/start", method = RequestMethod.POST)
     @ApiOperation(value = "开启任务")
     public Result start() throws SchedulerException {
-//        if(!scheduler.isStarted()) {
+        if(scheduler.isShutdown()) {
+            scheduler.shutdown(false);
             //创建JobDetail实例，并与HelloWordlJob类绑定
             JobDetail jobDetail = JobBuilder.newJob(HelloWorldJob.class).withIdentity("jobHello", "jobGroup1").build();
             JobDetail jobDetailTask = JobBuilder.newJob(LoadTaskJob.class).withIdentity("jobLoadTask", "jobGroup1").build();
@@ -53,14 +62,14 @@ public class QuartzTaskControllerImpl {
             scheduler.scheduleJob(jobDetail, trigger);
             scheduler.scheduleJob(jobDetailTask, trigger1);
             scheduler.start();
-//        }
+        }
         return new Result(true);
     }
 
     @RequestMapping(value = "/stop", method = RequestMethod.POST)
     @ApiOperation(value = "开启任务")
     public Result stop() throws SchedulerException {
-        if(scheduler.isStarted()) {
+        if(!scheduler.isShutdown()) {
             scheduler.shutdown();
         }
         return new Result(true);
@@ -87,7 +96,7 @@ public class QuartzTaskControllerImpl {
         reObj.dataList=new ArrayList<>();
         //1、通过调度工厂获得调度器
         GroupMatcher<TriggerKey> matcherTrigger = GroupMatcher.anyGroup();
-        if(scheduler.isStarted()) {
+        if(!scheduler.isShutdown()) {
             Set<TriggerKey> allTrigger = scheduler.getTriggerKeys(matcherTrigger);
             for (TriggerKey triggerKey : allTrigger) {
                 QuartzTaskModel task = new QuartzTaskModel();
