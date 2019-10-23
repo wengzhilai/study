@@ -1,10 +1,10 @@
 package com.quartz.server.impl;
 
 import com.dependencies.mybatis.service.MyBatisService;
-import com.quartz.server.ScriptService;
+import com.quartz.server.ScriptTaskService;
 import com.wzl.commons.model.*;
 import com.wzl.commons.model.dto.DtoSave;
-import com.wzl.commons.model.entity.FaScriptEntity;
+import com.wzl.commons.model.entity.FaScriptTaskEntity;
 import com.wzl.commons.model.mynum.DatabaseGeneratedOption;
 import com.wzl.commons.retention.EntityHelper;
 import org.apache.commons.lang3.StringUtils;
@@ -17,15 +17,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class ScriptServiceImpl implements ScriptService {
+public class ScriptTaskServiceImpl implements ScriptTaskService {
     @Autowired
-    MyBatisService<FaScriptEntity> dapper;
+    MyBatisService<FaScriptTaskEntity> dapper;
 
-    EntityHelper<FaScriptEntity> eh = new EntityHelper<>(new FaScriptEntity());
+    EntityHelper<FaScriptTaskEntity> eh = new EntityHelper<>(new FaScriptTaskEntity());
 
     @Override
-    public FaScriptEntity singleByKey(int key) {
-        return dapper.getSingleByPrimaryKey(eh, key);
+    public ResultObj<FaScriptTaskEntity> singleByKey(DtoDo inEnt) {
+        ResultObj<FaScriptTaskEntity> reObj=new ResultObj<>(true);
+        reObj.data=dapper.getSingleByPrimaryKey(eh, Convert.toInt(inEnt.key));
+        return reObj;
     }
 
     @Override
@@ -37,7 +39,7 @@ public class ScriptServiceImpl implements ScriptService {
     }
 
     @Override
-    public ResultObj<Integer> save(DtoSave<FaScriptEntity> inEnt) {
+    public ResultObj<Integer> save(DtoSave<FaScriptTaskEntity> inEnt) {
         ResultObj<Integer> resultObj = new ResultObj<>();
         eh.data = inEnt.data;
         if(inEnt.whereList==null || inEnt.whereList.size()==0){
@@ -60,14 +62,6 @@ public class ScriptServiceImpl implements ScriptService {
         resultObj.success = resultObj.data > 0;
 
         return resultObj;
-    }
-
-
-    @Override
-    public List<FaScriptEntity> getNormalScript() {
-        List<FaScriptEntity> reList= dapper.getAll(eh,x->x.status=="正常");
-        reList=reList.stream().filter(x->!StringUtils.isAllBlank(x.runWhen)).collect(Collectors.toList());
-        return  reList;
     }
 
     //——代码分隔线——
