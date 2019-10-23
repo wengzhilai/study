@@ -91,13 +91,14 @@ public class QuartzTaskControllerImpl {
             Set<TriggerKey> allTrigger = scheduler.getTriggerKeys(matcherTrigger);
             for (TriggerKey triggerKey : allTrigger) {
                 QuartzTaskModel task = new QuartzTaskModel();
-                Trigger jobTrigger = scheduler.getTrigger(triggerKey);
+                CronTrigger jobTrigger = (CronTrigger) scheduler.getTrigger(triggerKey);
                 JobDetail jobDetail = scheduler.getJobDetail(jobTrigger.getJobKey());
                 task.keyName = jobTrigger.getKey().getName();
                 task.keyGroup = jobTrigger.getKey().getGroup();
                 task.jobDataListStr = TypeChange.objToString(jobTrigger.getJobDataMap());
-                task.calendarName = jobTrigger.getCalendarName();
+//                task.calendarName = jobTrigger.getCalendarName();
                 task.description = jobTrigger.getDescription();
+                task.calendarName=jobTrigger.getCronExpression();
                 if (jobTrigger.getEndTime() != null)
                     task.endTime = TypeChange.dateToString(jobTrigger.getEndTime(), "yyyy-MM-dd HH-mm-ss");
                 if (jobTrigger.getFinalFireTime() != null)
