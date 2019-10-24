@@ -3,6 +3,7 @@ package com.quartz.jobs;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.crypto.SecureUtil;
 import com.dependencies.mybatis.service.MyBatisService;
+import com.quartz.component.BeanContext;
 import com.quartz.server.ScriptService;
 import com.quartz.server.ScriptTaskLogService;
 import com.quartz.server.ScriptTaskService;
@@ -17,6 +18,9 @@ import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.Scheduler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,30 +29,28 @@ import java.util.Date;
 /**
  * 执行具体任务
  */
-@RestController
+@Configuration
+@EnableScheduling
 public class QuartzJobRunScriptTask implements Job {
-    @Autowired
-    Scheduler scheduler;
 
-    @Autowired
-    ScriptService scriptService;
 
-    @Autowired
-    ScriptTaskService scriptTaskService;
+    ScriptService scriptService=BeanContext.getBean(ScriptService.class);;
 
-    @Autowired
-    ScriptTaskLogService scriptTaskLogService;
+    ScriptTaskService scriptTaskService=BeanContext.getBean(ScriptTaskService.class);
 
-    @Autowired
-    MyBatisService<FaScriptTaskEntity> dapper;
+    ScriptTaskLogService scriptTaskLogService=BeanContext.getBean(ScriptTaskLogService.class);
+
+    MyBatisService<FaScriptTaskEntity> dapper=BeanContext.getBean(MyBatisService.class);
 
     @Override
     public void execute(JobExecutionContext context) {
+
+
         // var jobData = context.JobDetail.JobDataMap;//获取Job中的参数
         JobDataMap triggerData = context.getTrigger().getJobDataMap();//获取Trigger中的参数
         // 当Job中的参数和Trigger中的参数名称一样时，用 context.MergedJobDataMap获取参数时，Trigger中的值会覆盖Job中的值。
         // var data = context.MergedJobDataMap;//获取Job和Trigger中合并的参数
-        int scriptId = triggerData.getIntFromString("scriptId");
+        int scriptId = triggerData.getInt("scriptId");
         FaScriptEntity script = scriptService.singleByKey(scriptId);
         if (script != null) {
             FaScriptTaskEntity addEnt = new FaScriptTaskEntity();
@@ -58,8 +60,11 @@ public class QuartzJobRunScriptTask implements Job {
             addEnt.returnCode = "";
             addEnt.runArgs = script.runArgs;
             addEnt.runData = script.runData;
+            addEnt.runWhen = script.runWhen;
             addEnt.runState = "等待";
             addEnt.scriptId = scriptId;
+            addEnt.serviceFlag="";
+            addEnt.region="";
             addEnt.startTime = new Date();
             ResultObj<Integer> taskId = scriptTaskService.save(new DtoSave<>(addEnt));
             if (!taskId.success) {

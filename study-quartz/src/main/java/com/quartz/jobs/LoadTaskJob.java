@@ -2,6 +2,7 @@ package com.quartz.jobs;
 
 import com.quartz.server.ScriptService;
 import com.wzl.commons.model.entity.FaScriptEntity;
+import com.wzl.commons.utlity.TypeChange;
 import org.quartz.*;
 import org.quartz.impl.matchers.GroupMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ import static org.quartz.CronScheduleBuilder.cronSchedule;
 /**
  * 用于加载数据库资源，并添加任务
  */
-@RestController
+@Component
 public class LoadTaskJob implements Job {
     @Autowired
     ScriptService scriptService;
@@ -33,7 +34,7 @@ public class LoadTaskJob implements Job {
     @Override
     public void execute(JobExecutionContext jobExecutionContext) {
         String strTime = new SimpleDateFormat("HH-mm-ss").format(new Date());
-        System.out.println(strTime + ":Hello World！LoadTaskJob");
+        System.out.println(strTime + ":Scan Task Job");
         List<FaScriptEntity> allTask = scriptService.getNormalScript();
         for (FaScriptEntity item : allTask) {
             GroupMatcher<TriggerKey> matcherTrigger = GroupMatcher.groupEquals("ScriptTriggerGroup");
@@ -45,7 +46,7 @@ public class LoadTaskJob implements Job {
                 Optional<TriggerKey> triggerKey = triggerList.stream().filter(x -> x.getName().equals("scriptTrigger_" + item.id)).findFirst();
 
                 //表示任务存在
-                if (triggerKey.get() != null) {
+                if (triggerKey.isPresent()) {
                     CronTrigger trigger = (CronTrigger) scheduler.getTrigger(triggerKey.get());
                     JobDetail job = scheduler.getJobDetail(trigger.getJobKey());
                     //表示式有变化则重新加载表达式
@@ -54,6 +55,7 @@ public class LoadTaskJob implements Job {
                         trigger.getTriggerBuilder().withSchedule(cronSchedule(item.runWhen));
                         scheduler.deleteJob(trigger.getJobKey());
                         scheduler.scheduleJob(job, trigger);
+                        System.out.println(String.format("表达式变化:原表达式[%1$s],现表达式[%2$s]",trigger.getCronExpression(),item.runWhen));
                     }
                 }
                 else {
@@ -67,6 +69,7 @@ public class LoadTaskJob implements Job {
                     JobDetail jobDetail = JobBuilder.newJob(QuartzJobRunScriptTask.class).withIdentity("scriptJob_" + item.id, "ScriptJobGroup").build();
                     //开始执行
                     scheduler.scheduleJob(jobDetail, trigger);
+                    System.out.println(String.format("添加新的任务:%1$s", TypeChange.objToString(item)));
                 }
             } catch (SchedulerException e) {
                 e.printStackTrace();

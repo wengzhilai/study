@@ -48,7 +48,9 @@ public class ScriptServiceImpl implements ScriptService {
         if (inEnt.data.id == 0) {
             if (eh.dbKeyType == DatabaseGeneratedOption.Computed) {
                 eh.data.id = dapper.getIncreasingId(eh);
-                inEnt.saveFieldList.add("id");
+                if(inEnt.saveFieldList!=null){
+                    inEnt.saveFieldList.add("id");
+                }
             }
             resultObj.data = dapper.insert(eh, inEnt.saveFieldList, null);
         } else {

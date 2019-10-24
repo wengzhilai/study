@@ -50,7 +50,14 @@ public class ScriptTaskLogServiceImpl implements ScriptTaskLogService {
         if (inEnt.data.id == 0) {
             if (eh.dbKeyType == DatabaseGeneratedOption.Computed) {
                 eh.data.id = dapper.getIncreasingId(eh);
-                inEnt.saveFieldList.add("id");
+                if(inEnt.saveFieldList!=null){
+                    inEnt.saveFieldList.add("id");
+                }
+            }
+            try {
+                eh.updateNullValue();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
             }
             resultObj.data = dapper.insert(eh, inEnt.saveFieldList, null);
         } else {

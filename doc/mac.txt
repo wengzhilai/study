@@ -4,3 +4,7 @@ mysqldump -h localhost -u root -pabcdef study>F:\Study\angular\my-admin\data\stu
 mysqldump -h localhost -u root -pWcnfngo123 study>/Users/wengzhilai/Desktop/Angular/ngx-admin/data/study.sql
 mysqldump -h localhost -u root -pWcnfngo123 study>/Users/wengzhilai/Desktop/java/study/doc/study.sql
 
+
+
+NSERT INTO FA_SCRIPT_TASK  (BODY_TEXT,RUN_WHEN,START_TIME,RETURN_CODE,SERVICE_FLAG,BODY_HASH,REGION,GROUP_ID,SCRIPT_ID,DISABLE_REASON,END_TIME,DISABLE_DATE,RUN_ARGS,RUN_STATE,RUN_DATA,LOG_TYPE,ID,DSL_TYPE) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+### Cause: java.sql.SQLIntegrityConstraintViolationException: Column 'DISABLE_REASON' cannot be null

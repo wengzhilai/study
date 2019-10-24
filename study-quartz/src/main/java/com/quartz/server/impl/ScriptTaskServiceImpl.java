@@ -25,8 +25,8 @@ public class ScriptTaskServiceImpl implements ScriptTaskService {
 
     @Override
     public ResultObj<FaScriptTaskEntity> singleByKey(DtoDo inEnt) {
-        ResultObj<FaScriptTaskEntity> reObj=new ResultObj<>(true);
-        reObj.data=dapper.getSingleByPrimaryKey(eh, Convert.toInt(inEnt.key));
+        ResultObj<FaScriptTaskEntity> reObj = new ResultObj<>(true);
+        reObj.data = dapper.getSingleByPrimaryKey(eh, Convert.toInt(inEnt.key));
         return reObj;
     }
 
@@ -42,19 +42,26 @@ public class ScriptTaskServiceImpl implements ScriptTaskService {
     public ResultObj<Integer> save(DtoSave<FaScriptTaskEntity> inEnt) {
         ResultObj<Integer> resultObj = new ResultObj<>();
         eh.data = inEnt.data;
-        if(inEnt.whereList==null || inEnt.whereList.size()==0){
-            inEnt.whereList=new ArrayList<>();
+        if (inEnt.whereList == null || inEnt.whereList.size() == 0) {
+            inEnt.whereList = new ArrayList<>();
             inEnt.whereList.add("id");
         }
 
         if (inEnt.data.id == 0) {
             if (eh.dbKeyType == DatabaseGeneratedOption.Computed) {
                 eh.data.id = dapper.getIncreasingId(eh);
-                inEnt.saveFieldList.add("id");
+                if (inEnt.saveFieldList != null) {
+                    inEnt.saveFieldList.add("id");
+                }
+            }
+            try {
+                eh.updateNullValue();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
             }
             resultObj.data = dapper.insert(eh, inEnt.saveFieldList, null);
         } else {
-            if(inEnt.whereList==null || inEnt.whereList.size()==0){
+            if (inEnt.whereList == null || inEnt.whereList.size() == 0) {
                 inEnt.whereList = Arrays.asList("id");
             }
             resultObj.data = dapper.update(eh, inEnt.saveFieldList, inEnt.whereList);

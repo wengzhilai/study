@@ -281,6 +281,77 @@ INSERT INTO `fa_script` VALUES (2,'string','string','select * from fa_user','112
 UNLOCK TABLES;
 
 --
+-- Table structure for table `fa_script_task`
+--
+
+DROP TABLE IF EXISTS `fa_script_task`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `fa_script_task` (
+  `ID` int(11) NOT NULL,
+  `SCRIPT_ID` int(11) NOT NULL,
+  `BODY_TEXT` text NOT NULL,
+  `BODY_HASH` varchar(255) NOT NULL,
+  `RUN_STATE` varchar(10) NOT NULL DEFAULT '0' COMMENT '0等待\n            1运行\n            2停止',
+  `RUN_WHEN` varchar(30) NOT NULL DEFAULT '''''',
+  `RUN_ARGS` varchar(255) NOT NULL DEFAULT '',
+  `RUN_DATA` varchar(20) NOT NULL DEFAULT '0',
+  `LOG_TYPE` decimal(1,0) NOT NULL DEFAULT 0,
+  `DSL_TYPE` varchar(255) NOT NULL DEFAULT '',
+  `RETURN_CODE` varchar(10) NOT NULL DEFAULT '''0''' COMMENT '成功\n            失败',
+  `START_TIME` datetime NOT NULL DEFAULT str_to_date('1970-01-01','%Y-%m-%d'),
+  `END_TIME` datetime NOT NULL DEFAULT str_to_date('1970-01-01','%Y-%m-%d'),
+  `DISABLE_DATE` datetime NOT NULL DEFAULT str_to_date('1970-01-01','%Y-%m-%d'),
+  `DISABLE_REASON` varchar(50) NOT NULL DEFAULT '',
+  `SERVICE_FLAG` varchar(50) NOT NULL DEFAULT '',
+  `REGION` varchar(10) NOT NULL DEFAULT '',
+  `GROUP_ID` int(11) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`ID`),
+  KEY `FK_FA_SCRIPT_TASK_REF_SCRIPT` (`SCRIPT_ID`),
+  CONSTRAINT `fa_script_task_ibfk_1` FOREIGN KEY (`SCRIPT_ID`) REFERENCES `fa_script` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `fa_script_task`
+--
+
+LOCK TABLES `fa_script_task` WRITE;
+/*!40000 ALTER TABLE `fa_script_task` DISABLE KEYS */;
+INSERT INTO `fa_script_task` VALUES (50992,2,'select * from fa_user','fee382eed21d49c152b1fcc9c02f5f7f','等待','0/20 * * * * ?','string','string',0,'','','2019-10-24 16:08:40','1969-12-31 16:00:00','1969-12-31 16:00:00','','','',0),(50993,2,'select * from fa_user','fee382eed21d49c152b1fcc9c02f5f7f','等待','0/20 * * * * ?','string','string',0,'','','2019-10-24 16:09:00','1969-12-31 16:00:00','1969-12-31 16:00:00','','','',0),(50994,2,'select * from fa_user','fee382eed21d49c152b1fcc9c02f5f7f','等待','0/20 * * * * ?','string','string',0,'','','2019-10-24 16:09:20','1969-12-31 16:00:00','1969-12-31 16:00:00','','','',0),(50995,2,'select * from fa_user','fee382eed21d49c152b1fcc9c02f5f7f','等待','0/20 * * * * ?','string','string',0,'','','2019-10-24 16:10:40','1969-12-31 16:00:00','1969-12-31 16:00:00','','','',0),(50996,2,'select * from fa_user','fee382eed21d49c152b1fcc9c02f5f7f','等待','0/20 * * * * ?','string','string',0,'','','2019-10-24 16:11:00','1969-12-31 16:00:00','1969-12-31 16:00:00','','','',0),(50997,2,'select * from fa_user','fee382eed21d49c152b1fcc9c02f5f7f','等待','0/20 * * * * ?','string','string',0,'','','2019-10-24 16:11:20','1969-12-31 16:00:00','1969-12-31 16:00:00','','','',0),(50998,2,'select * from fa_user','fee382eed21d49c152b1fcc9c02f5f7f','等待','0/20 * * * * ?','string','string',0,'','','2019-10-24 16:11:40','1969-12-31 16:00:00','1969-12-31 16:00:00','','','',0),(50999,2,'select * from fa_user','fee382eed21d49c152b1fcc9c02f5f7f','等待','0/20 * * * * ?','string','string',0,'','','2019-10-24 16:12:20','1969-12-31 16:00:00','1969-12-31 16:00:00','','','',0),(51000,2,'select * from fa_user','fee382eed21d49c152b1fcc9c02f5f7f','等待','0/20 * * * * ?','string','string',0,'','','2019-10-24 16:12:40','1969-12-31 16:00:00','1969-12-31 16:00:00','','','',0),(51001,2,'select * from fa_user','fee382eed21d49c152b1fcc9c02f5f7f','等待','0/20 * * * * ?','string','string',0,'','','2019-10-24 16:13:00','1969-12-31 16:00:00','1969-12-31 16:00:00','','','',0);
+/*!40000 ALTER TABLE `fa_script_task` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `fa_script_task_log`
+--
+
+DROP TABLE IF EXISTS `fa_script_task_log`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `fa_script_task_log` (
+  `ID` int(11) NOT NULL,
+  `SCRIPT_TASK_ID` int(11) NOT NULL,
+  `LOG_TIME` datetime NOT NULL DEFAULT str_to_date('1970-01-01','%Y-%m-%d'),
+  `LOG_TYPE` decimal(1,0) NOT NULL DEFAULT 1 COMMENT '0正常日志\n            1错误日志',
+  `MESSAGE` text NOT NULL,
+  `SQL_TEXT` text NOT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `FK_FA_SCRIPT_TASK_LOG_REF_TASK` (`SCRIPT_TASK_ID`),
+  CONSTRAINT `fa_script_task_log_ibfk_1` FOREIGN KEY (`SCRIPT_TASK_ID`) REFERENCES `fa_script_task` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `fa_script_task_log`
+--
+
+LOCK TABLES `fa_script_task_log` WRITE;
+/*!40000 ALTER TABLE `fa_script_task_log` DISABLE KEYS */;
+/*!40000 ALTER TABLE `fa_script_task_log` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `fa_user`
 --
 
@@ -416,7 +487,7 @@ CREATE TABLE `sequence` (
 
 LOCK TABLES `sequence` WRITE;
 /*!40000 ALTER TABLE `sequence` DISABLE KEYS */;
-INSERT INTO `sequence` VALUES ('fa_equipment',4,1),('fa_files',30,1),('fa_login',54,1),('fa_login_history',31,1),('fa_module',21,1),('fa_query',13,1),('fa_role',8,1),('fa_script',2,1),('fa_script_task',50949,1),('fa_script_task_log',50941,1),('fa_table_column',11,1),('fa_table_type',9,1),('fa_user',1597,1);
+INSERT INTO `sequence` VALUES ('fa_equipment',4,1),('fa_files',30,1),('fa_login',54,1),('fa_login_history',31,1),('fa_module',21,1),('fa_query',13,1),('fa_role',8,1),('fa_script',2,1),('fa_script_task',51001,1),('fa_script_task_log',50951,1),('fa_table_column',11,1),('fa_table_type',9,1),('fa_user',1597,1);
 /*!40000 ALTER TABLE `sequence` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -429,4 +500,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-10-22 12:01:58
+-- Dump completed on 2019-10-25  0:14:53

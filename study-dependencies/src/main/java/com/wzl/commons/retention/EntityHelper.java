@@ -1,5 +1,6 @@
 package com.wzl.commons.retention;
 
+import cn.hutool.core.convert.Convert;
 import com.wzl.commons.model.mynum.DatabaseGeneratedOption;
 import org.apache.commons.lang3.StringUtils;
 
@@ -152,6 +153,33 @@ public class EntityHelper<T> {
             }
         }
         return reList;
+    }
+
+    public void updateNullValue() throws IllegalAccessException {
+        Field[] fields = data.getClass().getDeclaredFields();//获取类成员变量
+        for (Field field : fields) {//遍历
+
+            if (field.isAnnotationPresent(Column.class)) {//判断是不是EmployeeName类型注解
+                Column column = field.getAnnotation(Column.class);
+                Object value = null;
+                try {
+                    value = field.get(data);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+                if (value == null) {
+                    if (String.class.equals(field.getType())) {
+                        field.set(data, "");
+                    } else if (Date.class.equals(field.getType())) {
+                        field.set(data, Convert.toDate("1970-01-01"));
+                    }
+                    try {
+                    }catch(Exception e){
+
+                    }
+                }
+            }
+        }
     }
 
 
