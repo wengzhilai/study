@@ -17,12 +17,15 @@ import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.Scheduler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
 
 /**
  * 执行具体任务
  */
+@RestController
 public class QuartzJobRunScriptTask implements Job {
     @Autowired
     Scheduler scheduler;

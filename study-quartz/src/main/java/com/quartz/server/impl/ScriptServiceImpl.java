@@ -65,7 +65,8 @@ public class ScriptServiceImpl implements ScriptService {
 
     @Override
     public List<FaScriptEntity> getNormalScript() {
-        List<FaScriptEntity> reList= dapper.getAll(eh,x->x.status=="正常");
+        List<FaScriptEntity> reList;
+        reList= dapper.getAll(eh,x->x.status=="正常");
         reList=reList.stream().filter(x->!StringUtils.isAllBlank(x.runWhen)).collect(Collectors.toList());
         return  reList;
     }

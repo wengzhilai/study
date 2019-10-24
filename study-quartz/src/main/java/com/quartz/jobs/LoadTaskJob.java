@@ -7,6 +7,8 @@ import org.quartz.impl.matchers.GroupMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -20,7 +22,7 @@ import static org.quartz.CronScheduleBuilder.cronSchedule;
 /**
  * 用于加载数据库资源，并添加任务
  */
-@Controller
+@RestController
 public class LoadTaskJob implements Job {
     @Autowired
     ScriptService scriptService;

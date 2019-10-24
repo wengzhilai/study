@@ -42,27 +42,24 @@ public class QuartzTaskControllerImpl {
     @ApiOperation(value = "开启任务")
     public Result start() throws SchedulerException {
         if(scheduler.isShutdown()) {
-            scheduler.shutdown(false);
+            scheduler.standby();
+        }
+        JobDetail jobDetail= scheduler.getJobDetail(new JobKey("jobLoadTask", "jobGroup"));
+        if(jobDetail==null) {
             //创建JobDetail实例，并与HelloWordlJob类绑定
-            JobDetail jobDetail = JobBuilder.newJob(HelloWorldJob.class).withIdentity("jobHello", "jobGroup1").build();
-            JobDetail jobDetailTask = JobBuilder.newJob(LoadTaskJob.class).withIdentity("jobLoadTask", "jobGroup1").build();
+            JobDetail jobDetailTask = JobBuilder.newJob(LoadTaskJob.class).withIdentity("jobLoadTask", "jobGroup").build();
 
             //创建触发器Trigger实例(立即执行，每隔1S执行一次)
-            Trigger trigger = TriggerBuilder.newTrigger()
-                    .withIdentity("trigger1", "triggerGroup1")
-                    .startNow()
-                    .withSchedule(cronSchedule("1/5 * * * * ?"))
-                    .build();
+
             Trigger trigger1 = TriggerBuilder.newTrigger()
-                    .withIdentity("trigger2", "triggerGroup1")
+                    .withIdentity("triggerJob", "triggerJobGroup")
                     .startNow()
                     .withSchedule(cronSchedule("1/5 * * * * ?"))
                     .build();
             //开始执行
-            scheduler.scheduleJob(jobDetail, trigger);
             scheduler.scheduleJob(jobDetailTask, trigger1);
-            scheduler.start();
         }
+        scheduler.start();
         return new Result(true);
     }
 
@@ -70,7 +67,7 @@ public class QuartzTaskControllerImpl {
     @ApiOperation(value = "开启任务")
     public Result stop() throws SchedulerException {
         if(!scheduler.isShutdown()) {
-            scheduler.shutdown();
+            scheduler.standby();
         }
         return new Result(true);
     }
