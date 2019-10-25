@@ -28,15 +28,11 @@ public class SchedulerConfig implements ApplicationListener<ContextRefreshedEven
 
     @Scheduled(cron = "1/5 * * * * ?")
     public void run() throws SchedulerException {
-
-        System.out.println("1");
         JobDetail jobDetail= scheduler.getJobDetail(new JobKey("jobLoadTask", "jobGroup"));
         if(jobDetail==null) {
             //创建JobDetail实例，并与HelloWordlJob类绑定
             JobDetail jobDetailTask = JobBuilder.newJob(LoadTaskJob.class).withIdentity("jobLoadTask", "jobGroup").build();
-
             //创建触发器Trigger实例(立即执行，每隔1S执行一次)
-
             Trigger trigger1 = TriggerBuilder.newTrigger()
                     .withIdentity("triggerJob", "triggerJobGroup")
                     .startNow()

@@ -42,11 +42,6 @@ public class ScriptTaskServiceImpl implements ScriptTaskService {
     public ResultObj<Integer> save(DtoSave<FaScriptTaskEntity> inEnt) {
         ResultObj<Integer> resultObj = new ResultObj<>();
         eh.data = inEnt.data;
-        if (inEnt.whereList == null || inEnt.whereList.size() == 0) {
-            inEnt.whereList = new ArrayList<>();
-            inEnt.whereList.add("id");
-        }
-
         if (inEnt.data.id == 0) {
             if (eh.dbKeyType == DatabaseGeneratedOption.Computed) {
                 eh.data.id = dapper.getIncreasingId(eh);
@@ -59,14 +54,14 @@ public class ScriptTaskServiceImpl implements ScriptTaskService {
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
-            resultObj.data = dapper.insert(eh, inEnt.saveFieldList, null);
+            resultObj.success = dapper.insert(eh, inEnt.saveFieldList, null) > 0;
         } else {
             if (inEnt.whereList == null || inEnt.whereList.size() == 0) {
                 inEnt.whereList = Arrays.asList("id");
             }
-            resultObj.data = dapper.update(eh, inEnt.saveFieldList, inEnt.whereList);
+            resultObj.success = dapper.update(eh, inEnt.saveFieldList, inEnt.whereList) > 0;
         }
-        resultObj.success = resultObj.data > 0;
+        resultObj.data = eh.data.id;
 
         return resultObj;
     }

@@ -193,6 +193,8 @@ public class MyBatisServiceImpl<T> implements MyBatisService<T> {
         return ent.current_val;
     }
 
+
+
     @Override
     public String oneValue(EntityHelper eh, String selectStr, String whereStr) {
         return mh.oneValue(eh, selectStr,whereStr);
