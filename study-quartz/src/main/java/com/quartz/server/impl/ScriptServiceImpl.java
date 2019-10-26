@@ -1,5 +1,6 @@
 package com.quartz.server.impl;
 
+import cn.hutool.crypto.SecureUtil;
 import com.dependencies.mybatis.service.MyBatisService;
 import com.quartz.server.ScriptService;
 import com.wzl.commons.model.*;
@@ -32,7 +33,10 @@ public class ScriptServiceImpl implements ScriptService {
     public Result delete(DtoDo inEnt) {
         Result reObj = new Result();
         Integer key = Convert.toInt(inEnt.key);
+        dapper.alter("DELETE from fa_script_task_log where SCRIPT_TASK_ID in (select id from fa_script_task where SCRIPT_ID ="+key+"2)");
+        dapper.alter("DELETE from fa_script_task where SCRIPT_ID ="+key);
         reObj.success = dapper.delete(eh, x -> x.id == key) > 0;
+
         return reObj;
     }
 
@@ -52,6 +56,12 @@ public class ScriptServiceImpl implements ScriptService {
                     inEnt.saveFieldList.add("id");
                 }
             }
+            try {
+                eh.updateNullValue();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+            eh.data.bodyHash= SecureUtil.md5(eh.data.bodyText);
             resultObj.data = dapper.insert(eh, inEnt.saveFieldList, null);
         } else {
             if(inEnt.whereList==null || inEnt.whereList.size()==0){

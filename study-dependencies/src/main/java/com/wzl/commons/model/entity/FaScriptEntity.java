@@ -135,11 +135,6 @@ from FA_SCRIPT
 
 /*
 {
-  "code": {
-    "title": "Name",
-    "type": "String",
-    "editable": true
-  },
   "id": {
     "title": "ID",
     "type": "int",

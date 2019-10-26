@@ -22,15 +22,15 @@ public class GenerateTests {
     @Test
     public void MakeClassFile() {
         PathConfig cfg=new PathConfig();
-        cfg.tableName="ScriptTaskLog";
-//        cfg.consumerPath="/Users/wengzhilai/Desktop/java/study/study-quartz/src/main/java/com/quartz/";
-//        cfg.providerPath="/Users/wengzhilai/Desktop/java/study/study-quartz/src/main/java/com/quartz/";
-        cfg.consumerPath="D:\\IdeaProjects\\study_new\\study-quartz\\src\\main\\java\\com\\quartz\\";
-        cfg.providerPath="D:\\IdeaProjects\\study_new\\study-quartz\\src\\main\\java\\com\\quartz\\";
+        cfg.tableName="Script";
+        cfg.consumerPath="/Users/wengzhilai/Desktop/java/study/study-quartz/src/main/java/com/quartz/";
+        cfg.providerPath="/Users/wengzhilai/Desktop/java/study/study-quartz/src/main/java/com/quartz/";
+//        cfg.consumerPath="D:\\IdeaProjects\\study_new\\study-quartz\\src\\main\\java\\com\\quartz\\";
+//        cfg.providerPath="D:\\IdeaProjects\\study_new\\study-quartz\\src\\main\\java\\com\\quartz\\";
         cfg.consumerPackageName="com.quartz";
         cfg.providerPackageName="com.quartz";
 
-        cfg.makeFileNum=Arrays.asList(1,2);
+        cfg.makeFileNum=Arrays.asList(3,4);
         try {
             GenerateFile.Start(cfg);
         } catch (IOException e) {

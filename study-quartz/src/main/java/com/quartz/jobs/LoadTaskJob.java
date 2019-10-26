@@ -1,11 +1,13 @@
 package com.quartz.jobs;
 
+import com.quartz.component.BeanContext;
 import com.quartz.server.ScriptService;
 import com.wzl.commons.model.entity.FaScriptEntity;
 import com.wzl.commons.utlity.TypeChange;
 import org.quartz.*;
 import org.quartz.impl.matchers.GroupMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
@@ -23,16 +25,16 @@ import static org.quartz.CronScheduleBuilder.cronSchedule;
 /**
  * 用于加载数据库资源，并添加任务
  */
-@Component
 public class LoadTaskJob implements Job {
-    @Autowired
+
     ScriptService scriptService;
 
-    @Autowired
-    Scheduler scheduler ;
+    Scheduler scheduler;
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) {
+        scheduler=BeanContext.getBean(Scheduler.class);
+        scriptService=BeanContext.getBean(ScriptService.class);
         String strTime = new SimpleDateFormat("HH-mm-ss").format(new Date());
         System.out.println(strTime + ":Scan Task Job");
         List<FaScriptEntity> allTask = scriptService.getNormalScript();
