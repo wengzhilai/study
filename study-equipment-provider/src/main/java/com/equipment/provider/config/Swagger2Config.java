@@ -1,4 +1,4 @@
-package com.equipment.config;
+package com.equipment.provider.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

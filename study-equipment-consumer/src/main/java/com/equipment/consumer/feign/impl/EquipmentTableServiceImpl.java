@@ -1,11 +1,11 @@
 package com.equipment.consumer.feign.impl;
 
 import com.equipment.consumer.feign.EquipmentTableService;
-import com.equipment.consumer.model.entity.FaTableTypeEntity;
 import com.wzl.commons.model.DtoDo;
 import com.wzl.commons.model.KVT;
 import com.wzl.commons.model.ResultObj;
 import com.wzl.commons.model.dto.DtoSave;
+import com.wzl.commons.model.entity.FaTableTypeEntity;
 import org.springframework.stereotype.Component;
 
 @Component

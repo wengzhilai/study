@@ -2,17 +2,17 @@ package com.equipment.consumer.controller.impl;
 
 import com.equipment.consumer.controller.TableController;
 import com.equipment.consumer.feign.EquipmentTableService;
-import com.equipment.consumer.model.entity.FaTableTypeEntity;
 import com.wzl.commons.model.DtoDo;
 import com.wzl.commons.model.KVT;
 import com.wzl.commons.model.ResultObj;
 import com.wzl.commons.model.dto.DtoSave;
+import com.wzl.commons.model.entity.FaTableTypeEntity;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("Table")
 @RestController
+@RequestMapping("table")
 public class TableControllerImpl implements TableController {
 
 
@@ -27,19 +27,19 @@ public class TableControllerImpl implements TableController {
 
 
 
-    @RequestMapping(value = "/SingleByKey", method = RequestMethod.POST)
+    @RequestMapping(value = "/singleByKey", method = RequestMethod.POST)
     @ApiOperation(value = "获取单个")
     public ResultObj<FaTableTypeEntity> SingleByKey(@RequestBody DtoDo inEnt) {
         return testC.SingleByKey(inEnt);
     }
 
-    @RequestMapping(value = "/Save", method = RequestMethod.POST)
+    @RequestMapping(value = "/save", method = RequestMethod.POST)
     @ApiOperation(value = "保存")
     public ResultObj<Integer> Save(@RequestBody DtoSave<FaTableTypeEntity> inEnt) {
         return testC.Save(inEnt);
     }
 
-    @RequestMapping(value = "/Delete", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
     @ApiOperation(value = "删除")
     public ResultObj<Integer> Delete(@RequestBody DtoDo inEnt) {
         return testC.Delete(inEnt);

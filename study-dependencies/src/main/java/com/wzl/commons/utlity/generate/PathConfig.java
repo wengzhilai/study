@@ -106,8 +106,8 @@ public class PathConfig {
         String contentStr = "package %1$s;\n" +
                 "\n" +
                 "import cn.hutool.core.convert.Convert;\n" +
-                "import com.user.consumer.controller.%2$sController;\n" +
-                "import com.user.consumer.feign.%2$sService;\n" +
+                "import %4$s.controller.%2$sController;\n" +
+                "import %4$s.feign.%2$sService;\n" +
                 "import com.wzl.commons.model.*;\n" +
                 "import com.wzl.commons.model.dto.DtoSave;\n" +
                 "import com.wzl.commons.model.entity.Fa%2$sEntity;\n" +
@@ -147,7 +147,7 @@ public class PathConfig {
                 "\n" +
                 "}\n";
 
-        contentStr = String.format(contentStr, packageName, tableName, tableName.toLowerCase());
+        contentStr = String.format(contentStr, packageName, tableName, tableName.toLowerCase(),this.consumerPackageName);
         return contentStr;
     }
 
@@ -201,7 +201,7 @@ public class PathConfig {
     public String getConsumerFeignImplText(String packageName, String tableName) {
         String contentStr = "package %1$s;\n" +
                 "\n" +
-                "import com.user.consumer.feign.%2$sService;\n" +
+                "import %3$s.feign.%2$sService;\n" +
                 "import com.wzl.commons.model.*;\n" +
                 "import com.wzl.commons.model.dto.DtoSave;\n" +
                 "import com.wzl.commons.model.entity.Fa%2$sEntity;\n" +
@@ -237,7 +237,7 @@ public class PathConfig {
                 "\n" +
                 "}\n";
 
-        contentStr = String.format(contentStr, packageName, tableName);
+        contentStr = String.format(contentStr, packageName, tableName,this.consumerPackageName);
         return contentStr;
     }
 
@@ -736,7 +736,7 @@ public class PathConfig {
     private  List<Filed> getFiledListByMysql(String tableName){
         List<Filed> allFiled = new ArrayList<>();
         try {
-            String sql="select column_name name, column_comment remark,COLUMN_TYPE type,IS_NULLABLE required,COLUMN_KEY='PRI' isKey  from information_schema.columns where table_schema ='fa' and table_name = '%1$s' ;";
+            String sql="select column_name name, column_comment remark,COLUMN_TYPE type,IS_NULLABLE required,COLUMN_KEY='PRI' isKey  from information_schema.columns where table_schema ='study' and table_name = '%1$s' ;";
             sql=String.format(sql,tableName);
             List<Entity> allFiled1= Db.use().query( sql);
             for (Entity entity : allFiled1) {
@@ -761,6 +761,7 @@ public class PathConfig {
 
     private String getFiledType(String typeStr) {
         String reObj = "";
+        typeStr=typeStr.split("\\(")[0];
         switch (typeStr) {
             case "int":
                 reObj = "int";

@@ -1,7 +1,7 @@
-package com.equipment.controller.impl;
+package com.equipment.provider.controller.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.equipment.controller.TestController;
+import com.equipment.provider.controller.TestController;
 import com.wzl.commons.model.DtoDo;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.RequestBody;

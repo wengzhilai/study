@@ -22,15 +22,18 @@ public class GenerateTests {
     @Test
     public void MakeClassFile() {
         PathConfig cfg=new PathConfig();
-        cfg.tableName="Script";
-        cfg.consumerPath="/Users/wengzhilai/Desktop/java/study/study-quartz/src/main/java/com/quartz/";
-        cfg.providerPath="/Users/wengzhilai/Desktop/java/study/study-quartz/src/main/java/com/quartz/";
+        cfg.tableName="Equipment";
+//        cfg.consumerPath="/Users/wengzhilai/Desktop/java/study/study-quartz/src/main/java/com/quartz/";
+//        cfg.providerPath="/Users/wengzhilai/Desktop/java/study/study-quartz/src/main/java/com/quartz/";
+        cfg.consumerPath="/Users/wengzhilai/Desktop/java/study/study-equipment-consumer/src/main/java/com/equipment/consumer/";
+        cfg.providerPath="/Users/wengzhilai/Desktop/java/study/study-equipment-provider/src/main/java/com/equipment/provider/";
+
 //        cfg.consumerPath="D:\\IdeaProjects\\study_new\\study-quartz\\src\\main\\java\\com\\quartz\\";
 //        cfg.providerPath="D:\\IdeaProjects\\study_new\\study-quartz\\src\\main\\java\\com\\quartz\\";
-        cfg.consumerPackageName="com.quartz";
-        cfg.providerPackageName="com.quartz";
+        cfg.consumerPackageName="com.equipment.consumer";
+        cfg.providerPackageName="com.equipment.provider";
 
-        cfg.makeFileNum=Arrays.asList(3,4);
+        cfg.makeFileNum=Arrays.asList(7,8);
         try {
             GenerateFile.Start(cfg);
         } catch (IOException e) {
@@ -44,13 +47,16 @@ public class GenerateTests {
     @Test
     public void AddFunciton() {
         PathConfig cfg=new PathConfig();
-        cfg.tableName="Query";
-        cfg.consumerPath="/Users/wengzhilai/Desktop/java/study/study-user-consumer/src/main/java/com/user/consumer/";
-        cfg.providerPath="/Users/wengzhilai/Desktop/java/study/study-user-provider/src/main/java/com/user/provider/";
+        cfg.tableName="equipment";
+
+        cfg.consumerPath="/Users/wengzhilai/Desktop/java/study/study-equipment-consumer/src/main/java/com/equipment/consumer/";
+        cfg.providerPath="/Users/wengzhilai/Desktop/java/study/study-equipment-provider/src/main/java/com/equipment/provider/";
+//        cfg.consumerPath="/Users/wengzhilai/Desktop/java/study/study-user-consumer/src/main/java/com/user/consumer/";
+//        cfg.providerPath="/Users/wengzhilai/Desktop/java/study/study-user-provider/src/main/java/com/user/provider/";
 //        cfg.consumerPath="D:\\IdeaProjects\\study_new\\study-user-consumer/src/main/java/com/user/consumer/";
 //        cfg.providerPath="D:\\IdeaProjects\\study_new\\study-user-provider/src/main/java/com/user/provider/";
-        cfg.consumerPackageName="com.user.consumer";
-        cfg.providerPackageName="com.user.provider";
+        cfg.consumerPackageName="com.equipment.consumer";
+        cfg.providerPackageName="com.equipment.provider";
 
         try {
             String funName="downFile";
@@ -68,17 +74,18 @@ public class GenerateTests {
     @Test
     public void MakeEntity(){
         PathConfig cfg=new PathConfig();
-        cfg.entityPath="D:\\IdeaProjects\\study_new\\study-dependencies\\src\\main\\java\\com\\wzl\\commons\\model\\entity\\";
-        cfg.tableName="FA_SCRIPT_TASK_LOG";
-        cfg.tableNameRmark="任务日志";
-        cfg.clumStr="" +
-                "ID\tID\tint\t\t\tTRUE\tFALSE\tTRUE\n" +
-                "口径任务ID\tSCRIPT_TASK_ID\tint\t\t\tFALSE\tTRUE\tTRUE\n" +
-                "记录时间\tLOG_TIME\tdatetime\t\t\tFALSE\tFALSE\tTRUE\n" +
-                "日志级别\tLOG_TYPE\tnumeric(1)\t1\t\tFALSE\tFALSE\tTRUE\n" +
-                "日志说明\tMESSAGE\ttext\t\t\tFALSE\tFALSE\tFALSE\n" +
-                "SQL内容\tSQL_TEXT\ttext\t\t\tFALSE\tFALSE\tFALSE" +
-                "";
+//        cfg.entityPath="D:\\IdeaProjects\\study_new\\study-dependencies\\src\\main\\java\\com\\wzl\\commons\\model\\entity\\";
+        cfg.entityPath="/Users/wengzhilai/Desktop/java/study/study-dependencies/src/main/java/com/wzl/commons/model/entity/";
+        cfg.tableName="fa_table_type";
+        cfg.tableNameRmark="自定义表";
+//        cfg.clumStr="" +
+//                "ID\tID\tint\t\t\tTRUE\tFALSE\tTRUE\n" +
+//                "口径任务ID\tSCRIPT_TASK_ID\tint\t\t\tFALSE\tTRUE\tTRUE\n" +
+//                "记录时间\tLOG_TIME\tdatetime\t\t\tFALSE\tFALSE\tTRUE\n" +
+//                "日志级别\tLOG_TYPE\tnumeric(1)\t1\t\tFALSE\tFALSE\tTRUE\n" +
+//                "日志说明\tMESSAGE\ttext\t\t\tFALSE\tFALSE\tFALSE\n" +
+//                "SQL内容\tSQL_TEXT\ttext\t\t\tFALSE\tFALSE\tFALSE" +
+//                "";
         try {
             GenerateFile.MakeEntity(cfg);
         } catch (IOException e) {

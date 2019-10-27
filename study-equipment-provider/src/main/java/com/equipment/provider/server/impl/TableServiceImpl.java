@@ -1,13 +1,12 @@
-package com.equipment.service.impl;
+package com.equipment.provider.server.impl;
 
 import com.dependencies.mybatis.service.MyBatisService;
-import com.equipment.model.entity.FaTableColumnEntity;
-import com.equipment.model.entity.FaTableTypeEntity;
-import com.equipment.model.mynum.TableColumnType;
-import com.equipment.service.TableService;
+import com.equipment.provider.server.TableService;
 import com.wzl.commons.model.KVT;
 import com.wzl.commons.model.ResultObj;
 import com.wzl.commons.model.dto.DtoSave;
+import com.wzl.commons.model.entity.FaTableColumnEntity;
+import com.wzl.commons.model.entity.FaTableTypeEntity;
 import com.wzl.commons.model.mynum.DatabaseGeneratedOption;
 import com.wzl.commons.retention.EntityHelper;
 import com.wzl.commons.utlity.LogHelper;
@@ -16,10 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -38,6 +34,7 @@ public class TableServiceImpl implements TableService {
     public ResultObj<FaTableTypeEntity> SingleByKey(int key) {
         ResultObj<FaTableTypeEntity> reObj=new ResultObj<>();
         reObj.data=moduleMhs.getSingleByPrimaryKey(moduleEh, key);
+        reObj.data.allColumns=batisColumn.getAll(new EntityHelper(new FaTableColumnEntity()),x->x.tableTypeId==key);
         reObj.success=true;
         return reObj;
     }
@@ -47,7 +44,7 @@ public class TableServiceImpl implements TableService {
         ResultObj<Integer> resultObj = new ResultObj<>();
 
         //region 判断数据是否有效
-        if (inEnt.data.AllColumns == null || inEnt.data.AllColumns.size() == 0) {
+        if (inEnt.data.allColumns == null || inEnt.data.allColumns.size() == 0) {
             resultObj.success = false;
             resultObj.msg = "配置列不能为空";
             return resultObj;
@@ -68,6 +65,13 @@ public class TableServiceImpl implements TableService {
                 moduleEh.data.addTime = new Date();
             }
             isAdd = true;
+
+            try {
+                moduleEh.updateNullValue();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+
             resultObj.data = moduleMhs.insert(moduleEh, inEnt.saveFieldList, null);
             if (resultObj.data>0) {
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
@@ -79,6 +83,11 @@ public class TableServiceImpl implements TableService {
         } else {
             isAdd = false;
             oldEnt = moduleMhs.getSingleByPrimaryKey(moduleEh, moduleEh.data.id);
+            List<HashMap<String,Object>> list=moduleMhs.Select(this.CheckTableExistsNum(oldEnt.tableName));
+            if(list.size()==0){
+                moduleMhs.alter(MakeSqlCreateTable(inEnt.data));
+            }
+
             int id=moduleEh.data.id;
             oldColumnList=batisColumn.getAll(new EntityHelper(new FaTableColumnEntity()),x->x.tableTypeId==id,1,100,null);
             resultObj.data = moduleMhs.update(moduleEh, inEnt.saveFieldList, Arrays.asList("id"));
@@ -97,12 +106,17 @@ public class TableServiceImpl implements TableService {
         //endregion
 
         //region 修改阿或添加列
-        for (FaTableColumnEntity item : inEnt.data.AllColumns) {
+        for (FaTableColumnEntity item : inEnt.data.allColumns) {
             EntityHelper<FaTableColumnEntity> columEH = new EntityHelper(item);
             if (isAdd) //如果是新增加，或列ID为空
             {
                 item.tableTypeId = inEnt.data.id;
                 item.id = batisColumn.getIncreasingId(columEH);
+                try {
+                    columEH.updateNullValue();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
                 opNum = batisColumn.insert(columEH, null, null);
                 if (opNum < 1) {
                     TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
@@ -127,6 +141,11 @@ public class TableServiceImpl implements TableService {
                 }
                 if (oldCol == null) {
                     item.id = batisColumn.getIncreasingId(columEH);
+                    try {
+                        columEH.updateNullValue();
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
                     opNum = batisColumn.insert(columEH, null, null);
                     if (opNum < 1) {
                         TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
@@ -175,7 +194,7 @@ public class TableServiceImpl implements TableService {
         //endregion
 
         for (FaTableColumnEntity item : oldColumnList){
-            if(!inEnt.data.AllColumns.stream().anyMatch(x->x.columnName.equals(item.columnName))){
+            if(!inEnt.data.allColumns.stream().anyMatch(x->x.columnName.equals(item.columnName))){
                 EntityHelper<FaTableColumnEntity> columEH = new EntityHelper(item);
                 int delId=item.id;
                 batisColumn.delete(columEH,x->x.id==delId );
@@ -226,7 +245,7 @@ public class TableServiceImpl implements TableService {
     */
     public String MakeSqlCreateTable(FaTableTypeEntity inEnt) {
         List<String> allColumns = new ArrayList<>();
-        for (FaTableColumnEntity item : inEnt.AllColumns) {
+        for (FaTableColumnEntity item : inEnt.allColumns) {
             allColumns.add(
                     String.format("\r\n  %s %s %s COMMENT '%s'",
                             item.columnName,
@@ -248,7 +267,16 @@ public class TableServiceImpl implements TableService {
         return reObj;
     }
 
-
+    /**
+     * 判断表存在数
+     * @param tableName
+     * @return
+     */
+    public String CheckTableExistsNum(String tableName){
+        String reObj="show tables like '%1$s'";
+        reObj=String.format(reObj,tableName);
+        return reObj;
+    }
 
     /**
     * 修改表名
@@ -383,6 +411,8 @@ public class TableServiceImpl implements TableService {
                 return String.format("varchar(%s) CHARACTER SET utf8", inEnt.columnLong);
         }
     }
+
+
 
 
 }

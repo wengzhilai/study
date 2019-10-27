@@ -1,10 +1,10 @@
 package com.equipment.consumer.controller;
 
-import com.equipment.consumer.model.entity.FaTableTypeEntity;
 import com.wzl.commons.model.DtoDo;
 import com.wzl.commons.model.KVT;
 import com.wzl.commons.model.ResultObj;
 import com.wzl.commons.model.dto.DtoSave;
+import com.wzl.commons.model.entity.FaTableTypeEntity;
 
 public interface TableController {
     /**

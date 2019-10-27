@@ -1,10 +1,10 @@
-package com.equipment.controller;
+package com.equipment.provider.controller;
 
-import com.equipment.model.entity.FaTableTypeEntity;
 import com.wzl.commons.model.DtoDo;
 import com.wzl.commons.model.KVT;
 import com.wzl.commons.model.ResultObj;
 import com.wzl.commons.model.dto.DtoSave;
+import com.wzl.commons.model.entity.FaTableTypeEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 
 public interface TableController {

@@ -1,10 +1,9 @@
-package com.equipment.service;
+package com.equipment.provider.server;
 
-import com.equipment.model.entity.FaTableColumnEntity;
-import com.equipment.model.entity.FaTableTypeEntity;
 import com.wzl.commons.model.KVT;
 import com.wzl.commons.model.ResultObj;
 import com.wzl.commons.model.dto.DtoSave;
+import com.wzl.commons.model.entity.FaTableTypeEntity;
 
 public interface TableService {
     /**

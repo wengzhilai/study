@@ -1,11 +1,10 @@
-package com.quartz.server.impl;
+package com.equipment.provider.server.impl;
 
-import cn.hutool.crypto.SecureUtil;
 import com.dependencies.mybatis.service.MyBatisService;
-import com.quartz.server.ScriptService;
+import com.equipment.provider.server.EquipmentService;
 import com.wzl.commons.model.*;
 import com.wzl.commons.model.dto.DtoSave;
-import com.wzl.commons.model.entity.FaScriptEntity;
+import com.wzl.commons.model.entity.FaEquipmentEntity;
 import com.wzl.commons.model.mynum.DatabaseGeneratedOption;
 import com.wzl.commons.retention.EntityHelper;
 import org.apache.commons.lang3.StringUtils;
@@ -18,30 +17,29 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class ScriptServiceImpl implements ScriptService {
+public class EquipmentServiceImpl implements EquipmentService {
     @Autowired
-    MyBatisService<FaScriptEntity> dapper;
+    MyBatisService<FaEquipmentEntity> dapper;
 
-    EntityHelper<FaScriptEntity> eh = new EntityHelper<>(new FaScriptEntity());
+    EntityHelper<FaEquipmentEntity> eh = new EntityHelper<>(new FaEquipmentEntity());
 
     @Override
-    public FaScriptEntity singleByKey(int key) {
-        return dapper.getSingleByPrimaryKey(eh, key);
+    public ResultObj<FaEquipmentEntity> singleByKey(DtoDo inEnt) {
+        ResultObj<FaEquipmentEntity> reObj=new ResultObj<>(true);
+        reObj.data=dapper.getSingleByPrimaryKey(eh, Convert.toInt(inEnt.key));
+        return reObj;
     }
 
     @Override
     public Result delete(DtoDo inEnt) {
         Result reObj = new Result();
         Integer key = Convert.toInt(inEnt.key);
-        dapper.alter("DELETE from fa_script_task_log where SCRIPT_TASK_ID in (select id from fa_script_task where SCRIPT_ID ="+key+"2)");
-        dapper.alter("DELETE from fa_script_task where SCRIPT_ID ="+key);
         reObj.success = dapper.delete(eh, x -> x.id == key) > 0;
-
         return reObj;
     }
 
     @Override
-    public ResultObj<Integer> save(DtoSave<FaScriptEntity> inEnt) {
+    public ResultObj<Integer> save(DtoSave<FaEquipmentEntity> inEnt) {
         ResultObj<Integer> resultObj = new ResultObj<>();
         eh.data = inEnt.data;
         if(inEnt.whereList==null || inEnt.whereList.size()==0){
@@ -52,16 +50,8 @@ public class ScriptServiceImpl implements ScriptService {
         if (inEnt.data.id == 0) {
             if (eh.dbKeyType == DatabaseGeneratedOption.Computed) {
                 eh.data.id = dapper.getIncreasingId(eh);
-                if(inEnt.saveFieldList!=null){
-                    inEnt.saveFieldList.add("id");
-                }
+                inEnt.saveFieldList.add("id");
             }
-            try {
-                eh.updateNullValue();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-            eh.data.bodyHash= SecureUtil.md5(eh.data.bodyText);
             resultObj.data = dapper.insert(eh, inEnt.saveFieldList, null);
         } else {
             if(inEnt.whereList==null || inEnt.whereList.size()==0){
@@ -72,15 +62,6 @@ public class ScriptServiceImpl implements ScriptService {
         resultObj.success = resultObj.data > 0;
 
         return resultObj;
-    }
-
-
-    @Override
-    public List<FaScriptEntity> getNormalScript() {
-        List<FaScriptEntity> reList;
-        reList= dapper.getAll(eh,x->x.status=="1");
-        reList=reList.stream().filter(x->!StringUtils.isAllBlank(x.runWhen)).collect(Collectors.toList());
-        return  reList;
     }
 
     //——代码分隔线——

@@ -1,4 +1,4 @@
-package com.equipment.consumer.model.mynum;
+package com.wzl.commons.model.mynum;
 
 public enum TableColumnType {
     Text,

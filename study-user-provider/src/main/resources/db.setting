@@ -1,4 +1,4 @@
-url = jdbc:mysql://127.0.0.1:3306/fa?serverTimezone=UTC&useSSL=false&characterEncoding=utf-8
+url = jdbc:mysql://127.0.0.1:3306/study?serverTimezone=UTC&useSSL=false&characterEncoding=utf-8
 user = fa
 pass = fa
 

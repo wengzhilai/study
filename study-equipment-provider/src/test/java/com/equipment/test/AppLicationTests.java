@@ -1,12 +1,13 @@
 package com.equipment.test;
 
-import com.equipment.controller.QueryController;
-import com.equipment.controller.TableController;
-import com.equipment.model.entity.FaTableColumnEntity;
-import com.equipment.model.entity.FaTableTypeEntity;
-import com.equipment.model.mynum.TableColumnType;
+import com.equipment.provider.controller.QueryController;
+import com.equipment.provider.controller.TableController;
+
 import com.wzl.commons.model.DtoDo;
 import com.wzl.commons.model.dto.DtoSave;
+import com.wzl.commons.model.entity.FaTableColumnEntity;
+import com.wzl.commons.model.entity.FaTableTypeEntity;
+import com.wzl.commons.model.mynum.TableColumnType;
 import com.wzl.commons.utlity.TypeChange;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,7 +40,7 @@ public class AppLicationTests {
         saveObj.data.name="测试java2";
         saveObj.data.id=30;
         saveObj.saveFieldList=Arrays.asList("stauts","tableName","addTime","introduce","name");
-        saveObj.data.AllColumns=new ArrayList<>();
+        saveObj.data.allColumns=new ArrayList<>();
 
         FaTableColumnEntity colum=new FaTableColumnEntity();
         colum.columnType= TableColumnType.Text;
@@ -47,7 +48,7 @@ public class AppLicationTests {
         colum.columnName="Name";
         colum.introduce="测试java";
         colum.stauts="正常";
-        saveObj.data.AllColumns.add(colum);
+        saveObj.data.allColumns.add(colum);
 
 
         System.out.println(TypeChange.objToString(tc.Save(saveObj)));

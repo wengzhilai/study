@@ -1,4 +1,4 @@
-package com.equipment.controller;
+package com.equipment.provider.controller;
 
 import com.wzl.commons.model.ResultObj;
 

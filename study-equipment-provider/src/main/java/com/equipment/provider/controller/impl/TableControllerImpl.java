@@ -1,15 +1,14 @@
-package com.equipment.controller.impl;
+package com.equipment.provider.controller.impl;
 
-import com.equipment.controller.TableController;
-import com.equipment.model.entity.FaTableTypeEntity;
-import com.equipment.service.TableService;
+import com.equipment.provider.controller.TableController;
+import com.equipment.provider.server.TableService;
 import com.wzl.commons.model.DtoDo;
 import com.wzl.commons.model.KVT;
 import com.wzl.commons.model.ResultObj;
 import com.wzl.commons.model.dto.DtoSave;
+import com.wzl.commons.model.entity.FaTableTypeEntity;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("Table")
