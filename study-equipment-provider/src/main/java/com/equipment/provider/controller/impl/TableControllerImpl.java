@@ -27,7 +27,7 @@ public class TableControllerImpl implements TableController {
     @RequestMapping(value = "/SingleByKey", method = RequestMethod.POST,consumes = "application/json")
     @ApiOperation(value = "获取单个")
     public ResultObj<FaTableTypeEntity> SingleByKey(@RequestBody DtoDo inObj) {
-        ResultObj<FaTableTypeEntity> t=ts.SingleByKey(Integer.valueOf(inObj.key));
+        ResultObj<FaTableTypeEntity> t=ts.singleByKey(Integer.valueOf(inObj.key));
         return t;
     }
 

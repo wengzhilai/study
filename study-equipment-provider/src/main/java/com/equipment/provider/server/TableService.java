@@ -9,7 +9,7 @@ public interface TableService {
     /**
     * 获取表的单个对象
     */
-    ResultObj<FaTableTypeEntity> SingleByKey(int key);
+    ResultObj<FaTableTypeEntity> singleByKey(int key);
 
     /**
     * 保存和自定义Table

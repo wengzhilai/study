@@ -48,7 +48,6 @@ public class GenerateTests {
     public void AddFunciton() {
         PathConfig cfg=new PathConfig();
         cfg.tableName="equipment";
-
         cfg.consumerPath="/Users/wengzhilai/Desktop/java/study/study-equipment-consumer/src/main/java/com/equipment/consumer/";
         cfg.providerPath="/Users/wengzhilai/Desktop/java/study/study-equipment-provider/src/main/java/com/equipment/provider/";
 //        cfg.consumerPath="/Users/wengzhilai/Desktop/java/study/study-user-consumer/src/main/java/com/user/consumer/";
@@ -59,11 +58,11 @@ public class GenerateTests {
         cfg.providerPackageName="com.equipment.provider";
 
         try {
-            String funName="downFile";
-            String reObjStr="Result";
+            String funName="getConfig";
+            String reObjStr="ResultObj<SmartTableSetting>";
             String inObj="DtoDo";
-            String msg="下载文件";
-            String tableName="Query";
+            String msg="获取设备配置";
+            String tableName="Equipment";
 
             GenerateFile.MakeNewFunction(cfg,funName,reObjStr,inObj,msg,tableName);
         } catch (IOException e) {

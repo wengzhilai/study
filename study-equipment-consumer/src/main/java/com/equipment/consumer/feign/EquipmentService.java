@@ -3,6 +3,7 @@ package com.equipment.consumer.feign;
 import com.equipment.consumer.feign.impl.EquipmentServiceImpl;
 import com.wzl.commons.model.*;
 import com.wzl.commons.model.dto.DtoSave;
+import com.wzl.commons.model.dto.smartTable.SmartTableSetting;
 import com.wzl.commons.model.entity.FaEquipmentEntity;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,6 +37,21 @@ public interface EquipmentService {
     ResultObj<Integer> save(@RequestBody DtoSave<FaEquipmentEntity> inEnt);
     //endregion
 
-    //——代码分隔线——
+    /**
+     * 获取表的选择框
+     * @param inEnt
+     * @return
+     */
+    @GetMapping(value = "/equipment/getTree")
+    ResultObj<KV> getTree(@RequestBody DtoDo inEnt);
 
+    /**
+     * 获取设备配置
+     * @param inEnt
+     * @return
+     */
+    @GetMapping(value = "/equipment/getConfig")
+    ResultObj<SmartTableSetting> getConfig(@RequestBody DtoDo inEnt);
+
+    //——代码分隔线——
 }

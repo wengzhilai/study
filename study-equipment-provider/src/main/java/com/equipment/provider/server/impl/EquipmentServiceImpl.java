@@ -2,9 +2,14 @@ package com.equipment.provider.server.impl;
 
 import com.dependencies.mybatis.service.MyBatisService;
 import com.equipment.provider.server.EquipmentService;
+import com.equipment.provider.server.TableService;
 import com.wzl.commons.model.*;
 import com.wzl.commons.model.dto.DtoSave;
+import com.wzl.commons.model.dto.smartTable.SmartTableColumnSetting;
+import com.wzl.commons.model.dto.smartTable.SmartTableSetting;
 import com.wzl.commons.model.entity.FaEquipmentEntity;
+import com.wzl.commons.model.entity.FaTableColumnEntity;
+import com.wzl.commons.model.entity.FaTableTypeEntity;
 import com.wzl.commons.model.mynum.DatabaseGeneratedOption;
 import com.wzl.commons.retention.EntityHelper;
 import org.apache.commons.lang3.StringUtils;
@@ -20,6 +25,12 @@ import java.util.stream.Collectors;
 public class EquipmentServiceImpl implements EquipmentService {
     @Autowired
     MyBatisService<FaEquipmentEntity> dapper;
+
+    @Autowired
+    MyBatisService<FaTableTypeEntity> dapperTable;
+
+    @Autowired
+    TableService tableService;
 
     EntityHelper<FaEquipmentEntity> eh = new EntityHelper<>(new FaEquipmentEntity());
 
@@ -64,6 +75,60 @@ public class EquipmentServiceImpl implements EquipmentService {
         return resultObj;
     }
 
-    //——代码分隔线——
+    public ResultObj<KV> getTree(DtoDo inEnt) {
+        ResultObj<KV> reObj=new ResultObj<> ();
+        int id=Convert.toInt(inEnt.key);
+        List<FaEquipmentEntity> list=dapper.getAll(eh,x->x.parentId==id);
+        reObj.dataList=list.stream().map(x->new KV(Convert.toStr(x.id),x.name)).collect(Collectors.toList());
+        for (KV item : reObj.dataList) {
+            item.child = getTree(new DtoDo(item.k)).dataList;
 
+        }
+
+        reObj.success=true;
+        return reObj;
+    }
+
+    public ResultObj<SmartTableSetting> getConfig(DtoDo inEnt) {
+        ResultObj<SmartTableSetting> reObj=new ResultObj<> ();
+        int id=Convert.toInt(inEnt.key);
+
+        FaEquipmentEntity equType = dapper.getSingle(eh,x->x.id==id);
+        if (equType == null)
+        {
+            reObj.success = false;
+            reObj.msg = "设备类型ID有误";
+            return reObj;
+        }
+        FaTableTypeEntity tableType = tableService.singleByKey(equType.tableTypeId).data;
+        if (tableType == null)
+        {
+            reObj.success = false;
+            reObj.msg = "表不存在";
+            return reObj;
+        }
+        SmartTableSetting setting = new SmartTableSetting();
+        setting.heardBtn = "[]";
+        List<SmartTableColumnSetting> allColumns=new ArrayList<>();
+        for (FaTableColumnEntity x : tableType.allColumns) {
+            SmartTableColumnSetting t = new SmartTableColumnSetting();
+            t.columnName = x.columnName;
+            t.title = x.name;
+            t.editable = true;
+            t.filter = true;
+            t.show = true;
+            t.sort = true;
+            t.type = x.columnType;
+            allColumns.add(t);
+        }
+
+
+        setting.columnsList = allColumns;
+        setting.rowsBtn = "[]";
+        setting.showCheckbox = true;
+        reObj.data = setting;
+        return reObj;
+    }
+
+    //——代码分隔线——
 }

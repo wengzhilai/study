@@ -31,7 +31,7 @@ public class TableServiceImpl implements TableService {
     EntityHelper<FaTableTypeEntity> moduleEh = new EntityHelper<>(new FaTableTypeEntity());
 
     @Override
-    public ResultObj<FaTableTypeEntity> SingleByKey(int key) {
+    public ResultObj<FaTableTypeEntity> singleByKey(int key) {
         ResultObj<FaTableTypeEntity> reObj=new ResultObj<>();
         reObj.data=moduleMhs.getSingleByPrimaryKey(moduleEh, key);
         reObj.data.allColumns=batisColumn.getAll(new EntityHelper(new FaTableColumnEntity()),x->x.tableTypeId==key);

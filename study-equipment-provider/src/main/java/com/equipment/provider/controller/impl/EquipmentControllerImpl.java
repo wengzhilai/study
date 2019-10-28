@@ -4,6 +4,7 @@ import com.equipment.provider.controller.EquipmentController;
 import com.equipment.provider.server.EquipmentService;
 import com.wzl.commons.model.*;
 import com.wzl.commons.model.dto.DtoSave;
+import com.wzl.commons.model.dto.smartTable.SmartTableSetting;
 import com.wzl.commons.model.entity.FaEquipmentEntity;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,17 @@ public class EquipmentControllerImpl implements EquipmentController {
         return service.save(inEnt);
     }
 
-    //——代码分隔线——
+    @ApiOperation(value="获取表的选择框")
+    @RequestMapping(value = "getTree", method = RequestMethod.POST)
+    public ResultObj<KV> getTree(@RequestBody DtoDo inEnt) {
+        return service.getTree(inEnt);
+    }
 
+    @ApiOperation(value="获取设备配置")
+    @RequestMapping(value = "getConfig", method = RequestMethod.POST)
+    public ResultObj<SmartTableSetting> getConfig(@RequestBody DtoDo inEnt) {
+        return service.getConfig(inEnt);
+    }
+
+    //——代码分隔线——
 }

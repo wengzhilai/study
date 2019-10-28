@@ -3,6 +3,7 @@ package com.equipment.provider.controller;
 
 import com.wzl.commons.model.*;
 import com.wzl.commons.model.dto.DtoSave;
+import com.wzl.commons.model.dto.smartTable.SmartTableSetting;
 import com.wzl.commons.model.entity.FaEquipmentEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -30,6 +31,21 @@ public interface EquipmentController {
     ResultObj<Integer> save(@RequestBody DtoSave<FaEquipmentEntity> inEnt);
     //endregion
 
-    //——代码分隔线——
 
+
+    /**
+     * 获取表的选择框
+     * @param inEnt
+     * @return
+     */
+    ResultObj<KV> getTree(@RequestBody DtoDo inEnt);
+
+    /**
+     * 获取设备配置
+     * @param inEnt
+     * @return
+     */
+    ResultObj<SmartTableSetting> getConfig(@RequestBody DtoDo inEnt);
+
+    //——代码分隔线——
 }

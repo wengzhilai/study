@@ -3,6 +3,7 @@ package com.equipment.provider.server;
 
 import com.wzl.commons.model.*;
 import com.wzl.commons.model.dto.DtoSave;
+import com.wzl.commons.model.dto.smartTable.SmartTableSetting;
 import com.wzl.commons.model.entity.FaEquipmentEntity;
 
 public interface EquipmentService {
@@ -29,6 +30,19 @@ public interface EquipmentService {
     ResultObj<Integer> save(DtoSave<FaEquipmentEntity> inEnt);
     //endregion
 
-    //——代码分隔线——
+    /**
+     * 获取表的选择框
+     * @param inEnt
+     * @return
+     */
+    ResultObj<KV> getTree(DtoDo inEnt);
 
+    /**
+     * 获取设备配置
+     * @param inEnt
+     * @return
+     */
+    ResultObj<SmartTableSetting> getConfig(DtoDo inEnt);
+
+    //——代码分隔线——
 }
