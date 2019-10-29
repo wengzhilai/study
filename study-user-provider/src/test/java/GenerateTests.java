@@ -48,20 +48,22 @@ public class GenerateTests {
     public void AddFunciton() {
         PathConfig cfg=new PathConfig();
         cfg.tableName="equipment";
-        cfg.consumerPath="/Users/wengzhilai/Desktop/java/study/study-equipment-consumer/src/main/java/com/equipment/consumer/";
-        cfg.providerPath="/Users/wengzhilai/Desktop/java/study/study-equipment-provider/src/main/java/com/equipment/provider/";
+//        cfg.consumerPath="/Users/wengzhilai/Desktop/java/study/study-equipment-consumer/src/main/java/com/equipment/consumer/";
+//        cfg.providerPath="/Users/wengzhilai/Desktop/java/study/study-equipment-provider/src/main/java/com/equipment/provider/";
 //        cfg.consumerPath="/Users/wengzhilai/Desktop/java/study/study-user-consumer/src/main/java/com/user/consumer/";
 //        cfg.providerPath="/Users/wengzhilai/Desktop/java/study/study-user-provider/src/main/java/com/user/provider/";
 //        cfg.consumerPath="D:\\IdeaProjects\\study_new\\study-user-consumer/src/main/java/com/user/consumer/";
 //        cfg.providerPath="D:\\IdeaProjects\\study_new\\study-user-provider/src/main/java/com/user/provider/";
+        cfg.consumerPath="D:\\IdeaProjects\\study_new\\study-equipment-consumer\\src\\main\\java\\com\\equipment\\consumer\\";
+        cfg.providerPath="D:\\IdeaProjects\\study_new\\study-equipment-provider\\src\\main\\java\\com\\equipment\\provider\\";
         cfg.consumerPackageName="com.equipment.consumer";
         cfg.providerPackageName="com.equipment.provider";
 
         try {
-            String funName="getConfig";
-            String reObjStr="ResultObj<SmartTableSetting>";
-            String inObj="DtoDo";
-            String msg="获取设备配置";
+            String funName="getConfigAndData";
+            String reObjStr="ResultObj<HashMap<String,Object>>";
+            String inObj="QuerySearchDto";
+            String msg="获取配置信息和数据";
             String tableName="Equipment";
 
             GenerateFile.MakeNewFunction(cfg,funName,reObjStr,inObj,msg,tableName);

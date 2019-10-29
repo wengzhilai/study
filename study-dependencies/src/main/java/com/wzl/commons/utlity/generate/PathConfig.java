@@ -587,7 +587,7 @@ public class PathConfig {
                     raf.seek(lastPoint);
 //                    raf.writeBytes(str);
                     raf.write(str.getBytes("utf-8"));
-                    ponit = lastPoint + str.length();
+                    ponit = lastPoint + str.length()+line.length();
                     raf.seek(ponit);
 
                 }

@@ -3,9 +3,12 @@ package com.equipment.consumer.controller;
 
 import com.wzl.commons.model.*;
 import com.wzl.commons.model.dto.DtoSave;
+import com.wzl.commons.model.dto.query.QuerySearchDto;
 import com.wzl.commons.model.dto.smartTable.SmartTableSetting;
 import com.wzl.commons.model.entity.FaEquipmentEntity;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.HashMap;
 
 public interface EquipmentController {
     //region 基本方法
@@ -44,6 +47,13 @@ public interface EquipmentController {
      * @return
      */
     ResultObj<SmartTableSetting> getConfig(@RequestBody DtoDo inEnt);
+
+    /**
+     * 获取配置信息和数据
+     * @param inEnt
+     * @return
+     */
+    ResultObj<HashMap<String,Object>> getConfigAndData(@RequestBody QuerySearchDto inEnt);
 
     //——代码分隔线——
 }

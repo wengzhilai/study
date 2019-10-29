@@ -5,6 +5,7 @@ import com.equipment.consumer.controller.EquipmentController;
 import com.equipment.consumer.feign.EquipmentService;
 import com.wzl.commons.model.*;
 import com.wzl.commons.model.dto.DtoSave;
+import com.wzl.commons.model.dto.query.QuerySearchDto;
 import com.wzl.commons.model.dto.smartTable.SmartTableSetting;
 import com.wzl.commons.model.entity.FaEquipmentEntity;
 import io.swagger.annotations.ApiOperation;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
 
 @RestController
 @RequestMapping("equipment")
@@ -49,6 +52,12 @@ public class EquipmentControllerImpl implements EquipmentController {
     @ApiOperation(value = "获取设备配置")
     public ResultObj<SmartTableSetting> getConfig(@RequestBody DtoDo inEnt) {
         return service.getConfig(inEnt);
+    }
+
+    @RequestMapping(value = "getConfigAndData", method = RequestMethod.POST)
+    @ApiOperation(value = "获取配置信息和数据")
+    public ResultObj<HashMap<String,Object>> getConfigAndData(@RequestBody QuerySearchDto inEnt) {
+        return service.getConfigAndData(inEnt);
     }
 
     //——代码分隔线——

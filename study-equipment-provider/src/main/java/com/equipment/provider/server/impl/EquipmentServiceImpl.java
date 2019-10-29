@@ -5,6 +5,7 @@ import com.equipment.provider.server.EquipmentService;
 import com.equipment.provider.server.TableService;
 import com.wzl.commons.model.*;
 import com.wzl.commons.model.dto.DtoSave;
+import com.wzl.commons.model.dto.query.QuerySearchDto;
 import com.wzl.commons.model.dto.smartTable.SmartTableColumnSetting;
 import com.wzl.commons.model.dto.smartTable.SmartTableSetting;
 import com.wzl.commons.model.entity.FaEquipmentEntity;
@@ -12,12 +13,14 @@ import com.wzl.commons.model.entity.FaTableColumnEntity;
 import com.wzl.commons.model.entity.FaTableTypeEntity;
 import com.wzl.commons.model.mynum.DatabaseGeneratedOption;
 import com.wzl.commons.retention.EntityHelper;
+import com.wzl.commons.utlity.QueryHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import cn.hutool.core.convert.Convert;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -127,10 +130,65 @@ public class EquipmentServiceImpl implements EquipmentService {
         setting.rowsBtn = "[]";
         setting.showCheckbox = true;
         reObj.data = setting;
+        reObj.success=true;
         return reObj;
     }
 
 
+
+    public ResultObj<HashMap<String,Object>> getConfigAndData(QuerySearchDto inEnt) {
+        ResultObj<HashMap<String,Object>> reObj=new ResultObj<> (true);
+        if (StringUtils.isAnyBlank(inEnt.code))
+        {
+            reObj.success = false;
+            reObj.msg = "代码有误";
+            return reObj;
+        }
+        FaEquipmentEntity equType = dapper.getSingleByPrimaryKey(eh,Convert.toInt(inEnt.code));
+        if (equType == null)
+        {
+            reObj.success = false;
+            reObj.msg = "设备类型ID有误";
+            return reObj;
+        }
+        FaTableTypeEntity tableType = tableService.singleByKey(equType.tableTypeId).data;
+        if (tableType == null)
+        {
+            reObj.success = false;
+            reObj.msg = "表不存在";
+            return reObj;
+        }
+        HashMap<String,Object> bindEnt = new HashMap<>();
+
+
+        String sql = String.format("select * from %1$s", tableType.tableName);
+
+        String whereStr = QueryHelper.MakeWhereStr(inEnt);
+        sql = QueryHelper.MakeSql(inEnt, sql);
+        sql = QueryHelper.MakePageSql(sql, inEnt.page, inEnt.rows, inEnt.orderStr, whereStr,null);
+        try
+        {
+            String[] sqlList = sql.split(";");
+            if (sqlList.length > 0)
+            {
+                reObj.dataList = dapper.Select(sqlList[0]);
+            }
+
+            if (sqlList.length > 1)
+            {
+                reObj.total = dapper.exec(sqlList[1]);
+            }
+
+            reObj.data = bindEnt;
+        }
+        catch (Exception e)
+        {
+            reObj.success=false;
+            reObj.msg=e.getMessage();
+            return reObj;
+        }
+        return reObj;
+    }
 
     //——代码分隔线——
 }

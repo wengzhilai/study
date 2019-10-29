@@ -3,11 +3,14 @@ package com.equipment.consumer.feign;
 import com.equipment.consumer.feign.impl.EquipmentServiceImpl;
 import com.wzl.commons.model.*;
 import com.wzl.commons.model.dto.DtoSave;
+import com.wzl.commons.model.dto.query.QuerySearchDto;
 import com.wzl.commons.model.dto.smartTable.SmartTableSetting;
 import com.wzl.commons.model.entity.FaEquipmentEntity;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.HashMap;
 
 @FeignClient(value = "user-provider-equipment",url = "http://localhost:9003",fallback = EquipmentServiceImpl.class)
 public interface EquipmentService {
@@ -52,6 +55,14 @@ public interface EquipmentService {
      */
     @GetMapping(value = "/equipment/getConfig")
     ResultObj<SmartTableSetting> getConfig(@RequestBody DtoDo inEnt);
+
+    /**
+     * 获取配置信息和数据
+     * @param inEnt
+     * @return
+     */
+    @GetMapping(value = "/equipment/getConfigAndData")
+    ResultObj<HashMap<String,Object>> getConfigAndData(@RequestBody QuerySearchDto inEnt);
 
     //——代码分隔线——
 }
