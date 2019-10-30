@@ -3,6 +3,7 @@ package com.equipment.consumer.feign.impl;
 import com.equipment.consumer.feign.EquipmentService;
 import com.wzl.commons.model.*;
 import com.wzl.commons.model.dto.DtoSave;
+import com.wzl.commons.model.dto.EquipmentDto;
 import com.wzl.commons.model.dto.query.QuerySearchDto;
 import com.wzl.commons.model.dto.smartTable.SmartTableSetting;
 import com.wzl.commons.model.entity.FaEquipmentEntity;
@@ -52,6 +53,20 @@ public class EquipmentServiceImpl implements EquipmentService {
 
     public ResultObj<HashMap<String,Object>> getConfigAndData(QuerySearchDto inEnt) {
         ResultObj<HashMap<String,Object>> reObj=new ResultObj<HashMap<String,Object>> ();
+        reObj.success=false;
+        reObj.msg="网络有问题";
+        return reObj;
+    }
+
+    public ResultObj<Integer> saveEquiment(EquipmentDto inEnt) {
+        ResultObj<Integer> reObj=new ResultObj<Integer> ();
+        reObj.success=false;
+        reObj.msg="网络有问题";
+        return reObj;
+    }
+
+    public ResultObj<Integer> deleteEquiment(EquipmentDto inEnt) {
+        ResultObj<Integer> reObj=new ResultObj<Integer> ();
         reObj.success=false;
         reObj.msg="网络有问题";
         return reObj;

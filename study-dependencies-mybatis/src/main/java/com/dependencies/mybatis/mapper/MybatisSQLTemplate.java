@@ -8,8 +8,13 @@ import org.apache.ibatis.jdbc.SQL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MybatisSQLTemplate {
+
+    public String execByMap(@Param("sql") String sql,@Param("map") Map<String, Object> map) {
+        return sql;
+    }
 
     public String getSingleSql(@Param("data") EntityHelper eh,int key) {
         SQL sqlObj = new SQL().

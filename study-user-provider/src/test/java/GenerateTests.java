@@ -60,10 +60,10 @@ public class GenerateTests {
         cfg.providerPackageName="com.equipment.provider";
 
         try {
-            String funName="getConfigAndData";
-            String reObjStr="ResultObj<HashMap<String,Object>>";
-            String inObj="QuerySearchDto";
-            String msg="获取配置信息和数据";
+            String funName="deleteEquiment";
+            String reObjStr="ResultObj<Integer>";
+            String inObj="EquipmentDto";
+            String msg="删除设备";
             String tableName="Equipment";
 
             GenerateFile.MakeNewFunction(cfg,funName,reObjStr,inObj,msg,tableName);

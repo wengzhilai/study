@@ -26,8 +26,17 @@ public interface MapperHelper {
     @Select("${sql}")
     List<HashMap<String,Object>> Select(@Param("sql") String sql);
 
-    @Select("${sql}")
+    /**
+     * 执行查询语句
+     * @param sql
+     * @param map
+     * @return
+     */
+    @SelectProvider(type = MybatisSQLTemplate.class, method = "execByMap")
+    List<HashMap<String,Object>> execByMap(@Param("sql") String sql,@Param("map") Map<String, Object> map);
 
+
+    @Select("${sql}")
     List<Map> SelectMap(@Param("sql") String sql);
 
 

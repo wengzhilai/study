@@ -4,6 +4,7 @@ import com.equipment.provider.controller.EquipmentController;
 import com.equipment.provider.server.EquipmentService;
 import com.wzl.commons.model.*;
 import com.wzl.commons.model.dto.DtoSave;
+import com.wzl.commons.model.dto.EquipmentDto;
 import com.wzl.commons.model.dto.query.QuerySearchDto;
 import com.wzl.commons.model.dto.smartTable.SmartTableSetting;
 import com.wzl.commons.model.entity.FaEquipmentEntity;
@@ -56,6 +57,18 @@ public class EquipmentControllerImpl implements EquipmentController {
     @RequestMapping(value = "getConfigAndData", method = RequestMethod.POST)
     public ResultObj<HashMap<String,Object>> getConfigAndData(@RequestBody QuerySearchDto inEnt) {
         return service.getConfigAndData(inEnt);
+    }
+
+    @ApiOperation(value="保存设备")
+    @RequestMapping(value = "saveEquiment", method = RequestMethod.POST)
+    public ResultObj<Integer> saveEquiment(@RequestBody EquipmentDto inEnt) {
+        return service.saveEquiment(inEnt);
+    }
+
+    @ApiOperation(value="删除设备")
+    @RequestMapping(value = "deleteEquiment", method = RequestMethod.POST)
+    public ResultObj<Integer> deleteEquiment(@RequestBody EquipmentDto inEnt) {
+        return service.deleteEquiment(inEnt);
     }
 
     //——代码分隔线——

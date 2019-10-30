@@ -11,6 +11,9 @@ import java.util.Map;
 
 public interface MyBatisService<T> {
     int exec(String sql);
+
+    List<HashMap<String,Object>> execByMap(String sql,Map<String, Object> map);
+
     boolean alter(String sql);
 
     T getSingleByPrimaryKey(EntityHelper<T> entityHelper, int key);

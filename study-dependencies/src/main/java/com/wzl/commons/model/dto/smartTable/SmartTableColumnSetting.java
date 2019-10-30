@@ -17,7 +17,7 @@ public class SmartTableColumnSetting {
     /**
      * 'text'|'html'|'custom'
      */
-    public TableColumnType type;
+    public String type;
 
     public ColumnEditorSetting editor;
 

@@ -3,6 +3,7 @@ package com.equipment.consumer.feign;
 import com.equipment.consumer.feign.impl.EquipmentServiceImpl;
 import com.wzl.commons.model.*;
 import com.wzl.commons.model.dto.DtoSave;
+import com.wzl.commons.model.dto.EquipmentDto;
 import com.wzl.commons.model.dto.query.QuerySearchDto;
 import com.wzl.commons.model.dto.smartTable.SmartTableSetting;
 import com.wzl.commons.model.entity.FaEquipmentEntity;
@@ -63,6 +64,22 @@ public interface EquipmentService {
      */
     @GetMapping(value = "/equipment/getConfigAndData")
     ResultObj<HashMap<String,Object>> getConfigAndData(@RequestBody QuerySearchDto inEnt);
+
+    /**
+     * 保存设备
+     * @param inEnt
+     * @return
+     */
+    @GetMapping(value = "/equipment/saveEquiment")
+    ResultObj<Integer> saveEquiment(@RequestBody EquipmentDto inEnt);
+
+    /**
+     * 删除设备
+     * @param inEnt
+     * @return
+     */
+    @GetMapping(value = "/equipment/deleteEquiment")
+    ResultObj<Integer> deleteEquiment(@RequestBody EquipmentDto inEnt);
 
     //——代码分隔线——
 }

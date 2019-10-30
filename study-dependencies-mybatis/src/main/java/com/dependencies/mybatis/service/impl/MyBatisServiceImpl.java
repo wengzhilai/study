@@ -53,6 +53,9 @@ public class MyBatisServiceImpl<T> implements MyBatisService<T> {
     public List<HashMap<String,Object>> Select(String sql){
         return mh.Select(sql);
     }
+    public List<HashMap<String,Object>> execByMap(String sql,Map<String, Object> map){
+        return mh.execByMap(sql,map);
+    }
 
     public List<Map> SelectMap(String sql){
         return mh.SelectMap(sql);

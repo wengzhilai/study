@@ -5,7 +5,9 @@ import com.equipment.provider.server.EquipmentService;
 import com.equipment.provider.server.TableService;
 import com.wzl.commons.model.*;
 import com.wzl.commons.model.dto.DtoSave;
+import com.wzl.commons.model.dto.EquipmentDto;
 import com.wzl.commons.model.dto.query.QuerySearchDto;
+import com.wzl.commons.model.dto.smartTable.ColumnEditorSetting;
 import com.wzl.commons.model.dto.smartTable.SmartTableColumnSetting;
 import com.wzl.commons.model.dto.smartTable.SmartTableSetting;
 import com.wzl.commons.model.entity.FaEquipmentEntity;
@@ -14,14 +16,13 @@ import com.wzl.commons.model.entity.FaTableTypeEntity;
 import com.wzl.commons.model.mynum.DatabaseGeneratedOption;
 import com.wzl.commons.retention.EntityHelper;
 import com.wzl.commons.utlity.QueryHelper;
+import com.wzl.commons.utlity.TypeChange;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import cn.hutool.core.convert.Convert;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -121,7 +122,13 @@ public class EquipmentServiceImpl implements EquipmentService {
             t.filter = true;
             t.show = true;
             t.sort = true;
-            t.type = x.columnType;
+            t.type = x.columnType.toString().toLowerCase();
+            t.editor=new ColumnEditorSetting();
+            switch (x.columnType){
+                case Int:
+                    t.editor.type= "number";
+                    break;
+            }
             allColumns.add(t);
         }
 
@@ -161,7 +168,9 @@ public class EquipmentServiceImpl implements EquipmentService {
         HashMap<String,Object> bindEnt = new HashMap<>();
 
 
-        String sql = String.format("select * from %1$s", tableType.tableName);
+        String sql = String.format("select Id id, %1$s  from %2$s",
+                String.join(",", tableType.allColumns.stream().map(i -> i.columnName).collect(Collectors.toList())),
+                tableType.tableName);
 
         String whereStr = QueryHelper.MakeWhereStr(inEnt);
         sql = QueryHelper.MakeSql(inEnt, sql);
@@ -187,6 +196,78 @@ public class EquipmentServiceImpl implements EquipmentService {
             reObj.msg=e.getMessage();
             return reObj;
         }
+        return reObj;
+    }
+
+    public ResultObj<Integer> saveEquiment(EquipmentDto inEnt) {
+        ResultObj<Integer> reObj=new ResultObj<> ();
+        FaEquipmentEntity equType = dapper.getSingleByPrimaryKey(eh,Convert.toInt(inEnt.typeId));
+        if (equType == null)
+        {
+            reObj.success = false;
+            reObj.msg = "设备类型ID有误";
+            return reObj;
+        }
+        FaTableTypeEntity tableType = tableService.singleByKey(equType.tableTypeId).data;
+        if (tableType == null)
+        {
+            reObj.success = false;
+            reObj.msg = "表不存在";
+            return reObj;
+        }
+        String sql;
+        Map<String, Object> parMap=TypeChange.jsonStrToJavaBean(inEnt.dataStr, Map.class);
+
+        if(inEnt.id==0){
+            sql = String.format("insert into %1$s(%2$s) values(%3$s) ",
+                    tableType.tableName,
+                    String.join(",", tableType.allColumns.stream().map(i -> i.columnName).collect(Collectors.toList())),
+                    String.join(",", tableType.allColumns.stream().map(i -> "'${map." + i.columnName+"}'").collect(Collectors.toList()))
+            );
+            System.out.println(sql);
+            System.out.println(TypeChange.objToString(parMap));
+
+            dapper.execByMap(sql,parMap);
+        }
+        else {
+            sql = String.format("update %1$s set %2$s where ID=%3$s",
+                    tableType.tableName,
+                    String.join(",", tableType.allColumns.stream().map(i -> i.columnName + "='${map." + i.columnName+"}'").collect(Collectors.toList())),
+                    inEnt.id
+            );
+            System.out.println(sql);
+            dapper.execByMap(sql,parMap);
+        }
+        reObj.success=true;
+        return reObj;
+    }
+
+    /**
+     * 删除设备
+     * @param inEnt
+     * @return
+     */
+    public ResultObj<Integer> deleteEquiment(EquipmentDto inEnt) {
+        ResultObj<Integer> reObj = new ResultObj<>();
+        FaEquipmentEntity equType = dapper.getSingleByPrimaryKey(eh, Convert.toInt(inEnt.typeId));
+        if (equType == null) {
+            reObj.success = false;
+            reObj.msg = "设备类型ID有误";
+            return reObj;
+        }
+        FaTableTypeEntity tableType = tableService.singleByKey(equType.tableTypeId).data;
+        if (tableType == null) {
+            reObj.success = false;
+            reObj.msg = "表不存在";
+            return reObj;
+        }
+        String sql = String.format("delete from %1$s where Id=%2$s",
+                tableType.tableName,
+                inEnt.id
+        );
+        System.out.println(sql);
+        boolean opNum= dapper.alter(sql);
+        reObj.success = true;
         return reObj;
     }
 

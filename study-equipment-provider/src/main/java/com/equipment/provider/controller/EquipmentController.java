@@ -3,6 +3,7 @@ package com.equipment.provider.controller;
 
 import com.wzl.commons.model.*;
 import com.wzl.commons.model.dto.DtoSave;
+import com.wzl.commons.model.dto.EquipmentDto;
 import com.wzl.commons.model.dto.query.QuerySearchDto;
 import com.wzl.commons.model.dto.smartTable.SmartTableSetting;
 import com.wzl.commons.model.entity.FaEquipmentEntity;
@@ -56,6 +57,20 @@ public interface EquipmentController {
      * @return
      */
     ResultObj<HashMap<String,Object>> getConfigAndData(@RequestBody QuerySearchDto inEnt);
+
+    /**
+     * 保存设备
+     * @param inEnt
+     * @return
+     */
+    ResultObj<Integer> saveEquiment(@RequestBody EquipmentDto inEnt);
+
+    /**
+     * 删除设备
+     * @param inEnt
+     * @return
+     */
+    ResultObj<Integer> deleteEquiment(@RequestBody EquipmentDto inEnt);
 
     //——代码分隔线——
 }
